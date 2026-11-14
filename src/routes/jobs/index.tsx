@@ -47,7 +47,7 @@ function JobsPage() {
     <SmartShell>
       <PageHeader title="Explore Jobs" />
       <JobFilters value={search} onChange={(v) => navigate({ search: v })} />
-      <p className="mt-5 text-sm text-muted-foreground">
+      <p className="mt-4 text-xs text-muted-foreground" suppressHydrationWarning>
         {data ? `${data.total.toLocaleString()} jobs available` : ""} {isFetching && !isLoading && "· updating…"}
       </p>
       {error && <ErrorNote error={error} />}
@@ -57,7 +57,7 @@ function JobsPage() {
       ) : data && data.jobs.length === 0 ? (
         <div className="mt-4"><EmptyState icon={<SearchX />} title="No jobs match these filters" description="Try removing a filter or searching a broader term." /></div>
       ) : (
-        <div className="mt-3 grid gap-3 md:grid-cols-2">
+        <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
           {data?.jobs.map((j) => <JobCard key={j.id} job={j} saved={saved.has(j.id)} onToggleSave={() => toggle(j.id)} />)}
         </div>
       )}

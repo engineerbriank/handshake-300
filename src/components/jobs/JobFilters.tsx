@@ -60,10 +60,10 @@ export function JobFilters({ value, onChange }: { value: JobSearch; onChange: (v
       >
         <div className="relative flex-1">
           <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search title, skill or company" className="h-11 rounded-xl bg-background pl-10" />
+          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search title, skill or company" className="h-10 rounded-lg bg-background pl-10 text-xs" />
         </div>
-        <Button type="submit" className="h-11">Search</Button>
-        <Button type="button" variant="outline" className="h-11 md:hidden" onClick={() => setOpen(!open)} aria-label="Filters">
+        <Button type="submit" className="hidden h-10 sm:inline-flex">Search</Button>
+        <Button type="button" variant="outline" className="h-10 md:hidden" onClick={() => setOpen(!open)} aria-label="Filters">
           <SlidersHorizontal /> {activeCount > 0 && activeCount}
         </Button>
       </form>
