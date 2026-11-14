@@ -157,6 +157,7 @@ const signUpSchema = z
 
 function SignUpForm() {
   const [form, setForm] = useState({ first_name: "", middle_name: "", last_name: "", username: "", email: "", phone: "", country: "", password: "", confirm: "", referral_code: "", terms: false });
+  const [step, setStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState<string | null>(null);
@@ -164,6 +165,13 @@ function SignUpForm() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (step < 3) {
+      const parsedStep = signUpSchema.safeParse({ ...form, country: form.country || "Kenya", terms: true });
+      const keys = step === 1 ? ["first_name", "last_name", "username", "email", "phone"] : ["password", "confirm"];
+      const issues = parsedStep.success ? [] : parsedStep.error.issues.filter((i) => keys.includes(String(i.path[0])));
+      if (issues.length) { setErrors(Object.fromEntries(issues.map((i) => [String(i.path[0]), i.message]))); return; }
+      setErrors({}); setStep(step + 1); return;
+    }
     const parsed = signUpSchema.safeParse(form);
     if (!parsed.success) {
       setErrors(Object.fromEntries(parsed.error.issues.map((i) => [i.path[0] as string, i.message])));
@@ -199,32 +207,33 @@ function SignUpForm() {
   const err = (k: string) => errors[k] && <p className="mt-1 text-xs text-destructive">{errors[k]}</p>;
   return (
     <form onSubmit={submit} className="space-y-3" noValidate>
-      <div className="grid grid-cols-2 gap-3">
-        <div><Input placeholder="First name" value={form.first_name} onChange={set("first_name")} autoComplete="given-name" className="h-11 rounded-xl" />{err("first_name")}</div>
-        <div><Input placeholder="Last name" value={form.last_name} onChange={set("last_name")} autoComplete="family-name" className="h-11 rounded-xl" />{err("last_name")}</div>
+      <div className="mb-5">
+        <p className="mb-2 text-center text-xs text-muted-foreground">{step} of 3</p>
+        <div className="grid grid-cols-3 gap-1">{[1, 2, 3].map((i) => <div key={i} className={`h-1 rounded-full ${i <= step ? "bg-brand" : "bg-secondary"}`} />)}</div>
+        <h2 className="mt-5 text-lg font-semibold">{step === 1 ? "Create your account" : step === 2 ? "Set your password" : "Complete your profile"}</h2>
+        <p className="mt-1 text-xs text-muted-foreground">{step === 1 ? "Fill in your basic details." : step === 2 ? "Create a strong password to keep your account safe." : "Tell us more about yourself. Verification continues after email confirmation."}</p>
       </div>
-      <Input placeholder="Middle name (optional)" value={form.middle_name} onChange={set("middle_name")} autoComplete="additional-name" className="h-11 rounded-xl" />
-      <div><Input placeholder="Username" value={form.username} onChange={set("username")} autoComplete="username" className="h-11 rounded-xl" />{err("username")}</div>
-      <div><Input type="email" placeholder="Email address" value={form.email} onChange={set("email")} autoComplete="email" className="h-11 rounded-xl" />{err("email")}</div>
-      <div><Input type="tel" placeholder="Phone (e.g. +254712345678)" value={form.phone} onChange={set("phone")} autoComplete="tel" className="h-11 rounded-xl" />{err("phone")}</div>
-      <div>
-        <Select value={form.country} onValueChange={(v) => setForm({ ...form, country: v })}>
-          <SelectTrigger className="h-11 rounded-xl"><SelectValue placeholder="Country" /></SelectTrigger>
-          <SelectContent className="max-h-72">{COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent>
-        </Select>
-        {err("country")}
+      {step === 1 && <>
+        {([ ["first_name", "First name", "e.g. John"], ["last_name", "Last name", "e.g. Doe"], ["middle_name", "Middle name (optional)", "e.g. Kamau"], ["username", "Username", "Choose a unique username"], ["email", "Email address", "you@example.com"], ["phone", "Phone number", "+254 712345678"] ] as const).map(([key, label, placeholder]) => (
+          <label key={key} className="block rounded-lg border px-3 py-2"><span className="text-[11px] font-medium">{label}</span><Input aria-label={label} type={key === "email" ? "email" : key === "phone" ? "tel" : "text"} placeholder={placeholder} value={form[key]} onChange={set(key)} className="h-6 border-0 px-0 text-xs shadow-none focus-visible:ring-0" />{err(key)}</label>
+        ))}
+      </>}
+      {step === 2 && <>
+        <label className="block rounded-lg border px-3 py-2"><span className="text-[11px] font-medium">Password</span><Input aria-label="Password" type="password" placeholder="Min 8 characters, including a letter and number" value={form.password} onChange={set("password")} autoComplete="new-password" className="h-8 border-0 px-0 text-xs shadow-none" />{err("password")}</label>
+        <label className="block rounded-lg border px-3 py-2"><span className="text-[11px] font-medium">Confirm password</span><Input aria-label="Confirm password" type="password" placeholder="Re-enter your password" value={form.confirm} onChange={set("confirm")} autoComplete="new-password" className="h-8 border-0 px-0 text-xs shadow-none" />{err("confirm")}</label>
+        <p className="pt-2 text-xs font-medium">Password must include:</p>
+        <ul className="space-y-2 text-xs text-muted-foreground"><li className={form.password.length >= 8 ? "text-success" : ""}>✓ At least 8 characters</li><li className={/[A-Za-z]/.test(form.password) ? "text-success" : ""}>✓ One letter</li><li className={/[0-9]/.test(form.password) ? "text-success" : ""}>✓ One number</li></ul>
+      </>}
+      {step === 3 && <>
+        <label className="block space-y-1 text-xs font-medium">Country<Select value={form.country} onValueChange={(v) => setForm({ ...form, country: v })}><SelectTrigger className="h-11 rounded-lg"><SelectValue placeholder="Select country" /></SelectTrigger><SelectContent className="max-h-72">{COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent></Select>{err("country")}</label>
+        <Input placeholder="Referral code (optional)" value={form.referral_code} onChange={set("referral_code")} className="h-11 rounded-lg" />
+        <label className="flex items-start gap-2.5 pt-1 text-xs text-muted-foreground"><Checkbox checked={form.terms} onCheckedChange={(v) => setForm({ ...form, terms: v === true })} className="mt-0.5" /><span>I agree to the <Link to="/terms" className="font-medium text-foreground underline">Terms</Link> and <Link to="/privacy" className="font-medium text-foreground underline">Privacy Policy</Link>. My account is personal and non-transferable.</span></label>
+        {err("terms")}
+      </>}
+      <div className="flex items-center gap-4 pt-5">
+        {step > 1 && <Button type="button" variant="ghost" onClick={() => { setStep(step - 1); setErrors({}); }}>Back</Button>}
+        <Button variant="brand" type="submit" className="h-11 flex-1" disabled={loading}>{loading && <Loader2 className="animate-spin" />}{step === 3 ? "Create Account" : "Next →"}</Button>
       </div>
-      <div><Input type="password" placeholder="Password" value={form.password} onChange={set("password")} autoComplete="new-password" className="h-11 rounded-xl" />{err("password")}</div>
-      <div><Input type="password" placeholder="Confirm password" value={form.confirm} onChange={set("confirm")} autoComplete="new-password" className="h-11 rounded-xl" />{err("confirm")}</div>
-      <Input placeholder="Referral code (optional)" value={form.referral_code} onChange={set("referral_code")} className="h-11 rounded-xl" />
-      <label className="flex items-start gap-2.5 pt-1 text-sm text-muted-foreground">
-        <Checkbox checked={form.terms} onCheckedChange={(v) => setForm({ ...form, terms: v === true })} className="mt-0.5" />
-        <span>I agree to the <Link to="/terms" className="font-medium text-foreground underline">Terms</Link> and <Link to="/privacy" className="font-medium text-foreground underline">Privacy Policy</Link>. My account is personal and non-transferable.</span>
-      </label>
-      {err("terms")}
-      <Button type="submit" className="h-11 w-full" disabled={loading}>{loading && <Loader2 className="animate-spin" />} Create Account</Button>
-      <div className="relative py-2 text-center text-xs text-muted-foreground"><span className="relative z-10 bg-background px-2">or continue with</span><div className="absolute inset-x-0 top-1/2 border-t" /></div>
-      <SocialButtons />
     </form>
   );
 }

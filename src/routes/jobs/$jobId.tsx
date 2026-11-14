@@ -122,7 +122,7 @@ function JobDetail() {
           </button>
         </div>
 
-        <div className="rounded-3xl border bg-card p-5 shadow-card sm:p-7">
+        <div className="bg-card py-2">
           <div className="flex items-start gap-4">
             <EmployerLogo src={job.employer_logo} name={job.employer} className="h-14 w-14" />
             <div className="min-w-0">
@@ -130,7 +130,7 @@ function JobDetail() {
               <p className="mt-1 flex items-center gap-1 text-muted-foreground">{job.employer}{job.is_verified && <BadgeCheck className="h-4 w-4 text-info" />}</p>
             </div>
           </div>
-          {salary && <p className="tabular mt-4 text-2xl font-bold">{salary}</p>}
+          {salary && <p className="tabular mt-4 text-xl font-bold text-success">{salary}</p>}
           <div className="mt-4 flex flex-wrap gap-1.5">
             {job.is_remote && <Badge variant="success" className="gap-1"><CheckCircle2 className="h-3 w-3" /> Remote</Badge>}
             {job.worldwide && <Badge variant="info" className="gap-1"><Globe2 className="h-3 w-3" /> Worldwide</Badge>}
@@ -186,7 +186,7 @@ function JobDetail() {
           <Button variant="outline" size="lg" className="px-4" onClick={() => toggle(job.id)} aria-label={saved.has(job.id) ? "Unsave" : "Save"}>
             {saved.has(job.id) ? <BookmarkCheck className="text-info" /> : <Bookmark />}
           </Button>
-          <Button size="lg" className="flex-1" onClick={apply}>Apply for Job <ExternalLink /></Button>
+          <Button variant="brand" size="lg" className="flex-1" onClick={apply}>Apply for Job <ExternalLink /></Button>
           {user && (
             <Button variant="ghost" size="lg" className="px-4" onClick={() => setReport(true)} aria-label="Report listing"><Flag /></Button>
           )}

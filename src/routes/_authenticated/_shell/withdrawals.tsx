@@ -71,10 +71,9 @@ function Withdrawals() {
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <PageHeader title="Withdraw Funds" />
-      <div className="flex flex-col items-center rounded-3xl border bg-card p-6 text-center shadow-card">
-        <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground"><Wallet className="h-7 w-7" /></span>
-        <p className="mt-3 text-sm text-muted-foreground">Available Balance</p>
-        <p className="tabular text-3xl font-extrabold">{usd(wallet?.available_usd)} USD</p>
+      <div className="rounded-lg bg-secondary px-4 py-3">
+        <p className="text-xs text-muted-foreground">Available Balance</p>
+        <p className="tabular mt-1 text-xl font-bold">{usd(wallet?.available_usd)} USD</p>
       </div>
 
       <section>
@@ -85,7 +84,7 @@ function Withdrawals() {
               const Icon = ICON[m.provider as keyof typeof ICON] ?? Landmark;
               const p = providers.data?.find((x) => x.slug === m.provider);
               return (
-                <button key={m.id} type="button" onClick={() => setMethodId(m.id)} className={cn("flex w-full items-center gap-3 rounded-2xl border bg-card p-4 text-left", selected === m.id && "border-primary ring-1 ring-primary")}>
+                <Button variant="outline" key={m.id} type="button" onClick={() => setMethodId(m.id)} className={cn("flex w-full items-center gap-3 rounded-2xl border bg-card p-3 text-left h-auto whitespace-normal justify-start", selected === m.id && "border-primary ring-1 ring-primary")}>
                   <Icon className="h-5 w-5 shrink-0" />
                   <span className="flex-1">
                     <span className="block font-semibold">{m.label}</span>
@@ -96,7 +95,7 @@ function Withdrawals() {
                     {p && !p.enabled && <span className="text-[0.7rem] text-muted-foreground">Provider unavailable</span>}
                   </span>
                   <span className={cn("ml-1 h-5 w-5 rounded-full border-2", selected === m.id ? "border-[6px] border-primary" : "border-input")} />
-                </button>
+                </Button>
               );
             })}
           </div>
@@ -112,7 +111,7 @@ function Withdrawals() {
       </section>
 
       <Button size="lg" className="w-full" disabled={!valid || getQuote.isPending} onClick={() => getQuote.mutate()}>
-        {getQuote.isPending && <Loader2 className="animate-spin" />} Request Withdrawal
+        {getQuote.isPending && <Loader2 className="animate-spin" />} Continue
       </Button>
       {amount && amt < min && <p className="-mt-4 text-center text-xs text-destructive">Minimum withdrawal is {usd(min)}.</p>}
       {amount && amt > Number(wallet?.available_usd ?? 0) && <p className="-mt-4 text-center text-xs text-destructive">Amount exceeds your available balance.</p>}

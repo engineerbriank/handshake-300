@@ -45,10 +45,10 @@ function JobsPage() {
 
   return (
     <SmartShell>
-      <PageHeader title="Explore Jobs" description="Live remote opportunities from international job sources. Applications open on the employer's original page." />
+      <PageHeader title="Explore Jobs" />
       <JobFilters value={search} onChange={(v) => navigate({ search: v })} />
       <p className="mt-5 text-sm text-muted-foreground">
-        {data ? `${data.total.toLocaleString()} active listings` : " "} {isFetching && !isLoading && "· updating…"}
+        {data ? `${data.total.toLocaleString()} jobs available` : " "} {isFetching && !isLoading && "· updating…"}
       </p>
       {error && <ErrorNote error={error} />}
       {data?.error && <ErrorNote error={data.error} />}

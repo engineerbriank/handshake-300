@@ -77,7 +77,7 @@ export function SmartShell({ children }: { children: ReactNode }) {
   if (!isLoading && user) return <AppShell>{children}</AppShell>;
   return (
     <PublicShell>
-      <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6">{children}</div>
+      <div className="mx-auto w-full app-content max-w-5xl px-4 py-6 sm:px-6">{children}</div>
     </PublicShell>
   );
 }
