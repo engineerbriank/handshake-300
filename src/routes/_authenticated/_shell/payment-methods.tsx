@@ -15,7 +15,7 @@ import { useCurrentUser, useProfile } from "@/lib/auth";
 import { COUNTRIES } from "@/lib/constants";
 
 export const Route = createFileRoute("/_authenticated/_shell/payment-methods")({
-  head: () => ({ meta: [{ title: "Payment Methods — HANDSHAKE" }, { name: "description", content: "Manage your payout accounts." }] }),
+  head: () => ({ meta: [{ title: "Payment Methods — Handshake" }, { name: "description", content: "Manage your payout accounts." }] }),
   component: PaymentMethods,
 });
 

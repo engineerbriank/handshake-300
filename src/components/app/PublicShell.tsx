@@ -37,10 +37,10 @@ export function PublicFooter() {
     <footer className="border-t bg-primary text-primary-foreground">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-4">
         <div className="md:col-span-2">
-          <p className="text-lg font-extrabold tracking-[0.08em]">HANDSHAKE</p>
+          <p className="text-lg font-extrabold tracking-[0.08em]">Handshake</p>
           <p className="mt-1 text-sm text-primary-foreground/70">Global Work. Real Earnings.</p>
           <p className="mt-4 max-w-sm text-xs leading-relaxed text-primary-foreground/60">
-            External job listings link to the original employer or source. HANDSHAKE does not guarantee employment and does not pay for work performed for external employers.
+            External job listings link to the original employer or source. Handshake does not guarantee employment and does not pay for work performed for external employers.
           </p>
         </div>
         <div className="space-y-2 text-sm">
@@ -56,7 +56,7 @@ export function PublicFooter() {
           <Link to="/privacy" className="block text-primary-foreground/70 hover:text-primary-foreground">Privacy Policy</Link>
         </div>
       </div>
-      <div className="border-t border-primary-foreground/10 py-4 text-center text-xs text-primary-foreground/50">© {new Date().getFullYear()} HANDSHAKE</div>
+      <div className="border-t border-primary-foreground/10 py-4 text-center text-xs text-primary-foreground/50">© {new Date().getFullYear()} Handshake</div>
     </footer>
   );
 }
@@ -77,7 +77,7 @@ export function SmartShell({ children }: { children: ReactNode }) {
   if (!isLoading && user) return <AppShell>{children}</AppShell>;
   return (
     <PublicShell>
-      <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6">{children}</div>
+      <div className="mx-auto w-full app-content max-w-5xl px-4 py-6 sm:px-6">{children}</div>
     </PublicShell>
   );
 }

@@ -11,7 +11,7 @@ import { humanize } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/admin")({
-  head: () => ({ meta: [{ title: "Admin Console — HANDSHAKE" }, { name: "description", content: "HANDSHAKE administration." }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Admin Console — Handshake" }, { name: "description", content: "Handshake administration." }, { name: "robots", content: "noindex" }] }),
   component: AdminLayout,
 });
 

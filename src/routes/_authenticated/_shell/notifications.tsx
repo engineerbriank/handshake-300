@@ -10,7 +10,7 @@ import { ago, humanize } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/_shell/notifications")({
-  head: () => ({ meta: [{ title: "Notifications — HANDSHAKE" }, { name: "description", content: "Updates about your account, work and earnings." }] }),
+  head: () => ({ meta: [{ title: "Notifications — Handshake" }, { name: "description", content: "Updates about your account, work and earnings." }] }),
   component: Notifications,
 });
 

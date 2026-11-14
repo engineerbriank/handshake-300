@@ -27,7 +27,7 @@ export function MfaManager({ onVerified }: { onVerified?: () => void }) {
     mutationFn: async () => {
       const { data: existing } = await supabase.auth.mfa.listFactors();
       for (const f of existing?.all ?? []) if (f.status === "unverified") await supabase.auth.mfa.unenroll({ factorId: f.id });
-      const { data: d, error } = await supabase.auth.mfa.enroll({ factorType: "totp", friendlyName: `HANDSHAKE ${new Date().toISOString().slice(0, 10)}` });
+      const { data: d, error } = await supabase.auth.mfa.enroll({ factorType: "totp", friendlyName: `Handshake ${new Date().toISOString().slice(0, 10)}` });
       if (error) throw error;
       return { id: d.id, qr: d.totp.qr_code, secret: d.totp.secret };
     },

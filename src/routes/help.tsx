@@ -9,14 +9,14 @@ const FAQ: [string, string][] = [
   ["When will I be paid for an assignment?", "When a reviewer approves your submission, the earnings are credited immediately to your available USD balance."],
   ["When are withdrawals sent?", "Every Saturday at 8:00 PM East Africa Time. Requests made before the run are included if your account and payout method are verified."],
   ["Why is my withdrawal on hold?", "Common reasons: account not verified, payout method not yet confirmed, or the payment provider is temporarily unavailable. The reason is shown on the Withdrawals page and the funds remain reserved for you."],
-  ["Does HANDSHAKE pay for external jobs?", "No — external employers pay you directly. HANDSHAKE only pays for HANDSHAKE assignments."],
+  ["Does Handshake pay for external jobs?", "No — external employers pay you directly. Handshake only pays for Handshake assignments."],
   ["How do I secure my account?", "Enable two-factor authentication in the Security Centre and review Login Activity regularly."],
 ];
 
 export const Route = createFileRoute("/help")({
-  head: staticHead("Help Centre", "Answers about verification, assignments, earnings and withdrawals on HANDSHAKE."),
+  head: staticHead("Help Centre", "Answers about verification, assignments, earnings and withdrawals on Handshake."),
   component: () => (
-    <StaticPage title="Help Centre" intro="Common questions about using HANDSHAKE.">
+    <StaticPage title="Help Centre" intro="Common questions about using Handshake.">
       <Accordion type="single" collapsible>
         {FAQ.map(([q, a]) => (
           <AccordionItem key={q} value={q}>

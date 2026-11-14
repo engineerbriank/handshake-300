@@ -10,7 +10,7 @@ import { usd, dateTime, humanize } from "@/lib/format";
 import { useCurrentUser } from "@/lib/auth";
 
 export const Route = createFileRoute("/_authenticated/_shell/assignments/$assignmentId")({
-  head: () => ({ meta: [{ title: "Assignment — HANDSHAKE" }, { name: "description", content: "Assignment details and instructions." }] }),
+  head: () => ({ meta: [{ title: "Assignment — Handshake" }, { name: "description", content: "Assignment details and instructions." }] }),
   component: AssignmentDetail,
 });
 

@@ -18,7 +18,7 @@ import { usd, dateTime, shortDate, errorMessage } from "@/lib/format";
 import { uploadPrivate, validateFile } from "@/lib/upload";
 
 export const Route = createFileRoute("/_authenticated/_shell/employer")({
-  head: () => ({ meta: [{ title: "Client Portal — HANDSHAKE" }, { name: "description", content: "Create, fund and review paid digital assignments on HANDSHAKE." }] }),
+  head: () => ({ meta: [{ title: "Client Portal — Handshake" }, { name: "description", content: "Create, fund and review paid digital assignments on Handshake." }] }),
   component: EmployerPortal,
 });
 
@@ -48,7 +48,7 @@ function CreateEmployer() {
   });
   return (
     <div className="mx-auto max-w-2xl">
-      <PageHeader title="Client Portal" description="Publish funded digital assignments for HANDSHAKE workers." />
+      <PageHeader title="Client Portal" description="Publish funded digital assignments for Handshake workers." />
       <Panel title="Create your client account">
         <form className="grid gap-4 md:grid-cols-2" onSubmit={(e) => { e.preventDefault(); m.mutate(); }}>
           <div className="md:col-span-2"><Field label="Company or organisation name"><Input value={f.company_name} onChange={(e) => setF({ ...f, company_name: e.target.value })} required minLength={2} /></Field></div>
@@ -84,7 +84,7 @@ function Portal({ employer }: { employer: Employer }) {
       </div>
       {tab === "assignments" && (
         <div className="space-y-4">
-          <Notice>Assignments are published only after the full budget (pay × slots) is received and reserved. To fund a draft, request payment instructions below; HANDSHAKE finance records your payment against its reference and reserves the budget.</Notice>
+          <Notice>Assignments are published only after the full budget (pay × slots) is received and reserved. To fund a draft, request payment instructions below; Handshake finance records your payment against its reference and reserves the budget.</Notice>
           {!list.data?.length ? <EmptyState icon={<Building2 className="h-6 w-6" />} title="No assignments yet" description="Create your first draft to get started." action={<Button onClick={() => setTab("create")}>New assignment</Button>} /> : (
             <AdminTable head={["Assignment", "Budget", "Claimed", "Deadline", "Status", ""]}>
               {list.data.map((a) => (
@@ -131,12 +131,12 @@ function Invoices({ employer, rows }: { employer: Employer; rows: { id: string; 
   const download = (r: (typeof rows)[number]) => {
     const b = r.budget!;
     const html = `<!doctype html><html><head><meta charset="utf-8"><title>Invoice ${r.id.slice(0, 8).toUpperCase()}</title><style>body{font:14px system-ui,sans-serif;max-width:720px;margin:40px auto;color:#0b1b33}h1{font-size:22px}table{width:100%;border-collapse:collapse;margin-top:24px}td,th{border-bottom:1px solid #dde3ec;padding:8px;text-align:left}.r{text-align:right}</style></head><body>
-<h1>HANDSHAKE — Assignment funding statement</h1><p>Reference: HS-${r.id.slice(0, 8).toUpperCase()}<br>Date funded: ${shortDate(b.funded_at)}</p>
+<h1>Handshake — Assignment funding statement</h1><p>Reference: HS-${r.id.slice(0, 8).toUpperCase()}<br>Date funded: ${shortDate(b.funded_at)}</p>
 <p><b>Billed to:</b> ${escapeHtml(employer.company_name)}<br>${escapeHtml(employer.billing_email ?? "")}${employer.country ? "<br>" + escapeHtml(employer.country) : ""}</p>
 <table><tr><th>Description</th><th class="r">USD</th></tr><tr><td>Budget reserved: ${escapeHtml(r.title)}</td><td class="r">${Number(b.total_usd).toFixed(2)}</td></tr>
 <tr><td>Paid to workers for approved submissions</td><td class="r">${Number(b.released_usd).toFixed(2)}</td></tr><tr><td>Returned (unused budget)</td><td class="r">${Number(b.refunded_usd).toFixed(2)}</td></tr>
 <tr><th>Remaining in escrow</th><th class="r">${(Number(b.total_usd) - Number(b.released_usd) - Number(b.refunded_usd)).toFixed(2)}</th></tr></table>
-<p style="margin-top:32px;color:#5b6b82;font-size:12px">Generated from the HANDSHAKE ledger. Use your browser's Print → Save as PDF to keep a copy.</p></body></html>`;
+<p style="margin-top:32px;color:#5b6b82;font-size:12px">Generated from the Handshake ledger. Use your browser's Print → Save as PDF to keep a copy.</p></body></html>`;
     const url = URL.createObjectURL(new Blob([html], { type: "text/html" }));
     const a = document.createElement("a");
     a.href = url; a.download = `handshake-invoice-${r.id.slice(0, 8)}.html`; a.click();

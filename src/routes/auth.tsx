@@ -22,10 +22,10 @@ export const Route = createFileRoute("/auth")({
   }),
   head: () => ({
     meta: [
-      { title: "Sign in or create an account — HANDSHAKE" },
-      { name: "description", content: "Sign in to HANDSHAKE or create your account to find remote jobs and paid assignments." },
-      { property: "og:title", content: "Sign in — HANDSHAKE" },
-      { property: "og:description", content: "Access your HANDSHAKE account." },
+      { title: "Sign in or create an account — Handshake" },
+      { name: "description", content: "Sign in to Handshake or create your account to find remote jobs and paid assignments." },
+      { property: "og:title", content: "Sign in — Handshake" },
+      { property: "og:description", content: "Access your Handshake account." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -50,12 +50,12 @@ function SocialButtons({ redirect }: { redirect?: string }) {
   };
   return (
     <div className="grid gap-3">
-      <button type="button" onClick={() => go("google")} disabled={!!busy} className="flex h-11 items-center justify-center gap-2.5 rounded-xl border border-[#747775] bg-[#FFFFFF] px-3 text-sm font-medium text-[#1F1F1F] disabled:opacity-60">
+      <Button variant="outline" type="button" onClick={() => go("google")} disabled={!!busy} className="h-10 w-full text-xs">
         {busy === "google" ? <Loader2 className="h-4 w-4 animate-spin" /> : <GoogleG />} Continue with Google
-      </button>
-      <button type="button" onClick={() => go("apple")} disabled={!!busy} className="flex h-11 items-center justify-center rounded-xl bg-[#000000] px-3 text-sm font-medium text-[#FFFFFF] disabled:opacity-60">
+      </Button>
+      <Button type="button" onClick={() => go("apple")} disabled={!!busy} className="h-10 w-full text-xs">
         {busy === "apple" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Continue with Apple"}
-      </button>
+      </Button>
     </div>
   );
 }
@@ -81,38 +81,21 @@ function AuthPage() {
   }, [navigate, search.redirect]);
 
   return (
-    <div className="flex min-h-screen bg-surface">
-      <div className="hidden w-[42%] flex-col justify-between bg-primary p-10 text-primary-foreground lg:flex">
-        <Link to="/" className="flex items-center gap-3">
-          <LogoMark className="h-10 w-10 bg-primary-foreground text-primary" />
-          <span className="text-lg font-extrabold tracking-[0.08em]">HANDSHAKE</span>
-        </Link>
-        <div>
-          <h2 className="text-4xl font-extrabold leading-tight">Get paid in USD for real remote work from around the world.</h2>
-          <p className="mt-4 max-w-md text-primary-foreground/70">One account for international job discovery, funded digital assignments and weekly withdrawals.</p>
+    <main className={`auth-screen flex min-h-dvh flex-col items-center px-5 ${mode === "signup" ? "bg-background" : ""}`}>
+      <div className="w-full max-w-[350px] flex-1 pb-6 pt-14 sm:pt-16">
+        <div className="mb-7 flex flex-col items-center text-center">
+          <Link to="/"><LogoMark className="h-[62px] w-[62px]" /></Link>
+          <p className="mt-3 text-[30px] font-bold leading-tight">Handshake</p>
+          <h1 className="mt-2 text-xl font-bold">{mode === "signup" ? "Create your account" : mode === "forgot" ? "Reset your password" : "Welcome Back!"}</h1>
+          <p className="mt-1 text-xs text-muted-foreground">{mode === "signup" ? "Let’s get started. Fill in your basic details." : mode === "forgot" ? "We'll email you a reset link" : "Sign in to continue"}</p>
         </div>
-        <p className="text-xs text-primary-foreground/50">Accounts are personal and non-transferable.</p>
+        {mode === "signup" ? <SignUpForm /> : mode === "forgot" ? <ForgotForm /> : <SignInForm redirect={search.redirect} />}
+        <p className="mt-6 text-center text-xs text-muted-foreground">
+          {mode === "signup" ? < >Already have an account? <Link to="/auth" search={{ redirect: search.redirect }} className="font-semibold text-brand">Sign in</Link></> : <>Don't have an account? <Link to="/auth" search={{ mode: "signup", redirect: search.redirect }} className="font-semibold text-brand">Sign up</Link></>}
+        </p>
       </div>
-      <div className="flex flex-1 items-start justify-center px-4 py-10 sm:items-center">
-        <div className="w-full max-w-md">
-          <div className="mb-8 flex flex-col items-center text-center">
-            <Link to="/"><LogoMark className="h-14 w-14 lg:hidden" /></Link>
-            <h1 className="mt-4 text-2xl font-bold">{mode === "signup" ? "Create your account" : mode === "forgot" ? "Reset your password" : "Welcome back!"}</h1>
-            <p className="mt-1 text-sm text-muted-foreground">{mode === "signup" ? "Join HANDSHAKE in a few steps" : mode === "forgot" ? "We'll email you a reset link" : "Sign in to continue"}</p>
-          </div>
-          <div className="rounded-3xl border bg-background p-6 shadow-card sm:p-8">
-            {mode === "signup" ? <SignUpForm /> : mode === "forgot" ? <ForgotForm /> : <SignInForm redirect={search.redirect} />}
-          </div>
-          <p className="mt-6 text-center text-sm text-muted-foreground">
-            {mode === "signup" ? (
-              <>Already have an account? <Link to="/auth" search={{ redirect: search.redirect }} className="font-semibold text-foreground">Sign in</Link></>
-            ) : (
-              <>Don't have an account? <Link to="/auth" search={{ mode: "signup", redirect: search.redirect }} className="font-semibold text-foreground">Sign up</Link></>
-            )}
-          </p>
-        </div>
-      </div>
-    </div>
+      <div className="home-indicator" />
+    </main>
   );
 }
 
@@ -120,7 +103,7 @@ function IconInput({ icon: Icon, ...props }: React.ComponentProps<typeof Input> 
   return (
     <div className="relative">
       <Icon className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-      <Input {...props} className="h-12 rounded-xl pl-10" />
+      <Input {...props} className="h-11 rounded-lg pl-10 text-xs" />
     </div>
   );
 }
@@ -142,14 +125,14 @@ function SignInForm({ redirect }: { redirect?: string }) {
       <IconInput icon={Mail} type="email" placeholder="Email address" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
       <div className="relative">
         <IconInput icon={Lock} type={show ? "text" : "password"} placeholder="Password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button type="button" onClick={() => setShow(!show)} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-muted-foreground" aria-label={show ? "Hide password" : "Show password"}>
+        <Button variant="ghost" size="icon" type="button" onClick={() => setShow(!show)} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-muted-foreground" aria-label={show ? "Hide password" : "Show password"}>
           {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-        </button>
+        </Button>
       </div>
       <div className="text-right">
         <Link to="/auth" search={{ mode: "forgot" }} className="text-sm font-medium text-muted-foreground hover:text-foreground">Forgot password?</Link>
       </div>
-      <Button type="submit" className="h-12 w-full" disabled={loading}>{loading && <Loader2 className="animate-spin" />} Sign In</Button>
+      <Button type="submit" className="h-11 w-full" disabled={loading}>{loading && <Loader2 className="animate-spin" />} Sign In</Button>
       <div className="relative py-2 text-center text-xs text-muted-foreground"><span className="relative z-10 bg-background px-2">or continue with</span><div className="absolute inset-x-0 top-1/2 border-t" /></div>
       <SocialButtons redirect={redirect} />
     </form>
@@ -174,6 +157,7 @@ const signUpSchema = z
 
 function SignUpForm() {
   const [form, setForm] = useState({ first_name: "", middle_name: "", last_name: "", username: "", email: "", phone: "", country: "", password: "", confirm: "", referral_code: "", terms: false });
+  const [step, setStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState<string | null>(null);
@@ -181,6 +165,13 @@ function SignUpForm() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (step < 3) {
+      const parsedStep = signUpSchema.safeParse({ ...form, country: form.country || "Kenya", terms: true });
+      const keys = step === 1 ? ["first_name", "last_name", "username", "email", "phone"] : ["password", "confirm"];
+      const issues = parsedStep.success ? [] : parsedStep.error.issues.filter((i) => keys.includes(String(i.path[0])));
+      if (issues.length) { setErrors(Object.fromEntries(issues.map((i) => [String(i.path[0]), i.message]))); return; }
+      setErrors({}); setStep(step + 1); return;
+    }
     const parsed = signUpSchema.safeParse(form);
     if (!parsed.success) {
       setErrors(Object.fromEntries(parsed.error.issues.map((i) => [i.path[0] as string, i.message])));
@@ -216,32 +207,33 @@ function SignUpForm() {
   const err = (k: string) => errors[k] && <p className="mt-1 text-xs text-destructive">{errors[k]}</p>;
   return (
     <form onSubmit={submit} className="space-y-3" noValidate>
-      <div className="grid grid-cols-2 gap-3">
-        <div><Input placeholder="First name" value={form.first_name} onChange={set("first_name")} autoComplete="given-name" className="h-11 rounded-xl" />{err("first_name")}</div>
-        <div><Input placeholder="Last name" value={form.last_name} onChange={set("last_name")} autoComplete="family-name" className="h-11 rounded-xl" />{err("last_name")}</div>
+      <div className="mb-5">
+        <p className="mb-2 text-center text-xs text-muted-foreground">{step} of 3</p>
+        <div className="grid grid-cols-3 gap-1">{[1, 2, 3].map((i) => <div key={i} className={`h-1 rounded-full ${i <= step ? "bg-brand" : "bg-secondary"}`} />)}</div>
+        <h2 className="mt-5 text-lg font-semibold">{step === 1 ? "Create your account" : step === 2 ? "Set your password" : "Complete your profile"}</h2>
+        <p className="mt-1 text-xs text-muted-foreground">{step === 1 ? "Fill in your basic details." : step === 2 ? "Create a strong password to keep your account safe." : "Tell us more about yourself. Verification continues after email confirmation."}</p>
       </div>
-      <Input placeholder="Middle name (optional)" value={form.middle_name} onChange={set("middle_name")} autoComplete="additional-name" className="h-11 rounded-xl" />
-      <div><Input placeholder="Username" value={form.username} onChange={set("username")} autoComplete="username" className="h-11 rounded-xl" />{err("username")}</div>
-      <div><Input type="email" placeholder="Email address" value={form.email} onChange={set("email")} autoComplete="email" className="h-11 rounded-xl" />{err("email")}</div>
-      <div><Input type="tel" placeholder="Phone (e.g. +254712345678)" value={form.phone} onChange={set("phone")} autoComplete="tel" className="h-11 rounded-xl" />{err("phone")}</div>
-      <div>
-        <Select value={form.country} onValueChange={(v) => setForm({ ...form, country: v })}>
-          <SelectTrigger className="h-11 rounded-xl"><SelectValue placeholder="Country" /></SelectTrigger>
-          <SelectContent className="max-h-72">{COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent>
-        </Select>
-        {err("country")}
+      {step === 1 && <>
+        {([ ["first_name", "First name", "e.g. John"], ["last_name", "Last name", "e.g. Doe"], ["middle_name", "Middle name (optional)", "e.g. Kamau"], ["username", "Username", "Choose a unique username"], ["email", "Email address", "you@example.com"], ["phone", "Phone number", "+254 712345678"] ] as const).map(([key, label, placeholder]) => (
+          <label key={key} className="block rounded-lg border px-3 py-2"><span className="text-[11px] font-medium">{label}</span><Input aria-label={label} type={key === "email" ? "email" : key === "phone" ? "tel" : "text"} placeholder={placeholder} value={form[key]} onChange={set(key)} className="h-6 border-0 px-0 text-xs shadow-none focus-visible:ring-0" />{err(key)}</label>
+        ))}
+      </>}
+      {step === 2 && <>
+        <label className="block rounded-lg border px-3 py-2"><span className="text-[11px] font-medium">Password</span><Input aria-label="Password" type="password" placeholder="Min 8 characters, including a letter and number" value={form.password} onChange={set("password")} autoComplete="new-password" className="h-8 border-0 px-0 text-xs shadow-none" />{err("password")}</label>
+        <label className="block rounded-lg border px-3 py-2"><span className="text-[11px] font-medium">Confirm password</span><Input aria-label="Confirm password" type="password" placeholder="Re-enter your password" value={form.confirm} onChange={set("confirm")} autoComplete="new-password" className="h-8 border-0 px-0 text-xs shadow-none" />{err("confirm")}</label>
+        <p className="pt-2 text-xs font-medium">Password must include:</p>
+        <ul className="space-y-2 text-xs text-muted-foreground"><li className={form.password.length >= 8 ? "text-success" : ""}>✓ At least 8 characters</li><li className={/[A-Za-z]/.test(form.password) ? "text-success" : ""}>✓ One letter</li><li className={/[0-9]/.test(form.password) ? "text-success" : ""}>✓ One number</li></ul>
+      </>}
+      {step === 3 && <>
+        <label className="block space-y-1 text-xs font-medium">Country<Select value={form.country} onValueChange={(v) => setForm({ ...form, country: v })}><SelectTrigger className="h-11 rounded-lg"><SelectValue placeholder="Select country" /></SelectTrigger><SelectContent className="max-h-72">{COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent></Select>{err("country")}</label>
+        <Input placeholder="Referral code (optional)" value={form.referral_code} onChange={set("referral_code")} className="h-11 rounded-lg" />
+        <label className="flex items-start gap-2.5 pt-1 text-xs text-muted-foreground"><Checkbox checked={form.terms} onCheckedChange={(v) => setForm({ ...form, terms: v === true })} className="mt-0.5" /><span>I agree to the <Link to="/terms" className="font-medium text-foreground underline">Terms</Link> and <Link to="/privacy" className="font-medium text-foreground underline">Privacy Policy</Link>. My account is personal and non-transferable.</span></label>
+        {err("terms")}
+      </>}
+      <div className="flex items-center gap-4 pt-5">
+        {step > 1 && <Button type="button" variant="ghost" onClick={() => { setStep(step - 1); setErrors({}); }}>Back</Button>}
+        <Button variant="brand" type="submit" className="h-11 flex-1" disabled={loading}>{loading && <Loader2 className="animate-spin" />}{step === 3 ? "Create Account" : "Next →"}</Button>
       </div>
-      <div><Input type="password" placeholder="Password" value={form.password} onChange={set("password")} autoComplete="new-password" className="h-11 rounded-xl" />{err("password")}</div>
-      <div><Input type="password" placeholder="Confirm password" value={form.confirm} onChange={set("confirm")} autoComplete="new-password" className="h-11 rounded-xl" />{err("confirm")}</div>
-      <Input placeholder="Referral code (optional)" value={form.referral_code} onChange={set("referral_code")} className="h-11 rounded-xl" />
-      <label className="flex items-start gap-2.5 pt-1 text-sm text-muted-foreground">
-        <Checkbox checked={form.terms} onCheckedChange={(v) => setForm({ ...form, terms: v === true })} className="mt-0.5" />
-        <span>I agree to the <Link to="/terms" className="font-medium text-foreground underline">Terms</Link> and <Link to="/privacy" className="font-medium text-foreground underline">Privacy Policy</Link>. My account is personal and non-transferable.</span>
-      </label>
-      {err("terms")}
-      <Button type="submit" className="h-12 w-full" disabled={loading}>{loading && <Loader2 className="animate-spin" />} Create Account</Button>
-      <div className="relative py-2 text-center text-xs text-muted-foreground"><span className="relative z-10 bg-background px-2">or continue with</span><div className="absolute inset-x-0 top-1/2 border-t" /></div>
-      <SocialButtons />
     </form>
   );
 }
@@ -265,7 +257,7 @@ function ForgotForm() {
   return (
     <form onSubmit={submit} className="space-y-4">
       <IconInput icon={Mail} type="email" placeholder="Email address" required value={email} onChange={(e) => setEmail(e.target.value)} />
-      <Button type="submit" className="h-12 w-full" disabled={loading}>{loading && <Loader2 className="animate-spin" />} Send reset link</Button>
+      <Button type="submit" className="h-11 w-full" disabled={loading}>{loading && <Loader2 className="animate-spin" />} Send reset link</Button>
       <Link to="/auth" className="block text-center text-sm font-medium text-muted-foreground">Back to sign in</Link>
     </form>
   );

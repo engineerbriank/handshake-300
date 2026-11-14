@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { LogoMark } from "@/components/brand/Logo";
 
 export const Route = createFileRoute("/reset-password")({
-  head: () => ({ meta: [{ title: "Set a new password — HANDSHAKE" }, { name: "description", content: "Choose a new password for your HANDSHAKE account." }, { property: "og:title", content: "Reset password — HANDSHAKE" }, { property: "og:description", content: "Choose a new password." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Set a new password — Handshake" }, { name: "description", content: "Choose a new password for your Handshake account." }, { property: "og:title", content: "Reset password — Handshake" }, { property: "og:description", content: "Choose a new password." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: ResetPassword,
 });
 

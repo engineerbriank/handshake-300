@@ -9,7 +9,7 @@ import { PageHeader, Panel, Field } from "@/components/common/ui-bits";
 import { MfaManager } from "@/components/common/MfaManager";
 
 export const Route = createFileRoute("/_authenticated/_shell/security")({
-  head: () => ({ meta: [{ title: "Security Centre — HANDSHAKE" }, { name: "description", content: "Password, two-factor authentication and sessions." }] }),
+  head: () => ({ meta: [{ title: "Security Centre — Handshake" }, { name: "description", content: "Password, two-factor authentication and sessions." }] }),
   component: Security,
 });
 

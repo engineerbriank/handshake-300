@@ -6,10 +6,10 @@ import { humanize } from "@/lib/format";
 
 export function PageHeader({ title, description, actions, back }: { title: string; description?: string; actions?: ReactNode; back?: ReactNode }) {
   return (
-    <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <div className="mb-5 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
       <div className="min-w-0">
         {back}
-        <h1 className="text-2xl font-bold text-foreground sm:text-[1.7rem]">{title}</h1>
+        <h1 className="text-xl font-bold text-foreground">{title}</h1>
         {description && <p className="mt-1 max-w-2xl text-sm text-muted-foreground">{description}</p>}
       </div>
       {actions && <div className="flex flex-wrap gap-2">{actions}</div>}
@@ -19,14 +19,14 @@ export function PageHeader({ title, description, actions, back }: { title: strin
 
 export function Panel({ title, action, children, className, bodyClassName }: { title?: ReactNode; action?: ReactNode; children: ReactNode; className?: string; bodyClassName?: string }) {
   return (
-    <section className={cn("rounded-2xl border bg-card shadow-card", className)}>
+    <section className={cn("bg-card", className)}>
       {(title || action) && (
-        <header className="flex items-center justify-between gap-3 border-b px-5 py-3.5">
+        <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 pb-3">
           <h2 className="text-[0.95rem] font-bold">{title}</h2>
           {action}
         </header>
       )}
-      <div className={cn("p-5", bodyClassName)}>{children}</div>
+      <div className={cn("py-2", bodyClassName)}>{children}</div>
     </section>
   );
 }
@@ -39,12 +39,12 @@ export function StatCard({ label, value, hint, icon, tone = "default" }: { label
     info: "bg-info-soft text-info",
   }[tone];
   return (
-    <div className="rounded-2xl border bg-card p-4 shadow-card">
+    <div className="rounded-lg border bg-card p-3">
       <div className="flex items-start justify-between gap-2">
-        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{label}</p>
+        <p className="text-xs font-medium text-foreground">{label}</p>
         {icon && <span className={cn("rounded-lg p-1.5 [&_svg]:h-4 [&_svg]:w-4", toneCls)}>{icon}</span>}
       </div>
-      <p className="tabular mt-2 text-xl font-bold sm:text-2xl">{value}</p>
+      <p className="tabular mt-1 text-lg font-semibold">{value}</p>
       {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
     </div>
   );
@@ -52,7 +52,7 @@ export function StatCard({ label, value, hint, icon, tone = "default" }: { label
 
 export function EmptyState({ title, description, action, icon }: { title: string; description?: string; action?: ReactNode; icon?: ReactNode }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed bg-surface px-6 py-12 text-center">
+    <div className="flex flex-col items-center justify-center px-4 py-8 text-center">
       <span className="mb-3 rounded-full bg-background p-3 text-muted-foreground shadow-card [&_svg]:h-5 [&_svg]:w-5">{icon ?? <Inbox />}</span>
       <p className="font-semibold">{title}</p>
       {description && <p className="mt-1 max-w-sm text-sm text-muted-foreground">{description}</p>}

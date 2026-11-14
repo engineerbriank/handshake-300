@@ -9,7 +9,7 @@ import { usd, shortDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/_shell/earnings")({
-  head: () => ({ meta: [{ title: "Earnings — HANDSHAKE" }, { name: "description", content: "Your assignment earnings over time." }] }),
+  head: () => ({ meta: [{ title: "Earnings — Handshake" }, { name: "description", content: "Your assignment earnings over time." }] }),
   component: Earnings,
 });
 

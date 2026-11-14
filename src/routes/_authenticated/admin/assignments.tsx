@@ -58,7 +58,7 @@ function AllAssignments() {
         {q.data?.map((a) => (
           <tr key={a.id}>
             <Td className="max-w-xs"><Link to="/assignments/$assignmentId" params={{ assignmentId: a.id }} className="font-medium hover:underline">{a.title}</Link></Td>
-            <Td>{a.employer?.company_name ?? "HANDSHAKE"}</Td>
+            <Td>{a.employer?.company_name ?? "Handshake"}</Td>
             <Td className="tabular whitespace-nowrap">{usd(a.pay_usd)} × {a.slots}<span className="block text-xs text-muted-foreground">= {usd(Number(a.pay_usd) * a.slots)}</span></Td>
             <Td>{a.slots_claimed}/{a.slots}</Td>
             <Td className="whitespace-nowrap">{dateTime(a.deadline)}</Td>

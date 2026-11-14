@@ -12,17 +12,15 @@ import { supabase } from "@/integrations/supabase/client";
 import { useSavedJobs } from "@/lib/use-saved-jobs";
 
 export const Route = createFileRoute("/_authenticated/_shell/dashboard")({
-  head: () => ({ meta: [{ title: "Dashboard — HANDSHAKE" }, { name: "description", content: "Your HANDSHAKE balance, work and opportunities." }] }),
+  head: () => ({ meta: [{ title: "Dashboard — Handshake" }, { name: "description", content: "Your Handshake balance, work and opportunities." }] }),
   component: Dashboard,
 });
 
 const QUICK = [
-  { label: "Find jobs", to: "/jobs", icon: Search },
+  { label: "Jobs", to: "/jobs", icon: Search },
   { label: "Assignments", to: "/assignments", icon: Briefcase },
   { label: "Wallet", to: "/wallet", icon: Wallet },
-  { label: "Withdraw", to: "/withdrawals", icon: ArrowUpRight },
-  { label: "Applications", to: "/applications", icon: FileText },
-  { label: "Profile", to: "/profile", icon: UserRound },
+  { label: "Support", to: "/help", icon: UserRound },
 ] as const;
 
 function Dashboard() {
@@ -45,10 +43,10 @@ function Dashboard() {
   const needsVerification = profile && !["verified", "active"].includes(profile.account_status);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-bold sm:text-3xl">Hello, {profile?.first_name || "there"}!</h1>
-        <p className="text-muted-foreground">Welcome to HANDSHAKE</p>
+        <h1 className="text-2xl font-bold sm:text-3xl">Hello, {profile?.first_name || "there"}! 👋</h1>
+        <p className="mt-1 text-xs text-muted-foreground">Welcome to Handshake.</p>
       </div>
 
       {needsVerification && (
@@ -59,28 +57,34 @@ function Dashboard() {
         </Link>
       )}
 
-      <div className="flex items-center justify-between gap-4 rounded-3xl bg-primary p-5 text-primary-foreground shadow-raised sm:p-6">
+      <div className="flex items-center justify-between gap-4 rounded-lg bg-primary p-4 text-primary-foreground shadow-card">
         <div>
           <p className="text-sm text-primary-foreground/70">Your Balance</p>
-          <p className="tabular mt-1 text-3xl font-extrabold sm:text-4xl">{usd(wallet?.available_usd)} <span className="text-lg font-semibold text-primary-foreground/60">USD</span></p>
+          <p className="tabular mt-1 text-2xl font-semibold">{usd(wallet?.available_usd)} <span className="text-sm font-semibold text-primary-foreground/60">USD</span></p>
         </div>
         <Button asChild variant="secondary" className="shrink-0"><Link to="/withdrawals">Withdraw</Link></Button>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div className="grid grid-cols-4 gap-2">
+        {QUICK.map((q) => (
+          <Link key={q.to} to={q.to} className="flex flex-col items-center gap-2 bg-card py-2 text-center text-xs font-medium hover:border-primary/20">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary"><q.icon className="h-5 w-5" /></span>
+            {q.label}
+          </Link>
+        ))}
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-[1.3fr_1fr]">
+        <Panel title="Top Jobs" action={<Link to="/jobs" className="flex items-center gap-1 text-sm font-semibold">View all <ArrowRight className="h-4 w-4" /></Link>} bodyClassName="space-y-3 p-0">
+          {topJobs.data?.jobs.map((j) => <JobCard key={j.id} job={j} saved={saved.has(j.id)} onToggleSave={() => toggle(j.id)} />)}
+          {topJobs.data?.jobs.length === 0 && <EmptyState title="No listings right now" />}
+        </Panel>
+
+        <div className="space-y-4">      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         <StatCard label="Pending" value={usd(wallet?.pending_usd)} hint="Under review" icon={<Clock />} tone="warning" />
         <StatCard label="Reserved" value={usd(wallet?.reserved_usd)} hint="Awaiting payout" icon={<ArrowUpRight />} tone="info" />
         <StatCard label="Total earned" value={usd(wallet?.total_earned_usd)} icon={<CheckCircle2 />} tone="success" />
         <StatCard label="Total withdrawn" value={usd(wallet?.total_withdrawn_usd)} icon={<Wallet />} />
-      </div>
-
-      <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
-        {QUICK.map((q) => (
-          <Link key={q.to} to={q.to} className="flex flex-col items-center gap-2 rounded-2xl border bg-card p-3 text-center text-xs font-medium shadow-card hover:border-primary/20">
-            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-secondary"><q.icon className="h-5 w-5" /></span>
-            {q.label}
-          </Link>
-        ))}
       </div>
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -90,13 +94,7 @@ function Dashboard() {
         <StatCard label="Completed" value={done} hint="Paid assignments" />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1.3fr_1fr]">
-        <Panel title="Top Jobs" action={<Link to="/jobs" className="flex items-center gap-1 text-sm font-semibold">View all <ArrowRight className="h-4 w-4" /></Link>} bodyClassName="space-y-3 p-4">
-          {topJobs.data?.jobs.map((j) => <JobCard key={j.id} job={j} saved={saved.has(j.id)} onToggleSave={() => toggle(j.id)} />)}
-          {topJobs.data?.jobs.length === 0 && <EmptyState title="No listings right now" />}
-        </Panel>
 
-        <div className="space-y-6">
           <Panel title="Recent transactions" action={<Link to="/transactions" className="text-sm font-semibold">View all</Link>} bodyClassName="p-0">
             {txns?.length ? (
               <ul className="divide-y">

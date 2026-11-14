@@ -10,7 +10,7 @@ import { useCurrentUser, useProfile } from "@/lib/auth";
 import { useSavedJobs } from "@/lib/use-saved-jobs";
 
 export const Route = createFileRoute("/_authenticated/_shell/recommended")({
-  head: () => ({ meta: [{ title: "Recommended Jobs — HANDSHAKE" }, { name: "description", content: "Jobs matched to your skills." }] }),
+  head: () => ({ meta: [{ title: "Recommended Jobs — Handshake" }, { name: "description", content: "Jobs matched to your skills." }] }),
   component: Recommended,
 });
 

@@ -7,7 +7,7 @@ import { usd, dateTime } from "@/lib/format";
 import { useSettings } from "@/components/app/MaintenanceBanner";
 
 export const Route = createFileRoute("/_authenticated/_shell/wallet")({
-  head: () => ({ meta: [{ title: "USD Wallet — HANDSHAKE" }, { name: "description", content: "Your USD balances and transactions." }] }),
+  head: () => ({ meta: [{ title: "USD Wallet — Handshake" }, { name: "description", content: "Your USD balances and transactions." }] }),
   component: WalletPage,
 });
 
@@ -17,15 +17,15 @@ function WalletPage() {
   const { data: settings } = useSettings();
   return (
     <div className="space-y-6">
-      <PageHeader title="USD Wallet" description="Balances are calculated from an immutable double-entry ledger and can only change through verified backend transactions." />
-      <div className="rounded-3xl bg-primary p-6 text-primary-foreground shadow-raised">
-        <p className="text-sm text-primary-foreground/70">Available balance</p>
-        <p className="tabular mt-1 text-4xl font-extrabold">{usd(w?.available_usd)} <span className="text-lg text-primary-foreground/60">USD</span></p>
+      <PageHeader title="My Wallet" />
+      <div className="rounded-lg bg-secondary p-4 text-foreground">
+        <p className="text-sm text-muted-foreground">Available balance</p>
+        <p className="tabular mt-1 text-2xl font-bold">{usd(w?.available_usd)} <span className="text-sm text-muted-foreground">USD</span></p>
         <div className="mt-5 flex flex-wrap gap-2">
           <Button asChild variant="secondary"><Link to="/withdrawals">Withdraw</Link></Button>
-          <Button asChild variant="ghost" className="text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"><Link to="/earnings">Earnings history</Link></Button>
+          <Button asChild variant="ghost" className="text-foreground hover:bg-muted hover:text-foreground"><Link to="/earnings">Earnings history</Link></Button>
         </div>
-        <p className="mt-4 text-xs text-primary-foreground/60">Payouts: {String(settings?.payout_schedule ?? "Every Saturday at 8:00 PM EAT")} · Minimum ${String(settings?.min_withdrawal_usd ?? 5)}</p>
+        <p className="mt-4 text-xs text-muted-foreground">Payouts: {String(settings?.payout_schedule ?? "Every Saturday at 8:00 PM EAT")} · Minimum ${String(settings?.min_withdrawal_usd ?? 5)}</p>
       </div>
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         <StatCard label="Pending" value={usd(w?.pending_usd)} hint="Submissions under review" icon={<Clock />} tone="warning" />
@@ -33,7 +33,7 @@ function WalletPage() {
         <StatCard label="Total earned" value={usd(w?.total_earned_usd)} icon={<TrendingUp />} tone="success" />
         <StatCard label="Total withdrawn" value={usd(w?.total_withdrawn_usd)} icon={<ArrowUpRight />} />
       </div>
-      <Panel title="Transaction history" action={<Link to="/transactions" className="text-sm font-semibold">View all</Link>} bodyClassName="p-0">
+      <Panel title="Transactions" action={<Link to="/transactions" className="text-sm font-semibold">View all</Link>} bodyClassName="p-0">
         {txns?.length ? (
           <ul className="divide-y">
             {txns.map((t) => (
