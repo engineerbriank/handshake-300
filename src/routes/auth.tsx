@@ -10,7 +10,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { LogoMark } from "@/components/brand/Logo";
 import { COUNTRIES } from "@/lib/constants";
-import { errorMessage } from "@/lib/format";
 
 type AuthSearch = { mode?: "signin" | "signup" | "forgot"; redirect?: string };
 
