@@ -4,7 +4,7 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxi
 import { format, subDays } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { PageHeader, Panel, StatCard, StatusBadge } from "@/components/common/ui-bits";
-import { AdminTabs, AdminTable, Td } from "@/components/admin/AdminBits";
+import { AdminTabs, AdminTable, Td, SourcesTable } from "@/components/admin/AdminBits";
 import { tabSearch } from "@/components/admin/admin-nav";
 import { usd, ago } from "@/lib/format";
 
@@ -140,18 +140,3 @@ function AdminOverview() {
   );
 }
 
-export function SourcesTable({ rows }: { rows: { id: string; name: string; enabled: boolean; last_status: string; last_sync_at: string | null; active_jobs: number; last_error: string | null; requires_credentials: boolean }[] }) {
-  return (
-    <AdminTable head={["Source", "Status", "Active jobs", "Last sync", "Detail"]} empty={!rows.length}>
-      {rows.map((r) => (
-        <tr key={r.id}>
-          <Td className="font-medium">{r.name}{!r.enabled && <span className="ml-1 text-xs text-muted-foreground">(disabled)</span>}</Td>
-          <Td><StatusBadge status={r.last_status} /></Td>
-          <Td className="tabular">{r.active_jobs}</Td>
-          <Td>{r.last_sync_at ? ago(r.last_sync_at) : "Never"}</Td>
-          <Td className="max-w-sm text-xs text-muted-foreground">{r.last_error ?? (r.requires_credentials ? "Requires API credentials" : "Public feed")}</Td>
-        </tr>
-      ))}
-    </AdminTable>
-  );
-}
