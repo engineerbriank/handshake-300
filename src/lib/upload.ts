@@ -4,6 +4,9 @@ export const ALLOWED_TYPES: Record<string, string[]> = {
   document: ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/plain"],
   image: ["image/png", "image/jpeg", "image/webp"],
   archive: ["application/zip", "application/x-zip-compressed"],
+  spreadsheet: ["text/csv", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.oasis.opendocument.spreadsheet"],
+  audio: ["audio/mpeg", "audio/mp4", "audio/wav", "audio/x-wav", "audio/webm", "audio/ogg"],
+  video: ["video/mp4", "video/webm", "video/quicktime"],
 };
 export const MAX_BYTES = 10 * 1024 * 1024;
 

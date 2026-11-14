@@ -6,23 +6,44 @@ import { ClipboardList, Loader2, Paperclip } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { PageHeader, EmptyState, Loading, StatusBadge } from "@/components/common/ui-bits";
 import { useClaims } from "@/lib/user-data";
 import { useCurrentUser } from "@/lib/auth";
 import { usd, dateTime, shortDate } from "@/lib/format";
 import { uploadPrivate, validateFile } from "@/lib/upload";
+import { useOpenTasks } from "@/lib/task-data";
+import { FILE_SUBMISSION_TYPES, SUBMISSION_LABEL } from "@/lib/tasks";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/_shell/work")({
-  head: () => ({ meta: [{ title: "My Work — Handshake" }, { name: "description", content: "Your claimed assignments and submissions." }] }),
+  head: () => ({ meta: [
+    { title: "My Tasks — Handshake" },
+    { name: "description", content: "Tasks you've accepted, submitted, and been paid for." },
+    { property: "og:title", content: "My Tasks — Handshake" },
+    { property: "og:description", content: "Track accepted, submitted and paid tasks." },
+  ] }),
   component: WorkPage,
 });
 
 type Claim = NonNullable<ReturnType<typeof useClaims>["data"]>[number];
 
+const TABS = [
+  { key: "accepted", label: "Accepted", statuses: ["claimed"] },
+  { key: "in_progress", label: "In progress", statuses: ["in_progress"] },
+  { key: "revision", label: "Revision requested", statuses: ["revision_requested"] },
+  { key: "submitted", label: "Submitted", statuses: ["submitted"] },
+  { key: "review", label: "Under review", statuses: ["under_review", "disputed"] },
+  { key: "approved", label: "Approved", statuses: ["approved"] },
+  { key: "paid", label: "Paid", statuses: ["credited"] },
+  { key: "rejected", label: "Rejected", statuses: ["rejected"] },
+  { key: "closed", label: "Released", statuses: ["abandoned", "expired"] },
+] as const;
+
 function WorkPage() {
   const { data: claims, isLoading } = useClaims();
+  const open = useOpenTasks();
+  const [tab, setTab] = useState<string>("accepted");
   const [submitFor, setSubmitFor] = useState<Claim | null>(null);
   const [disputeFor, setDisputeFor] = useState<Claim | null>(null);
   const qc = useQueryClient();
@@ -34,57 +55,51 @@ function WorkPage() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["claims"] }),
     onError: (e) => toast.error((e as Error).message),
   });
-
-  const groups = {
-    active: claims?.filter((c) => ["claimed", "in_progress", "revision_requested"].includes(c.status)) ?? [],
-    review: claims?.filter((c) => ["submitted", "under_review", "disputed"].includes(c.status)) ?? [],
-    done: claims?.filter((c) => ["credited", "approved", "rejected", "abandoned", "expired"].includes(c.status)) ?? [],
-  };
-
-  const list = (items: Claim[]) =>
-    items.length === 0 ? (
-      <EmptyState icon={<ClipboardList />} title="Nothing here" action={<Button asChild variant="outline"><Link to="/assignments">Browse assignments</Link></Button>} />
-    ) : (
-      <div className="space-y-3">
-        {items.map((c) => (
-          <div key={c.id} className="rounded-2xl border bg-card p-4 shadow-card">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <Link to="/assignments/$assignmentId" params={{ assignmentId: c.assignment_id }} className="font-semibold hover:underline">{c.assignment?.title}</Link>
-                <p className="mt-0.5 text-xs text-muted-foreground">{usd(c.assignment?.pay_usd)} · claimed {shortDate(c.claimed_at)} · due {dateTime(c.due_at)}</p>
-              </div>
-              <StatusBadge status={c.status} />
-            </div>
-            <ClaimHistory claimId={c.id} />
-            <div className="mt-3 flex flex-wrap gap-2">
-              {c.status === "claimed" && <Button size="sm" variant="outline" onClick={() => act.mutate({ fn: "start_claim", id: c.id })}>Start work</Button>}
-              {["claimed", "in_progress", "revision_requested"].includes(c.status) && (
-                <>
-                  <Button size="sm" onClick={() => setSubmitFor(c)}>{c.status === "revision_requested" ? "Submit revision" : "Submit work"}</Button>
-                  <Button size="sm" variant="ghost" onClick={() => confirm("Release this slot? You won't be able to claim it again.") && act.mutate({ fn: "abandon_claim", id: c.id })}>Release slot</Button>
-                </>
-              )}
-              {c.status === "rejected" && <Button size="sm" variant="outline" onClick={() => setDisputeFor(c)}>Open dispute</Button>}
-            </div>
-          </div>
-        ))}
-      </div>
-    );
+  const mineIds = new Set(claims?.map((c) => c.assignment_id));
+  const available = (open.data ?? []).filter((t) => !mineIds.has(t.id) && t.slots_claimed < t.slots).length;
+  const count = (st: readonly string[]) => claims?.filter((c) => st.includes(c.status)).length ?? 0;
+  const current = TABS.find((t) => t.key === tab) ?? TABS[0];
+  const items = claims?.filter((c) => (current.statuses as readonly string[]).includes(c.status)) ?? [];
 
   return (
     <div>
-      <PageHeader title="My Work" description="Assignments you've claimed, submitted and completed." />
-      {isLoading ? <Loading /> : (
-        <Tabs defaultValue="active">
-          <TabsList className="mb-4">
-            <TabsTrigger value="active">Active ({groups.active.length})</TabsTrigger>
-            <TabsTrigger value="review">In review ({groups.review.length})</TabsTrigger>
-            <TabsTrigger value="done">Completed ({groups.done.length})</TabsTrigger>
-          </TabsList>
-          <TabsContent value="active">{list(groups.active)}</TabsContent>
-          <TabsContent value="review">{list(groups.review)}</TabsContent>
-          <TabsContent value="done">{list(groups.done)}</TabsContent>
-        </Tabs>
+      <PageHeader title="My Tasks" description="Everything you've accepted, from first step to payment." />
+      <div className="-mx-1 mb-4 flex gap-2 overflow-x-auto px-1 pb-1">
+        <Link to="/assignments" className="shrink-0 rounded-full border bg-card px-3.5 py-1.5 text-sm font-medium hover:bg-secondary">Available ({available})</Link>
+        {TABS.map((t) => (
+          <button key={t.key} type="button" onClick={() => setTab(t.key)} className={cn("shrink-0 rounded-full border px-3.5 py-1.5 text-sm font-medium", tab === t.key ? "border-primary bg-primary text-primary-foreground" : "bg-card hover:bg-secondary")}>
+            {t.label} ({count(t.statuses)})
+          </button>
+        ))}
+      </div>
+      {isLoading ? <Loading /> : items.length === 0 ? (
+        <EmptyState icon={<ClipboardList />} title={`Nothing ${current.label.toLowerCase()}`} action={<Button asChild variant="outline"><Link to="/assignments">Browse paid tasks</Link></Button>} />
+      ) : (
+        <div className="space-y-3">
+          {items.map((c) => (
+            <div key={c.id} className="rounded-xl border bg-card p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <Link to="/assignments/$assignmentId" params={{ assignmentId: c.assignment_id }} className="font-semibold hover:underline">{c.assignment?.title}</Link>
+                  <p className="mt-0.5 text-sm text-muted-foreground"><span className="font-semibold text-success">{usd(c.assignment?.pay_usd)}</span> · accepted {shortDate(c.claimed_at)} · due {dateTime(c.due_at)}</p>
+                  {c.status === "credited" && c.credited_at && <p className="mt-0.5 text-xs text-success">Credited to your wallet {dateTime(c.credited_at)}</p>}
+                </div>
+                <StatusBadge status={c.status} />
+              </div>
+              <ClaimHistory claimId={c.id} />
+              <div className="mt-3 flex flex-wrap gap-2">
+                {c.status === "claimed" && <Button size="sm" variant="outline" onClick={() => act.mutate({ fn: "start_claim", id: c.id })}>Start work</Button>}
+                {["claimed", "in_progress", "revision_requested"].includes(c.status) && (
+                  <>
+                    <Button size="sm" onClick={() => setSubmitFor(c)}>{c.status === "revision_requested" ? "Submit revision" : "Submit work"}</Button>
+                    <Button size="sm" variant="ghost" onClick={() => confirm("Release this slot? You won't be able to accept this task again.") && act.mutate({ fn: "abandon_claim", id: c.id })}>Release slot</Button>
+                  </>
+                )}
+                {c.status === "rejected" && <Button size="sm" variant="outline" onClick={() => setDisputeFor(c)}>Open dispute</Button>}
+              </div>
+            </div>
+          ))}
+        </div>
       )}
       {submitFor && <SubmitDialog claim={submitFor} onClose={() => setSubmitFor(null)} />}
       {disputeFor && <DisputeDialog claim={disputeFor} onClose={() => setDisputeFor(null)} />}
@@ -114,40 +129,49 @@ function ClaimHistory({ claimId }: { claimId: string }) {
 function SubmitDialog({ claim, onClose }: { claim: Claim; onClose: () => void }) {
   const { user } = useCurrentUser();
   const qc = useQueryClient();
+  const types = claim.assignment?.submission_types ?? ["text"];
+  const needsFile = types.some((t) => FILE_SUBMISSION_TYPES.includes(t));
+  const needsLink = types.includes("url");
   const [content, setContent] = useState("");
-  const [file, setFile] = useState<File | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
+  const [links, setLinks] = useState("");
+  const linkList = links.split(/\s+/).map((l) => l.trim()).filter(Boolean);
+  const problems = [
+    content.trim().length < 20 && "Describe your work in at least 20 characters",
+    needsFile && files.length === 0 && "Attach at least one file",
+    needsLink && linkList.length === 0 && "Add at least one link",
+    linkList.some((l) => !/^https:\/\/\S+\.\S+/.test(l)) && "Links must start with https://",
+    files.length > 10 && "Up to 10 files",
+  ].filter(Boolean) as string[];
   const m = useMutation({
     mutationFn: async () => {
-      let path: string | null = null;
-      if (file) {
-        const err = validateFile(file, ["document", "image", "archive"]);
-        if (err) throw new Error(err);
-        path = await uploadPrivate(user!.id, "submissions", file);
-      }
-      const { error } = await supabase.rpc("submit_assignment", { _claim: claim.id, _content: content.trim(), _file_path: path ?? undefined });
+      for (const f of files) { const err = validateFile(f, ["document", "image", "archive", "spreadsheet", "audio", "video"]); if (err) throw new Error(`${f.name}: ${err}`); }
+      const paths: string[] = [];
+      for (const f of files) paths.push(await uploadPrivate(user!.id, "submissions", f));
+      const { error } = await supabase.rpc("submit_task", { _claim: claim.id, _content: content.trim(), _attachments: paths, _links: linkList });
       if (error) throw error;
     },
-    onSuccess: () => {
-      toast.success("Submitted for review");
-      qc.invalidateQueries();
-      onClose();
-    },
+    onSuccess: () => { toast.success("Submitted. The amount shows as pending until it's approved."); qc.invalidateQueries(); onClose(); },
     onError: (e) => toast.error((e as Error).message),
   });
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
-      <DialogContent>
+      <DialogContent className="max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Submit: {claim.assignment?.title}</DialogTitle>
-          <DialogDescription>Due {dateTime(claim.due_at)}. Late submissions are not accepted.</DialogDescription>
+          <DialogDescription>Due {dateTime(claim.due_at)}. Required: {types.map((t) => SUBMISSION_LABEL[t] ?? t).join(", ")}.</DialogDescription>
         </DialogHeader>
-        <Textarea rows={7} value={content} onChange={(e) => setContent(e.target.value)} placeholder="Describe your deliverable or paste your work / links here" maxLength={20000} />
+        {claim.assignment?.deliverables && <p className="rounded-xl bg-surface p-3 text-sm">{claim.assignment.deliverables}</p>}
+        <Textarea rows={6} value={content} onChange={(e) => setContent(e.target.value)} placeholder="Your response, or a summary of what you've attached" maxLength={20000} />
+        <Textarea rows={2} value={links} onChange={(e) => setLinks(e.target.value)} placeholder={needsLink ? "Links (required) — one per line, https:// only" : "Links (optional) — one per line, https:// only"} />
         <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-dashed p-3 text-sm text-muted-foreground">
-          <Paperclip className="h-4 w-4" /> {file ? file.name : "Attach a file (PDF, DOCX, TXT, image or ZIP, max 10 MB)"}
-          <input type="file" className="hidden" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+          <Paperclip className="h-4 w-4 shrink-0" /> {files.length ? files.map((f) => f.name).join(", ") : `Attach files${needsFile ? " (required)" : ""}: PDF, DOCX, image, spreadsheet, audio, video or ZIP — 10 MB each, up to 10`}
+          <input type="file" multiple className="hidden" onChange={(e) => setFiles(Array.from(e.target.files ?? []))} />
         </label>
+        {problems.length > 0 && <ul className="space-y-1 text-xs text-muted-foreground">{problems.map((p) => <li key={p}>• {p}</li>)}</ul>}
+        <p className="text-xs text-muted-foreground">Submit only your own work. Copies of other people's submissions are detected and rejected. Never include passwords or one-time codes.</p>
         <DialogFooter>
-          <Button onClick={() => m.mutate()} disabled={!content.trim() || m.isPending}>{m.isPending && <Loader2 className="animate-spin" />} Submit</Button>
+          <Button onClick={() => m.mutate()} disabled={problems.length > 0 || m.isPending}>{m.isPending && <Loader2 className="animate-spin" />} Submit for review</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -163,7 +187,7 @@ function DisputeDialog({ claim, onClose }: { claim: Claim; onClose: () => void }
       if (error) throw error;
     },
     onSuccess: () => {
-      toast.success("Dispute opened. An assignment manager will review it.");
+      toast.success("Dispute opened. A reviewer will look at it again.");
       qc.invalidateQueries({ queryKey: ["claims"] });
       onClose();
     },
@@ -172,7 +196,7 @@ function DisputeDialog({ claim, onClose }: { claim: Claim; onClose: () => void }
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
       <DialogContent>
-        <DialogHeader><DialogTitle>Dispute rejection</DialogTitle><DialogDescription>Explain why your submission meets the assignment requirements.</DialogDescription></DialogHeader>
+        <DialogHeader><DialogTitle>Dispute rejection</DialogTitle><DialogDescription>Explain why your submission meets the task requirements.</DialogDescription></DialogHeader>
         <Textarea rows={5} value={reason} onChange={(e) => setReason(e.target.value)} maxLength={3000} />
         <DialogFooter><Button onClick={() => m.mutate()} disabled={reason.trim().length < 10 || m.isPending}>Open dispute</Button></DialogFooter>
       </DialogContent>
