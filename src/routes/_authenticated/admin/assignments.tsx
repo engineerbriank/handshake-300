@@ -94,7 +94,7 @@ function Budgets() {
   );
 }
 
-export function Reviews({ statuses, ownerOnly }: { statuses: ("submitted" | "under_review" | "disputed")[]; ownerOnly?: boolean }) {
+function Reviews({ statuses, ownerOnly }: { statuses: ("submitted" | "under_review" | "disputed")[]; ownerOnly?: boolean }) {
   const qc = useQueryClient();
   const [reason, setReason] = useState<Record<string, string>>({});
   const q = useQuery({
