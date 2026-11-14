@@ -38,7 +38,7 @@ export const Route = createFileRoute("/jobs/")({
 function JobsPage() {
   const search = Route.useSearch();
   const navigate = useNavigate({ from: "/jobs/" });
-  const { data, error, isFetching } = useSuspenseQuery(jobsQuery(search));
+  const { data, error } = useSuspenseQuery(jobsQuery(search));
   const isLoading = false;
   const { saved, toggle } = useSavedJobs();
   const page = search.page ?? 1;
@@ -49,7 +49,7 @@ function JobsPage() {
       <PageHeader title="Explore Jobs" />
       <JobFilters value={search} onChange={(v) => navigate({ search: v })} />
       <p className="mt-4 text-xs text-muted-foreground">
-        {data ? `${data.total.toLocaleString()} jobs available` : ""} {isFetching && !isLoading && "· updating…"}
+        {data ? `${data.total.toLocaleString()} jobs available` : ""}
       </p>
       {error && <ErrorNote error={error} />}
       {data?.error && <ErrorNote error={data.error} />}
