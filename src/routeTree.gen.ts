@@ -43,6 +43,7 @@ import { Route as AuthenticatedShellWithdrawalsRouteImport } from './routes/_aut
 import { Route as AuthenticatedShellWorkRouteImport } from './routes/_authenticated/_shell/work'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedAdminAssignmentsRouteImport } from './routes/_authenticated/admin/assignments'
+import { Route as AuthenticatedAdminFinanceRouteImport } from './routes/_authenticated/admin/finance'
 import { Route as AuthenticatedAdminJobsRouteImport } from './routes/_authenticated/admin/jobs'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin/users'
 import { Route as AuthenticatedShellAssignmentsIndexRouteImport } from './routes/_authenticated/_shell/assignments/index'
@@ -237,6 +238,12 @@ const AuthenticatedAdminAssignmentsRoute =
     path: '/assignments',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminFinanceRoute =
+  AuthenticatedAdminFinanceRouteImport.update({
+    id: '/finance',
+    path: '/finance',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminJobsRoute = AuthenticatedAdminJobsRouteImport.update({
   id: '/jobs',
   path: '/jobs',
@@ -314,6 +321,7 @@ export interface FileRoutesByFullPath {
   '/withdrawals': typeof AuthenticatedShellWithdrawalsRoute
   '/work': typeof AuthenticatedShellWorkRoute
   '/admin/assignments': typeof AuthenticatedAdminAssignmentsRoute
+  '/admin/finance': typeof AuthenticatedAdminFinanceRoute
   '/admin/jobs': typeof AuthenticatedAdminJobsRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
@@ -355,6 +363,7 @@ export interface FileRoutesByTo {
   '/withdrawals': typeof AuthenticatedShellWithdrawalsRoute
   '/work': typeof AuthenticatedShellWorkRoute
   '/admin/assignments': typeof AuthenticatedAdminAssignmentsRoute
+  '/admin/finance': typeof AuthenticatedAdminFinanceRoute
   '/admin/jobs': typeof AuthenticatedAdminJobsRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
@@ -400,6 +409,7 @@ export interface FileRoutesById {
   '/_authenticated/_shell/withdrawals': typeof AuthenticatedShellWithdrawalsRoute
   '/_authenticated/_shell/work': typeof AuthenticatedShellWorkRoute
   '/_authenticated/admin/assignments': typeof AuthenticatedAdminAssignmentsRoute
+  '/_authenticated/admin/finance': typeof AuthenticatedAdminFinanceRoute
   '/_authenticated/admin/jobs': typeof AuthenticatedAdminJobsRoute
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
@@ -444,6 +454,7 @@ export interface FileRouteTypes {
     | '/withdrawals'
     | '/work'
     | '/admin/assignments'
+    | '/admin/finance'
     | '/admin/jobs'
     | '/admin/users'
     | '/admin/'
@@ -485,6 +496,7 @@ export interface FileRouteTypes {
     | '/withdrawals'
     | '/work'
     | '/admin/assignments'
+    | '/admin/finance'
     | '/admin/jobs'
     | '/admin/users'
     | '/admin'
@@ -529,6 +541,7 @@ export interface FileRouteTypes {
     | '/_authenticated/_shell/withdrawals'
     | '/_authenticated/_shell/work'
     | '/_authenticated/admin/assignments'
+    | '/_authenticated/admin/finance'
     | '/_authenticated/admin/jobs'
     | '/_authenticated/admin/users'
     | '/_authenticated/admin/'
@@ -798,6 +811,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAssignmentsRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/finance': {
+      id: '/_authenticated/admin/finance'
+      path: '/finance'
+      fullPath: '/admin/finance'
+      preLoaderRoute: typeof AuthenticatedAdminFinanceRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/jobs': {
       id: '/_authenticated/admin/jobs'
       path: '/jobs'
@@ -916,6 +936,7 @@ const AuthenticatedShellRouteRouteWithChildren =
 
 interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminAssignmentsRoute: typeof AuthenticatedAdminAssignmentsRoute
+  AuthenticatedAdminFinanceRoute: typeof AuthenticatedAdminFinanceRoute
   AuthenticatedAdminJobsRoute: typeof AuthenticatedAdminJobsRoute
   AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
@@ -924,6 +945,7 @@ interface AuthenticatedAdminRouteRouteChildren {
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
     AuthenticatedAdminAssignmentsRoute: AuthenticatedAdminAssignmentsRoute,
+    AuthenticatedAdminFinanceRoute: AuthenticatedAdminFinanceRoute,
     AuthenticatedAdminJobsRoute: AuthenticatedAdminJobsRoute,
     AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
