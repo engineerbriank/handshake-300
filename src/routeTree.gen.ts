@@ -46,6 +46,7 @@ import { Route as AuthenticatedAdminAssignmentsRouteImport } from './routes/_aut
 import { Route as AuthenticatedAdminFinanceRouteImport } from './routes/_authenticated/admin/finance'
 import { Route as AuthenticatedAdminJobsRouteImport } from './routes/_authenticated/admin/jobs'
 import { Route as AuthenticatedAdminSupportRouteImport } from './routes/_authenticated/admin/support'
+import { Route as AuthenticatedAdminSystemRouteImport } from './routes/_authenticated/admin/system'
 import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin/users'
 import { Route as AuthenticatedShellAssignmentsIndexRouteImport } from './routes/_authenticated/_shell/assignments/index'
 import { Route as AuthenticatedShellAssignmentsAssignmentIdRouteImport } from './routes/_authenticated/_shell/assignments/$assignmentId'
@@ -256,6 +257,12 @@ const AuthenticatedAdminSupportRoute =
     path: '/support',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminSystemRoute =
+  AuthenticatedAdminSystemRouteImport.update({
+    id: '/system',
+    path: '/system',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -331,6 +338,7 @@ export interface FileRoutesByFullPath {
   '/admin/finance': typeof AuthenticatedAdminFinanceRoute
   '/admin/jobs': typeof AuthenticatedAdminJobsRoute
   '/admin/support': typeof AuthenticatedAdminSupportRoute
+  '/admin/system': typeof AuthenticatedAdminSystemRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/assignments/$assignmentId': typeof AuthenticatedShellAssignmentsAssignmentIdRoute
@@ -374,6 +382,7 @@ export interface FileRoutesByTo {
   '/admin/finance': typeof AuthenticatedAdminFinanceRoute
   '/admin/jobs': typeof AuthenticatedAdminJobsRoute
   '/admin/support': typeof AuthenticatedAdminSupportRoute
+  '/admin/system': typeof AuthenticatedAdminSystemRoute
   '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/assignments/$assignmentId': typeof AuthenticatedShellAssignmentsAssignmentIdRoute
@@ -421,6 +430,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/finance': typeof AuthenticatedAdminFinanceRoute
   '/_authenticated/admin/jobs': typeof AuthenticatedAdminJobsRoute
   '/_authenticated/admin/support': typeof AuthenticatedAdminSupportRoute
+  '/_authenticated/admin/system': typeof AuthenticatedAdminSystemRoute
   '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/_shell/assignments/$assignmentId': typeof AuthenticatedShellAssignmentsAssignmentIdRoute
@@ -467,6 +477,7 @@ export interface FileRouteTypes {
     | '/admin/finance'
     | '/admin/jobs'
     | '/admin/support'
+    | '/admin/system'
     | '/admin/users'
     | '/admin/'
     | '/assignments/$assignmentId'
@@ -510,6 +521,7 @@ export interface FileRouteTypes {
     | '/admin/finance'
     | '/admin/jobs'
     | '/admin/support'
+    | '/admin/system'
     | '/admin/users'
     | '/admin'
     | '/assignments/$assignmentId'
@@ -556,6 +568,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/finance'
     | '/_authenticated/admin/jobs'
     | '/_authenticated/admin/support'
+    | '/_authenticated/admin/system'
     | '/_authenticated/admin/users'
     | '/_authenticated/admin/'
     | '/_authenticated/_shell/assignments/$assignmentId'
@@ -845,6 +858,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminSupportRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/system': {
+      id: '/_authenticated/admin/system'
+      path: '/system'
+      fullPath: '/admin/system'
+      preLoaderRoute: typeof AuthenticatedAdminSystemRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/users': {
       id: '/_authenticated/admin/users'
       path: '/users'
@@ -959,6 +979,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminFinanceRoute: typeof AuthenticatedAdminFinanceRoute
   AuthenticatedAdminJobsRoute: typeof AuthenticatedAdminJobsRoute
   AuthenticatedAdminSupportRoute: typeof AuthenticatedAdminSupportRoute
+  AuthenticatedAdminSystemRoute: typeof AuthenticatedAdminSystemRoute
   AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
@@ -969,6 +990,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminFinanceRoute: AuthenticatedAdminFinanceRoute,
     AuthenticatedAdminJobsRoute: AuthenticatedAdminJobsRoute,
     AuthenticatedAdminSupportRoute: AuthenticatedAdminSupportRoute,
+    AuthenticatedAdminSystemRoute: AuthenticatedAdminSystemRoute,
     AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
   }

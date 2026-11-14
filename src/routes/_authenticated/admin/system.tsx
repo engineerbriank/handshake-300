@@ -64,9 +64,11 @@ function Admins() {
   const staff = useQuery({
     queryKey: ["admin-staff"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("user_roles").select("id,role,created_at,user_id, profile:profiles!user_roles_user_id_fkey(email,first_name,last_name)").not("role", "in", "(user,client)").order("created_at");
+      const { data, error } = await supabase.from("user_roles").select("id,role,created_at,user_id").not("role", "in", "(user,client)").order("created_at");
       if (error) throw error;
-      return data ?? [];
+      const ids = [...new Set((data ?? []).map((r) => r.user_id))];
+      const { data: profiles } = ids.length ? await supabase.from("profiles").select("id,email,first_name,last_name").in("id", ids) : { data: [] };
+      return (data ?? []).map((r) => ({ ...r, profile: profiles?.find((p) => p.id === r.user_id) }));
     },
   });
   const grant = useMutation({
