@@ -26,6 +26,7 @@ import { Route as AuthenticatedShellApplicationsRouteImport } from './routes/_au
 import { Route as AuthenticatedShellCvRouteImport } from './routes/_authenticated/_shell/cv'
 import { Route as AuthenticatedShellDashboardRouteImport } from './routes/_authenticated/_shell/dashboard'
 import { Route as AuthenticatedShellEarningsRouteImport } from './routes/_authenticated/_shell/earnings'
+import { Route as AuthenticatedShellEmployerRouteImport } from './routes/_authenticated/_shell/employer'
 import { Route as AuthenticatedShellLoginActivityRouteImport } from './routes/_authenticated/_shell/login-activity'
 import { Route as AuthenticatedShellNotificationsRouteImport } from './routes/_authenticated/_shell/notifications'
 import { Route as AuthenticatedShellPaymentMethodsRouteImport } from './routes/_authenticated/_shell/payment-methods'
@@ -139,6 +140,12 @@ const AuthenticatedShellEarningsRoute =
   AuthenticatedShellEarningsRouteImport.update({
     id: '/earnings',
     path: '/earnings',
+    getParentRoute: () => AuthenticatedShellRouteRoute,
+  } as any)
+const AuthenticatedShellEmployerRoute =
+  AuthenticatedShellEmployerRouteImport.update({
+    id: '/employer',
+    path: '/employer',
     getParentRoute: () => AuthenticatedShellRouteRoute,
   } as any)
 const AuthenticatedShellLoginActivityRoute =
@@ -319,6 +326,7 @@ export interface FileRoutesByFullPath {
   '/cv': typeof AuthenticatedShellCvRoute
   '/dashboard': typeof AuthenticatedShellDashboardRoute
   '/earnings': typeof AuthenticatedShellEarningsRoute
+  '/employer': typeof AuthenticatedShellEmployerRoute
   '/login-activity': typeof AuthenticatedShellLoginActivityRoute
   '/notifications': typeof AuthenticatedShellNotificationsRoute
   '/payment-methods': typeof AuthenticatedShellPaymentMethodsRoute
@@ -363,6 +371,7 @@ export interface FileRoutesByTo {
   '/cv': typeof AuthenticatedShellCvRoute
   '/dashboard': typeof AuthenticatedShellDashboardRoute
   '/earnings': typeof AuthenticatedShellEarningsRoute
+  '/employer': typeof AuthenticatedShellEmployerRoute
   '/login-activity': typeof AuthenticatedShellLoginActivityRoute
   '/notifications': typeof AuthenticatedShellNotificationsRoute
   '/payment-methods': typeof AuthenticatedShellPaymentMethodsRoute
@@ -411,6 +420,7 @@ export interface FileRoutesById {
   '/_authenticated/_shell/cv': typeof AuthenticatedShellCvRoute
   '/_authenticated/_shell/dashboard': typeof AuthenticatedShellDashboardRoute
   '/_authenticated/_shell/earnings': typeof AuthenticatedShellEarningsRoute
+  '/_authenticated/_shell/employer': typeof AuthenticatedShellEmployerRoute
   '/_authenticated/_shell/login-activity': typeof AuthenticatedShellLoginActivityRoute
   '/_authenticated/_shell/notifications': typeof AuthenticatedShellNotificationsRoute
   '/_authenticated/_shell/payment-methods': typeof AuthenticatedShellPaymentMethodsRoute
@@ -458,6 +468,7 @@ export interface FileRouteTypes {
     | '/cv'
     | '/dashboard'
     | '/earnings'
+    | '/employer'
     | '/login-activity'
     | '/notifications'
     | '/payment-methods'
@@ -502,6 +513,7 @@ export interface FileRouteTypes {
     | '/cv'
     | '/dashboard'
     | '/earnings'
+    | '/employer'
     | '/login-activity'
     | '/notifications'
     | '/payment-methods'
@@ -549,6 +561,7 @@ export interface FileRouteTypes {
     | '/_authenticated/_shell/cv'
     | '/_authenticated/_shell/dashboard'
     | '/_authenticated/_shell/earnings'
+    | '/_authenticated/_shell/employer'
     | '/_authenticated/_shell/login-activity'
     | '/_authenticated/_shell/notifications'
     | '/_authenticated/_shell/payment-methods'
@@ -716,6 +729,13 @@ declare module '@tanstack/react-router' {
       path: '/earnings'
       fullPath: '/earnings'
       preLoaderRoute: typeof AuthenticatedShellEarningsRouteImport
+      parentRoute: typeof AuthenticatedShellRouteRoute
+    }
+    '/_authenticated/_shell/employer': {
+      id: '/_authenticated/_shell/employer'
+      path: '/employer'
+      fullPath: '/employer'
+      preLoaderRoute: typeof AuthenticatedShellEmployerRouteImport
       parentRoute: typeof AuthenticatedShellRouteRoute
     }
     '/_authenticated/_shell/login-activity': {
@@ -922,6 +942,7 @@ interface AuthenticatedShellRouteRouteChildren {
   AuthenticatedShellCvRoute: typeof AuthenticatedShellCvRoute
   AuthenticatedShellDashboardRoute: typeof AuthenticatedShellDashboardRoute
   AuthenticatedShellEarningsRoute: typeof AuthenticatedShellEarningsRoute
+  AuthenticatedShellEmployerRoute: typeof AuthenticatedShellEmployerRoute
   AuthenticatedShellLoginActivityRoute: typeof AuthenticatedShellLoginActivityRoute
   AuthenticatedShellNotificationsRoute: typeof AuthenticatedShellNotificationsRoute
   AuthenticatedShellPaymentMethodsRoute: typeof AuthenticatedShellPaymentMethodsRoute
@@ -947,6 +968,7 @@ const AuthenticatedShellRouteRouteChildren: AuthenticatedShellRouteRouteChildren
     AuthenticatedShellCvRoute: AuthenticatedShellCvRoute,
     AuthenticatedShellDashboardRoute: AuthenticatedShellDashboardRoute,
     AuthenticatedShellEarningsRoute: AuthenticatedShellEarningsRoute,
+    AuthenticatedShellEmployerRoute: AuthenticatedShellEmployerRoute,
     AuthenticatedShellLoginActivityRoute: AuthenticatedShellLoginActivityRoute,
     AuthenticatedShellNotificationsRoute: AuthenticatedShellNotificationsRoute,
     AuthenticatedShellPaymentMethodsRoute:
