@@ -28,3 +28,10 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## HANDSHAKE project rules
+- Money moves only through SECURITY DEFINER SQL functions that post balanced, idempotent double-entry ledger transactions; never write balances from client or server code directly — keeps the ledger the single source of truth.
+- Administrator RPCs and staff RLS require a staff role plus an MFA (aal2) session via `_require_staff` / `staff_has` — admin rights are never decided in the browser.
+- Payouts are marked paid only by `payout_confirm` from a provider callback/confirmation running as service role — never simulate provider success.
+- External jobs come only from real source adapters in `src/lib/job-sync.server.ts`; description HTML is sanitised at import — never fabricate listings.
+- TypeScript runs with `exactOptionalPropertyTypes` and `noPropertyAccessFromIndexSignature` off to keep router search params and DB rows ergonomic.

@@ -121,8 +121,8 @@ function finishJob(j: Omit<NormalizedJob, "responsibilities" | "requirements" | 
     employer: decodeEntities(j.employer).trim().slice(0, 200),
     description,
     excerpt: j.excerpt ? plainText(decodeEntities(j.excerpt)) : plainText(description),
-    responsibilities: extractSection(description, /responsib|what you.ll do|what you will do|your role|the role|duties/),
-    requirements: extractSection(description, /requirement|qualification|what you.ll bring|what we.re looking for|who you are|you have|skills/),
+    responsibilities: extractSection(description, /responsib|what you.ll do|what you will do|your role|the role|duties/) ?? null,
+    requirements: extractSection(description, /requirement|qualification|what you.ll bring|what we.re looking for|who you are|you have|skills/) ?? null,
     skills: Array.from(new Set(j.skills.map((s) => s.toLowerCase().replace(/-/g, " ").trim()).filter((s) => s.length > 1 && s.length < 40))).slice(0, 12),
   };
 }
@@ -284,7 +284,7 @@ const adzuna: Adapter = {
             experience_level: normLevel(j.title),
             salary_min: j.salary_min ?? null,
             salary_max: j.salary_max ?? null,
-            salary_currency: j.salary_min ? ({ gb: "GBP", us: "USD", za: "ZAR" } as Record<string, string>)[country] : null,
+            salary_currency: j.salary_min ? ({ gb: "GBP", us: "USD", za: "ZAR" } as Record<string, string>)[country] ?? null : null,
             salary_period: j.salary_min ? "annual" : null,
             skills: [],
             deadline: null,

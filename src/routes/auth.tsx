@@ -255,7 +255,10 @@ function ForgotForm() {
     setLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo: `${window.location.origin}/reset-password` });
     setLoading(false);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     setSent(true);
   };
   if (sent) return <p className="text-center text-sm text-muted-foreground">If an account exists for <b>{email}</b>, a reset link is on its way.</p>;

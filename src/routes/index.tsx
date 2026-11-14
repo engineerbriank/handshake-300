@@ -258,7 +258,7 @@ function Landing() {
               ["How is the KES amount calculated?", "We use a documented USD/KES exchange rate retrieved at the time of your request. You see the rate, fees and net KES before you confirm."],
               ["Can I sell or transfer my account?", "No. Accounts are personal and non-transferable. Selling accounts, credentials or balances is prohibited and leads to suspension."],
               ["What verification is required?", "Email and a completed profile to claim assignments. Identity and payout-account ownership verification before withdrawals."],
-            ].map(([q, a]) => (
+            ].map(([q = "", a]) => (
               <AccordionItem key={q} value={q}>
                 <AccordionTrigger className="text-left">{q}</AccordionTrigger>
                 <AccordionContent className="text-muted-foreground">{a}</AccordionContent>

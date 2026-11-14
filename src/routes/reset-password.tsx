@@ -30,12 +30,12 @@ function ResetPassword() {
   }, []);
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (pw.length < 8 || !/[0-9]/.test(pw) || !/[A-Za-z]/.test(pw)) return toast.error("Use at least 8 characters with a letter and a number.");
-    if (pw !== pw2) return toast.error("Passwords do not match");
+    if (pw.length < 8 || !/[0-9]/.test(pw) || !/[A-Za-z]/.test(pw)) { toast.error("Use at least 8 characters with a letter and a number."); return; }
+    if (pw !== pw2) { toast.error("Passwords do not match"); return; }
     setLoading(true);
     const { error } = await supabase.auth.updateUser({ password: pw });
     setLoading(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Password updated");
     navigate({ to: "/dashboard" });
   };
