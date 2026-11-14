@@ -13,3 +13,4 @@
 - [ ] Employer/client portal
 - [ ] Tests for money rules, commit
 - [x] Send user a preview screenshot of progress
+- [x] Remix setup: re-apply database schema, storage, sign-in providers and job import on the new project
