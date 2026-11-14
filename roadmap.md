@@ -23,7 +23,7 @@
 - [x] Third remix setup: check database connection, schema, sign-up triggers, settings, job import
 
 ## Paid Tasks
-- [ ] Fourth remix setup: confirm this copy's database, sign-up triggers, settings, job import and app connection
+- [x] Fourth remix setup: sign-up hooks, starting records, 473 imported jobs, sign-in options
 - [x] Task catalogue tables, funding/claim/submit/review rules
 - [ ] Load 720 task templates and 218 verified apps (apps loaded)
 - [ ] User screens: Paid Tasks, task detail, My Tasks, dashboard sections, navigation
