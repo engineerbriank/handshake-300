@@ -125,7 +125,7 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
-    font-size: 14px;
+    font-size: 15px;
     -webkit-font-smoothing: antialiased;
   }
   h1, h2, h3, h4 {
@@ -163,17 +163,12 @@
 .welcome-screen, .auth-screen { position: relative; isolation: isolate; background: var(--background); }
 .welcome-screen::before, .auth-screen::before { content: ""; position: absolute; inset: auto 0 0; height: 32%; z-index: -1; background: linear-gradient(155deg, transparent 12%, var(--brand-soft) 64%, var(--secondary)); }
 .welcome-screen::after, .auth-screen::after { content: ""; position: absolute; bottom: 9%; left: 0; width: 100%; height: 15%; z-index: -1; background: var(--brand-soft); opacity: .8; clip-path: polygon(0 30%, 15% 15%, 30% 20%, 50% 50%, 70% 74%, 85% 79%, 100% 65%, 100% 100%, 0 100%); }
-.app-content { font-size: 13px; }
-.app-content .rounded-3xl, .app-content .rounded-2xl { border-radius: 10px; }
+.app-content { font-size: 15px; }
+.app-content .rounded-3xl, .app-content .rounded-2xl { border-radius: 14px; }
 .app-content .shadow-raised { box-shadow: var(--shadow-card); }
-.app-content h1 { font-size: 20px; line-height: 1.3; }
-.app-content .text-sm { font-size: 12px; }
-.app-content .text-xs { font-size: 10px; }
-.app-content .prose-job { font-size: 12px; }
+.app-content h1 { font-size: 24px; line-height: 1.25; }
+.app-content h2 { font-size: 17px; }
+.app-content .text-sm { font-size: 14px; }
+.app-content .text-xs { font-size: 12.5px; }
+.app-content .prose-job { font-size: 14.5px; }
 .home-indicator { height: 4px; width: 108px; border-radius: 999px; background: var(--muted-foreground); opacity: .8; margin: 18px auto 10px; }
-@media (min-width: 768px) {
-  .app-content { font-size: 14px; }
-  .app-content .text-sm { font-size: 13px; }
-  .app-content .text-xs { font-size: 11px; }
-  .app-content .prose-job { font-size: 14px; }
-}

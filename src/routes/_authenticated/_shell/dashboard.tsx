@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Briefcase, Wallet, ArrowUpRight, FileText, UserRound, ArrowRight, Clock, CheckCircle2, ClipboardList, ShieldAlert, Bell } from "lucide-react";
+import { Briefcase, Wallet, ArrowUpRight, LifeBuoy, ArrowRight, Clock, CheckCircle2, ClipboardList, ShieldAlert, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Panel, StatCard, StatusBadge, EmptyState } from "@/components/common/ui-bits";
 import { JobCard } from "@/components/jobs/JobCard";
@@ -17,10 +17,10 @@ export const Route = createFileRoute("/_authenticated/_shell/dashboard")({
 });
 
 const QUICK = [
-  { label: "Jobs", to: "/jobs", icon: Search },
-  { label: "Assignments", to: "/assignments", icon: Briefcase },
+  { label: "Jobs", to: "/jobs", icon: Briefcase },
+  { label: "Assignments", to: "/assignments", icon: ClipboardList },
   { label: "Wallet", to: "/wallet", icon: Wallet },
-  { label: "Support", to: "/help", icon: UserRound },
+  { label: "Support", to: "/report", icon: LifeBuoy },
 ] as const;
 
 function Dashboard() {
@@ -45,8 +45,8 @@ function Dashboard() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-bold sm:text-3xl">Hello, {profile?.first_name || "there"}! 👋</h1>
-        <p className="mt-1 text-xs text-muted-foreground">Welcome to Handshake.</p>
+        <h1 className="text-[26px] font-bold leading-tight">Hello, {profile?.first_name || "there"}! 👋</h1>
+        <p className="mt-1 text-base text-muted-foreground">Welcome to Handshake</p>
       </div>
 
       {needsVerification && (
@@ -57,30 +57,24 @@ function Dashboard() {
         </Link>
       )}
 
-      <div className="flex items-center justify-between gap-4 rounded-lg bg-primary p-4 text-primary-foreground shadow-card">
+      <div className="flex items-center justify-between gap-4 rounded-2xl bg-primary p-5 text-primary-foreground shadow-card">
         <div>
-          <p className="text-sm text-primary-foreground/70">Your Balance</p>
-          <p className="tabular mt-1 text-2xl font-semibold">{usd(wallet?.available_usd)} <span className="text-sm font-semibold text-primary-foreground/60">USD</span></p>
+          <p className="text-sm text-primary-foreground/80">Your Balance</p>
+          <p className="tabular mt-1 text-[26px] font-semibold">{usd(wallet?.available_usd)} <span className="text-sm font-semibold text-primary-foreground/60">USD</span></p>
         </div>
-        <Button asChild variant="secondary" className="shrink-0"><Link to="/withdrawals">Withdraw</Link></Button>
+        <Button asChild variant="outline" className="shrink-0 rounded-full border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"><Link to="/withdrawals">Withdraw</Link></Button>
       </div>
 
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-4 gap-1 sm:gap-3">
         {QUICK.map((q) => (
-          <Link key={q.to} to={q.to} className="flex flex-col items-center gap-2 bg-card py-2 text-center text-xs font-medium hover:border-primary/20">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary"><q.icon className="h-5 w-5" /></span>
-            {q.label}
+          <Link key={q.to} to={q.to} className="flex min-w-0 flex-col items-center gap-2 py-1 text-center text-sm font-medium">
+            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border bg-card shadow-card"><q.icon className="h-6 w-6" /></span>
+            <span className="w-full truncate">{q.label}</span>
           </Link>
         ))}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1.3fr_1fr]">
-        <Panel title="Top Jobs" action={<Link to="/jobs" className="flex items-center gap-1 text-sm font-semibold">View all <ArrowRight className="h-4 w-4" /></Link>} bodyClassName="space-y-3 p-0">
-          {topJobs.data?.jobs.map((j) => <JobCard key={j.id} job={j} saved={saved.has(j.id)} onToggleSave={() => toggle(j.id)} />)}
-          {topJobs.data?.jobs.length === 0 && <EmptyState title="No listings right now" />}
-        </Panel>
-
-        <div className="space-y-4">      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         <StatCard label="Pending" value={usd(wallet?.pending_usd)} hint="Under review" icon={<Clock />} tone="warning" />
         <StatCard label="Reserved" value={usd(wallet?.reserved_usd)} hint="Awaiting payout" icon={<ArrowUpRight />} tone="info" />
         <StatCard label="Total earned" value={usd(wallet?.total_earned_usd)} icon={<CheckCircle2 />} tone="success" />
@@ -94,19 +88,19 @@ function Dashboard() {
         <StatCard label="Completed" value={done} hint="Paid assignments" />
       </div>
 
-
+      <div className="grid gap-4 lg:grid-cols-2">
           <Panel title="Recent transactions" action={<Link to="/transactions" className="text-sm font-semibold">View all</Link>} bodyClassName="p-0">
             {txns?.length ? (
               <ul className="divide-y">
                 {txns.map((t) => (
-                  <li key={t.id} className="flex items-center justify-between gap-3 px-5 py-3 text-sm">
+                  <li key={t.id} className="flex items-center justify-between gap-3 py-3 text-sm">
                     <span><span className="block font-medium">{TXN_LABEL[t.kind] ?? t.description}</span><span className="text-xs text-muted-foreground">{shortDate(t.created_at)}</span></span>
                     <span className={`tabular font-semibold ${t.amount >= 0 ? "text-success" : ""}`}>{t.amount >= 0 ? "+" : "−"}{usd(Math.abs(t.amount))}</span>
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="px-5 py-6 text-sm text-muted-foreground">No transactions yet. Earnings appear here when an assignment is approved.</p>
+              <p className="py-4 text-sm text-muted-foreground">No transactions yet. Earnings appear here when an assignment is approved.</p>
             )}
           </Panel>
 
@@ -114,14 +108,14 @@ function Dashboard() {
             {apps?.length ? (
               <ul className="divide-y">
                 {apps.slice(0, 4).map((a) => (
-                  <li key={a.id} className="flex items-center justify-between gap-3 px-5 py-3 text-sm">
+                  <li key={a.id} className="flex items-center justify-between gap-3 py-3 text-sm">
                     <span className="min-w-0"><span className="block truncate font-medium">{a.job?.title}</span><span className="text-xs text-muted-foreground">{a.job?.employer} · {shortDate(a.applied_at)}</span></span>
                     <StatusBadge status={a.status} />
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="px-5 py-6 text-sm text-muted-foreground">Track jobs you apply to from any job page.</p>
+              <p className="py-4 text-sm text-muted-foreground">Track jobs you apply to from any job page.</p>
             )}
           </Panel>
 
@@ -129,14 +123,14 @@ function Dashboard() {
             {notes?.length ? (
               <ul className="divide-y">
                 {notes.map((n) => (
-                  <li key={n.id} className="flex gap-3 px-5 py-3 text-sm">
+                  <li key={n.id} className="flex gap-3 py-3 text-sm">
                     <Bell className={`mt-0.5 h-4 w-4 shrink-0 ${n.read_at ? "text-muted-foreground" : "text-info"}`} />
                     <span className="min-w-0"><span className="block font-medium">{n.title}</span><span className="line-clamp-1 text-xs text-muted-foreground">{n.body} · {ago(n.created_at)}</span></span>
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="px-5 py-6 text-sm text-muted-foreground">You're all caught up.</p>
+              <p className="py-4 text-sm text-muted-foreground">You're all caught up.</p>
             )}
           </Panel>
 
@@ -144,18 +138,22 @@ function Dashboard() {
             {claims?.length ? (
               <ul className="divide-y">
                 {claims.slice(0, 4).map((c) => (
-                  <li key={c.id} className="flex items-center justify-between gap-3 px-5 py-3 text-sm">
+                  <li key={c.id} className="flex items-center justify-between gap-3 py-3 text-sm">
                     <span className="min-w-0"><span className="block truncate font-medium">{c.assignment?.title}</span><span className="text-xs text-muted-foreground">{usd(c.assignment?.pay_usd)} · due {shortDate(c.due_at)}</span></span>
                     <StatusBadge status={c.status} />
                   </li>
                 ))}
               </ul>
             ) : (
-              <div className="flex items-center gap-3 px-5 py-6 text-sm text-muted-foreground"><ClipboardList className="h-4 w-4" /> No assignments claimed yet.</div>
+              <div className="flex items-center gap-3 py-4 text-sm text-muted-foreground"><ClipboardList className="h-4 w-4" /> No assignments claimed yet.</div>
             )}
           </Panel>
-        </div>
       </div>
+
+      <Panel title="Top Jobs" action={<Link to="/jobs" className="flex items-center gap-1 text-sm font-semibold">View all <ArrowRight className="h-4 w-4" /></Link>} bodyClassName="grid gap-3 p-0 md:grid-cols-2">
+          {topJobs.data?.jobs.map((j) => <JobCard key={j.id} job={j} saved={saved.has(j.id)} onToggleSave={() => toggle(j.id)} />)}
+          {topJobs.data?.jobs.length === 0 && <EmptyState title="No listings right now" />}
+        </Panel>
     </div>
   );
 }

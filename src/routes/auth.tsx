@@ -4,14 +4,12 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { Mail, Lock, Eye, EyeOff, Loader2, MailCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { LogoMark } from "@/components/brand/Logo";
 import { COUNTRIES } from "@/lib/constants";
-import { errorMessage } from "@/lib/format";
 
 type AuthSearch = { mode?: "signin" | "signup" | "forgot"; redirect?: string };
 
@@ -32,33 +30,6 @@ export const Route = createFileRoute("/auth")({
   }),
   component: AuthPage,
 });
-
-const GoogleG = () => (
-  <svg aria-hidden="true" width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.29v3.09C3.26 21.3 7.31 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.29c-.25-.72-.38-1.49-.38-2.29s.14-1.57.38-2.29V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.98-3.09z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.98 3.09c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
-);
-
-function SocialButtons({ redirect }: { redirect?: string }) {
-  const [busy, setBusy] = useState<string | null>(null);
-  const go = async (provider: "google" | "apple") => {
-    setBusy(provider);
-    if (redirect) sessionStorage.setItem("hs_post_auth", redirect);
-    const result = await lovable.auth.signInWithOAuth(provider, { redirect_uri: window.location.origin + "/auth" });
-    if (result.error) {
-      toast.error(errorMessage(result.error));
-      setBusy(null);
-    }
-  };
-  return (
-    <div className="grid gap-3">
-      <Button variant="outline" type="button" onClick={() => go("google")} disabled={!!busy} className="h-10 w-full text-xs">
-        {busy === "google" ? <Loader2 className="h-4 w-4 animate-spin" /> : <GoogleG />} Continue with Google
-      </Button>
-      <Button type="button" onClick={() => go("apple")} disabled={!!busy} className="h-10 w-full text-xs">
-        {busy === "apple" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Continue with Apple"}
-      </Button>
-    </div>
-  );
-}
 
 function AuthPage() {
   const search = Route.useSearch();
@@ -82,15 +53,15 @@ function AuthPage() {
 
   return (
     <main className={`auth-screen flex min-h-dvh flex-col items-center px-5 ${mode === "signup" ? "bg-background" : ""}`}>
-      <div className="w-full max-w-[350px] flex-1 pb-6 pt-14 sm:pt-16">
+      <div className="w-full max-w-[400px] flex-1 pb-6 pt-12 sm:pt-16">
         <div className="mb-7 flex flex-col items-center text-center">
-          <Link to="/"><LogoMark className="h-[62px] w-[62px]" /></Link>
-          <p className="mt-3 text-[30px] font-bold leading-tight">Handshake</p>
-          <h1 className="mt-2 text-xl font-bold">{mode === "signup" ? "Create your account" : mode === "forgot" ? "Reset your password" : "Welcome Back!"}</h1>
-          <p className="mt-1 text-xs text-muted-foreground">{mode === "signup" ? "Let’s get started. Fill in your basic details." : mode === "forgot" ? "We'll email you a reset link" : "Sign in to continue"}</p>
+          <Link to="/"><LogoMark className="h-[72px] w-[72px]" /></Link>
+          <p className="mt-3 text-[36px] font-bold leading-tight">Handshake</p>
+          <h1 className="mt-2 text-2xl font-bold">{mode === "signup" ? "Create your account" : mode === "forgot" ? "Reset your password" : "Welcome Back!"}</h1>
+          <p className="mt-1 text-base text-muted-foreground">{mode === "signup" ? "Let’s get started. Fill in your basic details." : mode === "forgot" ? "We'll email you a reset link" : "Sign in to continue"}</p>
         </div>
-        {mode === "signup" ? <SignUpForm /> : mode === "forgot" ? <ForgotForm /> : <SignInForm redirect={search.redirect} />}
-        <p className="mt-6 text-center text-xs text-muted-foreground">
+        {mode === "signup" ? <SignUpForm /> : mode === "forgot" ? <ForgotForm /> : <SignInForm />}
+        <p className="mt-6 text-center text-sm text-muted-foreground">
           {mode === "signup" ? < >Already have an account? <Link to="/auth" search={{ redirect: search.redirect }} className="font-semibold text-brand">Sign in</Link></> : <>Don't have an account? <Link to="/auth" search={{ mode: "signup", redirect: search.redirect }} className="font-semibold text-brand">Sign up</Link></>}
         </p>
       </div>
@@ -102,13 +73,13 @@ function AuthPage() {
 function IconInput({ icon: Icon, ...props }: React.ComponentProps<typeof Input> & { icon: typeof Mail }) {
   return (
     <div className="relative">
-      <Icon className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-      <Input {...props} className="h-11 rounded-lg pl-10 text-xs" />
+      <Icon className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+      <Input {...props} className="h-12 rounded-xl pl-11 text-[15px]" />
     </div>
   );
 }
 
-function SignInForm({ redirect }: { redirect?: string }) {
+function SignInForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
@@ -130,11 +101,9 @@ function SignInForm({ redirect }: { redirect?: string }) {
         </Button>
       </div>
       <div className="text-right">
-        <Link to="/auth" search={{ mode: "forgot" }} className="text-sm font-medium text-muted-foreground hover:text-foreground">Forgot password?</Link>
+        <Link to="/auth" search={{ mode: "forgot" }} className="text-sm font-medium text-info hover:text-foreground">Forgot password?</Link>
       </div>
-      <Button type="submit" className="h-11 w-full" disabled={loading}>{loading && <Loader2 className="animate-spin" />} Sign In</Button>
-      <div className="relative py-2 text-center text-xs text-muted-foreground"><span className="relative z-10 bg-background px-2">or continue with</span><div className="absolute inset-x-0 top-1/2 border-t" /></div>
-      <SocialButtons redirect={redirect} />
+      <Button type="submit" className="h-12 w-full text-base" disabled={loading}>{loading && <Loader2 className="animate-spin" />} Sign In</Button>
     </form>
   );
 }
@@ -208,31 +177,31 @@ function SignUpForm() {
   return (
     <form onSubmit={submit} className="space-y-3" noValidate>
       <div className="mb-5">
-        <p className="mb-2 text-center text-xs text-muted-foreground">{step} of 3</p>
+        <p className="mb-2 text-center text-sm text-info">{step} of 3</p>
         <div className="grid grid-cols-3 gap-1">{[1, 2, 3].map((i) => <div key={i} className={`h-1 rounded-full ${i <= step ? "bg-brand" : "bg-secondary"}`} />)}</div>
-        <h2 className="mt-5 text-lg font-semibold">{step === 1 ? "Create your account" : step === 2 ? "Set your password" : "Complete your profile"}</h2>
-        <p className="mt-1 text-xs text-muted-foreground">{step === 1 ? "Fill in your basic details." : step === 2 ? "Create a strong password to keep your account safe." : "Tell us more about yourself. Verification continues after email confirmation."}</p>
+        <h2 className="mt-5 text-2xl font-bold">{step === 1 ? "Create your account" : step === 2 ? "Set your password" : "Complete your profile"}</h2>
+        <p className="mt-1 text-[15px] text-muted-foreground">{step === 1 ? "Fill in your basic details." : step === 2 ? "Create a strong password to keep your account safe." : "Tell us more about yourself. Verification continues after email confirmation."}</p>
       </div>
       {step === 1 && <>
         {([ ["first_name", "First name", "e.g. John"], ["last_name", "Last name", "e.g. Doe"], ["middle_name", "Middle name (optional)", "e.g. Kamau"], ["username", "Username", "Choose a unique username"], ["email", "Email address", "you@example.com"], ["phone", "Phone number", "+254 712345678"] ] as const).map(([key, label, placeholder]) => (
-          <label key={key} className="block rounded-lg border px-3 py-2"><span className="text-[11px] font-medium">{label}</span><Input aria-label={label} type={key === "email" ? "email" : key === "phone" ? "tel" : "text"} placeholder={placeholder} value={form[key]} onChange={set(key)} className="h-6 border-0 px-0 text-xs shadow-none focus-visible:ring-0" />{err(key)}</label>
+          <label key={key} className="block rounded-xl border px-4 py-2.5"><span className="text-sm font-medium">{label}</span><Input aria-label={label} type={key === "email" ? "email" : key === "phone" ? "tel" : "text"} placeholder={placeholder} value={form[key]} onChange={set(key)} className="h-7 border-0 px-0 text-[15px] shadow-none focus-visible:ring-0" />{err(key)}</label>
         ))}
       </>}
       {step === 2 && <>
-        <label className="block rounded-lg border px-3 py-2"><span className="text-[11px] font-medium">Password</span><Input aria-label="Password" type="password" placeholder="Min 8 characters, including a letter and number" value={form.password} onChange={set("password")} autoComplete="new-password" className="h-8 border-0 px-0 text-xs shadow-none" />{err("password")}</label>
-        <label className="block rounded-lg border px-3 py-2"><span className="text-[11px] font-medium">Confirm password</span><Input aria-label="Confirm password" type="password" placeholder="Re-enter your password" value={form.confirm} onChange={set("confirm")} autoComplete="new-password" className="h-8 border-0 px-0 text-xs shadow-none" />{err("confirm")}</label>
-        <p className="pt-2 text-xs font-medium">Password must include:</p>
-        <ul className="space-y-2 text-xs text-muted-foreground"><li className={form.password.length >= 8 ? "text-success" : ""}>✓ At least 8 characters</li><li className={/[A-Za-z]/.test(form.password) ? "text-success" : ""}>✓ One letter</li><li className={/[0-9]/.test(form.password) ? "text-success" : ""}>✓ One number</li></ul>
+        <label className="block rounded-xl border px-4 py-2.5"><span className="text-sm font-medium">Password</span><Input aria-label="Password" type="password" placeholder="Min 8 characters, including a letter and number" value={form.password} onChange={set("password")} autoComplete="new-password" className="h-8 border-0 px-0 text-[15px] shadow-none focus-visible:ring-0" />{err("password")}</label>
+        <label className="block rounded-xl border px-4 py-2.5"><span className="text-sm font-medium">Confirm password</span><Input aria-label="Confirm password" type="password" placeholder="Re-enter your password" value={form.confirm} onChange={set("confirm")} autoComplete="new-password" className="h-8 border-0 px-0 text-[15px] shadow-none focus-visible:ring-0" />{err("confirm")}</label>
+        <p className="pt-2 text-[15px] font-medium">Password must include:</p>
+        <ul className="space-y-2 text-sm text-muted-foreground"><li className={form.password.length >= 8 ? "text-success" : ""}>✓ At least 8 characters</li><li className={/[A-Za-z]/.test(form.password) ? "text-success" : ""}>✓ One letter</li><li className={/[0-9]/.test(form.password) ? "text-success" : ""}>✓ One number</li></ul>
       </>}
       {step === 3 && <>
-        <label className="block space-y-1 text-xs font-medium">Country<Select value={form.country} onValueChange={(v) => setForm({ ...form, country: v })}><SelectTrigger className="h-11 rounded-lg"><SelectValue placeholder="Select country" /></SelectTrigger><SelectContent className="max-h-72">{COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent></Select>{err("country")}</label>
-        <Input placeholder="Referral code (optional)" value={form.referral_code} onChange={set("referral_code")} className="h-11 rounded-lg" />
-        <label className="flex items-start gap-2.5 pt-1 text-xs text-muted-foreground"><Checkbox checked={form.terms} onCheckedChange={(v) => setForm({ ...form, terms: v === true })} className="mt-0.5" /><span>I agree to the <Link to="/terms" className="font-medium text-foreground underline">Terms</Link> and <Link to="/privacy" className="font-medium text-foreground underline">Privacy Policy</Link>. My account is personal and non-transferable.</span></label>
+        <label className="block space-y-1.5 text-sm font-medium">Country<Select value={form.country} onValueChange={(v) => setForm({ ...form, country: v })}><SelectTrigger className="h-12 rounded-xl text-[15px]"><SelectValue placeholder="Select country" /></SelectTrigger><SelectContent className="max-h-72">{COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent></Select>{err("country")}</label>
+        <Input placeholder="Referral code (optional)" value={form.referral_code} onChange={set("referral_code")} className="h-12 rounded-xl text-[15px]" />
+        <label className="flex items-start gap-2.5 pt-1 text-sm text-muted-foreground"><Checkbox checked={form.terms} onCheckedChange={(v) => setForm({ ...form, terms: v === true })} className="mt-0.5" /><span>I agree to the <Link to="/terms" className="font-medium text-foreground underline">Terms</Link> and <Link to="/privacy" className="font-medium text-foreground underline">Privacy Policy</Link>. My account is personal and non-transferable.</span></label>
         {err("terms")}
       </>}
       <div className="flex items-center gap-4 pt-5">
         {step > 1 && <Button type="button" variant="ghost" onClick={() => { setStep(step - 1); setErrors({}); }}>Back</Button>}
-        <Button variant="brand" type="submit" className="h-11 flex-1" disabled={loading}>{loading && <Loader2 className="animate-spin" />}{step === 3 ? "Create Account" : "Next →"}</Button>
+        <Button variant="brand" type="submit" className="h-12 flex-1 text-base" disabled={loading}>{loading && <Loader2 className="animate-spin" />}{step === 3 ? "Create Account" : "Next →"}</Button>
       </div>
     </form>
   );
@@ -257,7 +226,7 @@ function ForgotForm() {
   return (
     <form onSubmit={submit} className="space-y-4">
       <IconInput icon={Mail} type="email" placeholder="Email address" required value={email} onChange={(e) => setEmail(e.target.value)} />
-      <Button type="submit" className="h-11 w-full" disabled={loading}>{loading && <Loader2 className="animate-spin" />} Send reset link</Button>
+      <Button type="submit" className="h-12 w-full text-base" disabled={loading}>{loading && <Loader2 className="animate-spin" />} Send reset link</Button>
       <Link to="/auth" className="block text-center text-sm font-medium text-muted-foreground">Back to sign in</Link>
     </form>
   );
