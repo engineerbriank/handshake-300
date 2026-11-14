@@ -1,11 +1,11 @@
 {
-  "version": 1,
   "asset_id": "799a3bd3-af5a-4703-bb0b-fdf596c0e665",
-  "project_id": "a23f211c-d85c-4e58-ac36-7432bed15774",
-  "url": "/__l5e/assets-v1/799a3bd3-af5a-4703-bb0b-fdf596c0e665/handshake-logo.png",
-  "r2_key": "a/v1/a23f211c-d85c-4e58-ac36-7432bed15774/799a3bd3-af5a-4703-bb0b-fdf596c0e665/handshake-logo.png",
-  "original_filename": "handshake-logo.png",
-  "size": 7232,
   "content_type": "image/png",
-  "created_at": "2026-11-14T11:07:38Z"
+  "created_at": "2026-11-14T11:07:38Z",
+  "original_filename": "handshake-logo.png",
+  "project_id": "e4013635-7e28-481a-9fc9-90a62c0bf9c7",
+  "r2_key": "a/v1/e4013635-7e28-481a-9fc9-90a62c0bf9c7/799a3bd3-af5a-4703-bb0b-fdf596c0e665/handshake-logo.png",
+  "size": 7232,
+  "url": "/__l5e/assets-v1/799a3bd3-af5a-4703-bb0b-fdf596c0e665/handshake-logo.png",
+  "version": 1
 }
