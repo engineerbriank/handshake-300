@@ -132,7 +132,7 @@ function Invoices({ employer, rows }: { employer: Employer; rows: { id: string; 
     const b = r.budget!;
     const html = `<!doctype html><html><head><meta charset="utf-8"><title>Invoice ${r.id.slice(0, 8).toUpperCase()}</title><style>body{font:14px system-ui,sans-serif;max-width:720px;margin:40px auto;color:#0b1b33}h1{font-size:22px}table{width:100%;border-collapse:collapse;margin-top:24px}td,th{border-bottom:1px solid #dde3ec;padding:8px;text-align:left}.r{text-align:right}</style></head><body>
 <h1>HANDSHAKE — Assignment funding statement</h1><p>Reference: HS-${r.id.slice(0, 8).toUpperCase()}<br>Date funded: ${shortDate(b.funded_at)}</p>
-<p><b>Billed to:</b> ${escapeHtml(employer.company_name)}<br>${escapeHtml(employer.billing_email)}${employer.country ? "<br>" + escapeHtml(employer.country) : ""}</p>
+<p><b>Billed to:</b> ${escapeHtml(employer.company_name)}<br>${escapeHtml(employer.billing_email ?? "")}${employer.country ? "<br>" + escapeHtml(employer.country) : ""}</p>
 <table><tr><th>Description</th><th class="r">USD</th></tr><tr><td>Budget reserved: ${escapeHtml(r.title)}</td><td class="r">${Number(b.total_usd).toFixed(2)}</td></tr>
 <tr><td>Paid to workers for approved submissions</td><td class="r">${Number(b.released_usd).toFixed(2)}</td></tr><tr><td>Returned (unused budget)</td><td class="r">${Number(b.refunded_usd).toFixed(2)}</td></tr>
 <tr><th>Remaining in escrow</th><th class="r">${(Number(b.total_usd) - Number(b.released_usd) - Number(b.refunded_usd)).toFixed(2)}</th></tr></table>
@@ -160,7 +160,7 @@ function escapeHtml(s: string) {
 function Company({ employer }: { employer: Employer }) {
   const { user } = useCurrentUser();
   const qc = useQueryClient();
-  const [f, setF] = useState({ company_name: employer.company_name, website: employer.website ?? "", billing_email: employer.billing_email, description: employer.description ?? "" });
+  const [f, setF] = useState({ company_name: employer.company_name, website: employer.website ?? "", billing_email: employer.billing_email ?? "", description: employer.description ?? "" });
   const verifs = useQuery({ queryKey: ["employer-verifs", employer.id], queryFn: async () => (await supabase.from("employer_verifications").select("*").eq("employer_id", employer.id).order("created_at", { ascending: false })).data ?? [] });
   const save = useMutation({
     mutationFn: async () => { const { error } = await supabase.from("employer_profiles").update({ company_name: f.company_name.trim(), website: f.website.trim() || null, billing_email: f.billing_email.trim(), description: f.description.trim() || null }).eq("id", employer.id); if (error) throw error; },
