@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Bell, Menu, LogOut, Home, Search, CircleDollarSign, UserRound, ShieldHalf, Building2 } from "lucide-react";
+import { Bell, Menu, LogOut, Home, Search, CircleDollarSign, UserRound, ShieldHalf, Building2, ClipboardList } from "lucide-react";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Logo } from "@/components/brand/Logo";
 import { NAV_GROUPS } from "./nav-items";
@@ -87,6 +87,7 @@ function useUnreadCount() {
 const TABS = [
   { label: "Home", to: "/dashboard", icon: Home },
   { label: "Jobs", to: "/jobs", icon: Search },
+  { label: "Tasks", to: "/assignments", icon: ClipboardList },
   { label: "Earnings", to: "/wallet", icon: CircleDollarSign },
   { label: "Account", to: "/profile", icon: UserRound },
 ];
@@ -151,9 +152,9 @@ export function AppShell({ children }: { children: ReactNode }) {
       </Sheet>
 
       {/* Mobile bottom tabs */}
-      <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-4 border-t bg-background pb-[env(safe-area-inset-bottom)] lg:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t bg-background pb-[env(safe-area-inset-bottom)] lg:hidden">
         {TABS.map((t) => {
-          const active = path === t.to || path.startsWith(t.to + "/") || (t.to === "/wallet" && ["/earnings", "/withdrawals", "/payment-methods", "/transactions"].includes(path)) || (t.to === "/profile" && ["/skills", "/cv", "/portfolio", "/verification", "/security", "/login-activity"].includes(path));
+          const active = path === t.to || path.startsWith(t.to + "/") || (t.to === "/assignments" && path === "/work") || (t.to === "/wallet" && ["/earnings", "/withdrawals", "/payment-methods", "/transactions"].includes(path)) || (t.to === "/profile" && ["/skills", "/cv", "/portfolio", "/verification", "/security", "/login-activity"].includes(path));
           return (
             <Link key={t.to} to={t.to} className={cn("flex flex-col items-center gap-1 py-2.5 text-xs font-medium", active ? "text-foreground" : "text-muted-foreground")}>
               <t.icon className={cn("h-6 w-6", active && "stroke-[2.4]")} />

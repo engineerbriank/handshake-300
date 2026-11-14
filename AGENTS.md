@@ -35,3 +35,4 @@ use the editor.
 - Payouts are marked paid only by `payout_confirm` from a provider callback/confirmation running as service role — never simulate provider success.
 - External jobs come only from real source adapters in `src/lib/job-sync.server.ts`; description HTML is sanitised at import — never fabricate listings.
 - TypeScript runs with `exactOptionalPropertyTypes` and `noPropertyAccessFromIndexSignature` off to keep router search params and DB rows ergonomic.
+- Paid Tasks reuse the `assignments` workflow (funding pool → escrow → claim → submit → review → credit); the task catalogue, pay rates and app directory are separate tables, and seed data lives in `seed/` with `seed/load_seed.py` — remixed copies start with empty data, so re-run it there.

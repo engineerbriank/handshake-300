@@ -46,7 +46,7 @@ export function useClaims() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("assignment_claims")
-        .select("*, assignment:assignments(id,title,pay_usd,deadline,max_revisions,category)")
+        .select("*, assignment:assignments(id,title,pay_usd,deadline,max_revisions,category,submission_types,verification_checklist,deliverables)")
         .eq("user_id", user!.id)
         .order("updated_at", { ascending: false });
       if (error) throw error;

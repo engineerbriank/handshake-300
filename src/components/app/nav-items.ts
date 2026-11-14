@@ -10,18 +10,18 @@ export const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
     items: [
       { label: "Dashboard", to: "/dashboard", icon: LayoutDashboard },
       { label: "Explore Jobs", to: "/jobs", icon: Search },
-      { label: "Handshake Assignments", to: "/assignments", icon: Briefcase },
-      { label: "Recommended Jobs", to: "/recommended", icon: Sparkles },
+      { label: "Paid Tasks", to: "/assignments", icon: Briefcase },
+      { label: "My Tasks", to: "/work", icon: ClipboardList },
+      { label: "Recommended Opportunities", to: "/recommended", icon: Sparkles },
       { label: "Saved Jobs", to: "/saved", icon: Bookmark },
-      { label: "Applications", to: "/applications", icon: FileText },
-      { label: "My Work", to: "/work", icon: ClipboardList },
+      { label: "My Applications", to: "/applications", icon: FileText },
     ],
   },
   {
     title: "Earnings",
     items: [
+      { label: "Earnings", to: "/earnings", icon: LineChart },
       { label: "USD Wallet", to: "/wallet", icon: Wallet },
-      { label: "Earnings History", to: "/earnings", icon: LineChart },
       { label: "Withdrawals", to: "/withdrawals", icon: ArrowUpRight },
       { label: "Payment Methods", to: "/payment-methods", icon: CreditCard },
       { label: "Transactions", to: "/transactions", icon: Receipt },
