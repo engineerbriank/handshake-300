@@ -1,5 +1,10 @@
 # HANDSHAKE roadmap
 
+## Reference redesign
+- [ ] Match the reference welcome, sign-in, signup and logo/favicon.
+- [ ] Apply reference typography, cards, navigation and layouts across user and staff screens.
+- [ ] Verify public and signed-in screens on mobile and desktop.
+
 - [x] Database schema, RLS, ledger & workflow functions
 - [x] Design system (navy/white/blue, mobile-first like mockups)
 - [ ] Auth: register (structured), sign in, Google/Apple, reset password, MFA
