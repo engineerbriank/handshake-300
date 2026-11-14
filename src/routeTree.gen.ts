@@ -42,6 +42,7 @@ import { Route as AuthenticatedShellWalletRouteImport } from './routes/_authenti
 import { Route as AuthenticatedShellWithdrawalsRouteImport } from './routes/_authenticated/_shell/withdrawals'
 import { Route as AuthenticatedShellWorkRouteImport } from './routes/_authenticated/_shell/work'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin/users'
 import { Route as AuthenticatedShellAssignmentsIndexRouteImport } from './routes/_authenticated/_shell/assignments/index'
 import { Route as AuthenticatedShellAssignmentsAssignmentIdRouteImport } from './routes/_authenticated/_shell/assignments/$assignmentId'
 import { Route as ApiPublicCronPayoutsRouteImport } from './routes/api/public/cron/payouts'
@@ -228,6 +229,11 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRouteRoute,
 } as any)
+const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
 const AuthenticatedShellAssignmentsIndexRoute =
   AuthenticatedShellAssignmentsIndexRouteImport.update({
     id: '/assignments/',
@@ -294,6 +300,7 @@ export interface FileRoutesByFullPath {
   '/wallet': typeof AuthenticatedShellWalletRoute
   '/withdrawals': typeof AuthenticatedShellWithdrawalsRoute
   '/work': typeof AuthenticatedShellWorkRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/assignments/$assignmentId': typeof AuthenticatedShellAssignmentsAssignmentIdRoute
   '/api/public/cron/payouts': typeof ApiPublicCronPayoutsRoute
@@ -332,6 +339,7 @@ export interface FileRoutesByTo {
   '/wallet': typeof AuthenticatedShellWalletRoute
   '/withdrawals': typeof AuthenticatedShellWithdrawalsRoute
   '/work': typeof AuthenticatedShellWorkRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/assignments/$assignmentId': typeof AuthenticatedShellAssignmentsAssignmentIdRoute
   '/api/public/cron/payouts': typeof ApiPublicCronPayoutsRoute
@@ -374,6 +382,7 @@ export interface FileRoutesById {
   '/_authenticated/_shell/wallet': typeof AuthenticatedShellWalletRoute
   '/_authenticated/_shell/withdrawals': typeof AuthenticatedShellWithdrawalsRoute
   '/_authenticated/_shell/work': typeof AuthenticatedShellWorkRoute
+  '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/_shell/assignments/$assignmentId': typeof AuthenticatedShellAssignmentsAssignmentIdRoute
   '/api/public/cron/payouts': typeof ApiPublicCronPayoutsRoute
@@ -415,6 +424,7 @@ export interface FileRouteTypes {
     | '/wallet'
     | '/withdrawals'
     | '/work'
+    | '/admin/users'
     | '/admin/'
     | '/assignments/$assignmentId'
     | '/api/public/cron/payouts'
@@ -453,6 +463,7 @@ export interface FileRouteTypes {
     | '/wallet'
     | '/withdrawals'
     | '/work'
+    | '/admin/users'
     | '/admin'
     | '/assignments/$assignmentId'
     | '/api/public/cron/payouts'
@@ -494,6 +505,7 @@ export interface FileRouteTypes {
     | '/_authenticated/_shell/wallet'
     | '/_authenticated/_shell/withdrawals'
     | '/_authenticated/_shell/work'
+    | '/_authenticated/admin/users'
     | '/_authenticated/admin/'
     | '/_authenticated/_shell/assignments/$assignmentId'
     | '/api/public/cron/payouts'
@@ -754,6 +766,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/users': {
+      id: '/_authenticated/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/_shell/assignments/': {
       id: '/_authenticated/_shell/assignments/'
       path: '/assignments'
@@ -857,11 +876,13 @@ const AuthenticatedShellRouteRouteWithChildren =
   )
 
 interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
+    AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
   }
 
