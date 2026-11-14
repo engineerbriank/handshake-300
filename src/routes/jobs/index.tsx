@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { keepPreviousData, queryOptions, useQuery } from "@tanstack/react-query";
+import { keepPreviousData, queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, SearchX } from "lucide-react";
 import { SmartShell } from "@/components/app/PublicShell";
 import { JobCard } from "@/components/jobs/JobCard";
@@ -38,7 +38,8 @@ export const Route = createFileRoute("/jobs/")({
 function JobsPage() {
   const search = Route.useSearch();
   const navigate = useNavigate({ from: "/jobs/" });
-  const { data, isLoading, error, isFetching } = useQuery(jobsQuery(search));
+  const { data, error } = useSuspenseQuery(jobsQuery(search));
+  const isLoading = false;
   const { saved, toggle } = useSavedJobs();
   const page = search.page ?? 1;
   const pages = Math.max(1, Math.ceil((data?.total ?? 0) / PAGE_SIZE));
@@ -47,8 +48,8 @@ function JobsPage() {
     <SmartShell>
       <PageHeader title="Explore Jobs" />
       <JobFilters value={search} onChange={(v) => navigate({ search: v })} />
-      <p className="mt-5 text-sm text-muted-foreground">
-        {data ? `${data.total.toLocaleString()} jobs available` : " "} {isFetching && !isLoading && "· updating…"}
+      <p className="mt-4 text-xs text-muted-foreground">
+        {data ? `${data.total.toLocaleString()} jobs available` : ""}
       </p>
       {error && <ErrorNote error={error} />}
       {data?.error && <ErrorNote error={data.error} />}
@@ -57,7 +58,7 @@ function JobsPage() {
       ) : data && data.jobs.length === 0 ? (
         <div className="mt-4"><EmptyState icon={<SearchX />} title="No jobs match these filters" description="Try removing a filter or searching a broader term." /></div>
       ) : (
-        <div className="mt-3 grid gap-3 md:grid-cols-2">
+        <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
           {data?.jobs.map((j) => <JobCard key={j.id} job={j} saved={saved.has(j.id)} onToggleSave={() => toggle(j.id)} />)}
         </div>
       )}

@@ -23,7 +23,7 @@ export function PublicHeader() {
           ) : (
             <>
               <Button asChild size="sm" variant="ghost"><Link to="/auth">Sign in</Link></Button>
-              <Button asChild size="sm"><Link to="/auth" search={{ mode: "signup" }}>Create account</Link></Button>
+              <Button asChild size="sm" className="hidden sm:inline-flex"><Link to="/auth" search={{ mode: "signup" }}>Create account</Link></Button>
             </>
           )}
         </div>

@@ -1,9 +1,9 @@
 # HANDSHAKE roadmap
 
 ## Reference redesign
-- [ ] Match the reference welcome, sign-in, signup and logo/favicon.
+- [x] Match the reference welcome, sign-in, signup and logo/favicon.
 - [ ] Apply reference typography, cards, navigation and layouts across user and staff screens.
-- [ ] Verify public and signed-in screens on mobile and desktop.
+- [ ] Verify signed-in screens (needs a signed-in test account)
 
 - [x] Database schema, RLS, ledger & workflow functions
 - [x] Design system (navy/white/blue, mobile-first like mockups)
@@ -20,3 +20,4 @@
 - [x] Send user a preview screenshot of progress
 - [x] Remix setup: re-apply database schema, storage, sign-in providers and job import on the new project
 - [x] Second remix setup: verify schema, sign-up triggers, starting settings, sign-in providers, job import
+- [x] Third remix setup: check database connection, schema, sign-up triggers, settings, job import

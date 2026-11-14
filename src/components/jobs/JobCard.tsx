@@ -37,7 +37,7 @@ export function JobCard({ job, saved, onToggleSave }: { job: JobListItem; saved?
   const salary = salaryLabel(job);
   const cat = JOB_CATEGORIES.find((c) => c.value === job.category)?.label;
   return (
-    <article className="group relative rounded-lg border bg-card p-3 transition hover:border-primary/20">
+    <article className="group relative min-w-0 overflow-hidden rounded-lg border bg-card p-3 transition hover:border-primary/20">
       <div className="flex gap-3">
         <EmployerLogo src={job.employer_logo} name={job.employer} />
         <div className="min-w-0 flex-1">
@@ -67,7 +67,7 @@ export function JobCard({ job, saved, onToggleSave }: { job: JobListItem; saved?
         )}
         {job.employment_type && <Badge variant="muted">{job.employment_type}</Badge>}
         {cat && <Badge variant="muted">{cat}</Badge>}
-        <span className="ml-auto text-xs text-muted-foreground">
+        <span className="ml-auto min-w-0 truncate text-xs text-muted-foreground">
           {job.source?.name} · {ago(job.published_at)}
         </span>
       </div>
