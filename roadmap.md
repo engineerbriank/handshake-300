@@ -21,3 +21,11 @@
 - [x] Remix setup: re-apply database schema, storage, sign-in providers and job import on the new project
 - [x] Second remix setup: verify schema, sign-up triggers, starting settings, sign-in providers, job import
 - [x] Third remix setup: check database connection, schema, sign-up triggers, settings, job import
+
+## Paid Tasks
+- [ ] Fourth remix setup: confirm this copy's database, sign-up triggers, settings, job import and app connection
+- [x] Task catalogue tables, funding/claim/submit/review rules
+- [ ] Load 720 task templates and 218 verified apps (apps loaded)
+- [ ] User screens: Paid Tasks, task detail, My Tasks, dashboard sections, navigation
+- [ ] Admin Paid Tasks centre: catalogue, publish, funding, submissions, payments, performance
+- [ ] Run the full $100 / 40 × $2.00 money test and edge cases against real records
