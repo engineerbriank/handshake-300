@@ -27,7 +27,7 @@ export type JobListItem = {
 
 export function EmployerLogo({ src, name, className }: { src: string | null; name: string; className?: string }) {
   return (
-    <span className={cn("flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg border bg-background text-sm font-bold text-muted-foreground", className)}>
+    <span className={cn("flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg border bg-background text-sm font-bold text-muted-foreground", className)}>
       {src ? <img src={src} alt="" loading="lazy" className="h-full w-full object-contain p-1" onError={(e) => ((e.currentTarget.style.display = "none"))} /> : name.slice(0, 2).toUpperCase()}
     </span>
   );
@@ -37,11 +37,11 @@ export function JobCard({ job, saved, onToggleSave }: { job: JobListItem; saved?
   const salary = salaryLabel(job);
   const cat = JOB_CATEGORIES.find((c) => c.value === job.category)?.label;
   return (
-    <article className="group relative min-w-0 overflow-hidden rounded-lg border bg-card p-3 transition hover:border-primary/20">
+    <article className="group relative min-w-0 overflow-hidden rounded-xl border bg-card p-4 transition hover:border-primary/20">
       <div className="flex gap-3">
         <EmployerLogo src={job.employer_logo} name={job.employer} />
         <div className="min-w-0 flex-1">
-          <Link to="/jobs/$jobId" params={{ jobId: job.id }} className="line-clamp-2 font-semibold leading-snug after:absolute after:inset-0">
+          <Link to="/jobs/$jobId" params={{ jobId: job.id }} className="line-clamp-2 text-base font-semibold leading-snug after:absolute after:inset-0">
             {job.title}
           </Link>
           <p className="mt-0.5 flex items-center gap-1 truncate text-sm text-muted-foreground">
@@ -52,12 +52,12 @@ export function JobCard({ job, saved, onToggleSave }: { job: JobListItem; saved?
           </p>
         </div>
         {onToggleSave && (
-          <Button variant="ghost" size="icon" type="button" onClick={onToggleSave} className="relative z-10 -mr-1 -mt-1 h-9 w-9 shrink-0 rounded-lg p-2 hover:bg-secondary" aria-label={saved ? "Remove from saved" : "Save job"}>
+          <Button variant="ghost" size="icon" type="button" onClick={onToggleSave} className="relative z-10 -mr-1 -mt-1 h-12 w-12 shrink-0 rounded-lg p-2 hover:bg-secondary" aria-label={saved ? "Remove from saved" : "Save job"}>
             {saved ? <BookmarkCheck className="h-5 w-5 text-info" /> : <Bookmark className="h-5 w-5" />}
           </Button>
         )}
       </div>
-      {salary && <p className="tabular mt-2 text-sm font-semibold text-success">{salary}</p>}
+      {salary && <p className="tabular mt-2 text-base font-semibold text-success">{salary}</p>}
       <div className="mt-2 flex flex-wrap items-center gap-1.5">
         {job.is_remote && <Badge variant="success">Remote</Badge>}
         {job.worldwide && (
@@ -71,7 +71,7 @@ export function JobCard({ job, saved, onToggleSave }: { job: JobListItem; saved?
           {job.source?.name} · {ago(job.published_at)}
         </span>
       </div>
-      <Button asChild className="relative z-10 mt-3 h-8 w-full text-xs"><Link to="/jobs/$jobId" params={{ jobId: job.id }}>Apply Now</Link></Button>
+      <Button asChild className="relative z-10 mt-3 h-10 w-full text-sm"><Link to="/jobs/$jobId" params={{ jobId: job.id }}>Apply Now</Link></Button>
     </article>
   );
 }

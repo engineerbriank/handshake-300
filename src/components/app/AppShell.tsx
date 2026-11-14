@@ -24,7 +24,7 @@ function NavList({ onNavigate, dark }: { onNavigate?: () => void; dark?: boolean
   const qc = useQueryClient();
   const item = (active: boolean) =>
     cn(
-      "flex items-center gap-3 rounded-lg px-3 py-2 text-[0.85rem] font-medium transition-colors",
+      "flex items-center gap-3 rounded-lg px-3 py-2 text-[0.95rem] font-medium transition-colors",
       dark
         ? active ? "bg-sidebar-accent text-sidebar-accent-foreground" : "text-sidebar-foreground/75 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground"
         : active ? "bg-secondary text-foreground" : "text-muted-foreground hover:bg-secondary hover:text-foreground",
@@ -110,13 +110,13 @@ export function AppShell({ children }: { children: ReactNode }) {
       </aside>
 
       <div className="lg:pl-60">
-        <header className="sticky top-0 z-20 grid h-12 grid-cols-[minmax(0,1fr)_auto] items-center gap-3 bg-background px-4 sm:px-6 lg:border-b">
+        <header className="sticky top-0 z-20 grid h-14 grid-cols-[minmax(0,1fr)_auto] items-center gap-3 bg-background px-4 sm:px-6 lg:border-b">
           <Button variant="ghost" size="icon" type="button" className="-ml-2 lg:hidden" onClick={() => setOpen(true)} aria-label="Open menu">
-            <Menu className="h-4 w-4" />
+            <Menu className="h-6 w-6" />
           </Button>
           <div className="ml-auto flex items-center gap-1">
             <Link to="/notifications" className="relative rounded-lg p-2 hover:bg-secondary" aria-label="Notifications">
-              <Bell className="h-5 w-5" />
+              <Bell className="h-6 w-6" />
               {!!unread && (
                 <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[0.6rem] font-bold text-destructive-foreground">
                   {unread > 9 ? "9+" : unread}
@@ -155,8 +155,8 @@ export function AppShell({ children }: { children: ReactNode }) {
         {TABS.map((t) => {
           const active = path === t.to || path.startsWith(t.to + "/") || (t.to === "/wallet" && ["/earnings", "/withdrawals", "/payment-methods", "/transactions"].includes(path)) || (t.to === "/profile" && ["/skills", "/cv", "/portfolio", "/verification", "/security", "/login-activity"].includes(path));
           return (
-            <Link key={t.to} to={t.to} className={cn("flex flex-col items-center gap-1 py-2.5 text-[0.7rem] font-medium", active ? "text-foreground" : "text-muted-foreground")}>
-              <t.icon className={cn("h-5 w-5", active && "stroke-[2.4]")} />
+            <Link key={t.to} to={t.to} className={cn("flex flex-col items-center gap-1 py-2.5 text-xs font-medium", active ? "text-foreground" : "text-muted-foreground")}>
+              <t.icon className={cn("h-6 w-6", active && "stroke-[2.4]")} />
               {t.label}
             </Link>
           );
