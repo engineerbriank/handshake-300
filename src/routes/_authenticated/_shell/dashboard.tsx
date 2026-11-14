@@ -10,6 +10,9 @@ import { usd, shortDate, ago, humanize } from "@/lib/format";
 import { listJobs } from "@/lib/jobs.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { useSavedJobs } from "@/lib/use-saved-jobs";
+import { TaskCard } from "@/components/tasks/TaskCard";
+import { useOpenTasks, useTaskProfile } from "@/lib/task-data";
+import { recommendTasks } from "@/lib/tasks";
 
 export const Route = createFileRoute("/_authenticated/_shell/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — Handshake" }, { name: "description", content: "Your Handshake balance, work and opportunities." }] }),
@@ -18,7 +21,7 @@ export const Route = createFileRoute("/_authenticated/_shell/dashboard")({
 
 const QUICK = [
   { label: "Jobs", to: "/jobs", icon: Briefcase },
-  { label: "Assignments", to: "/assignments", icon: ClipboardList },
+  { label: "Tasks", to: "/assignments", icon: ClipboardList },
   { label: "Wallet", to: "/wallet", icon: Wallet },
   { label: "Support", to: "/report", icon: LifeBuoy },
 ] as const;
@@ -40,6 +43,10 @@ function Dashboard() {
   const active = claims?.filter((c) => ["claimed", "in_progress", "revision_requested"].includes(c.status)).length ?? 0;
   const pending = claims?.filter((c) => ["submitted", "under_review", "disputed"].includes(c.status)).length ?? 0;
   const done = claims?.filter((c) => c.status === "credited").length ?? 0;
+  const openTasks = useOpenTasks();
+  const taskProfile = useTaskProfile();
+  const mineIds = new Set(claims?.map((c) => c.assignment_id));
+  const recTasks = taskProfile.data ? recommendTasks((openTasks.data ?? []).filter((t) => !mineIds.has(t.id)), taskProfile.data).slice(0, 3) : [];
   const needsVerification = profile && !["verified", "active"].includes(profile.account_status);
 
   return (
@@ -52,7 +59,7 @@ function Dashboard() {
       {needsVerification && (
         <Link to="/verification" className="flex items-center gap-3 rounded-2xl border border-warning/30 bg-warning-soft p-4 text-sm">
           <ShieldAlert className="h-5 w-5 shrink-0 text-warning" />
-          <span className="flex-1"><b>Finish verification.</b> Your account is {humanize(profile.account_status).toLowerCase()}. Complete the remaining steps to claim assignments and withdraw.</span>
+          <span className="flex-1"><b>Finish verification.</b> Your account is {humanize(profile.account_status).toLowerCase()}. Complete the remaining steps to accept paid tasks and withdraw.</span>
           <ArrowRight className="h-4 w-4" />
         </Link>
       )}
@@ -73,6 +80,27 @@ function Dashboard() {
           </Link>
         ))}
       </div>
+
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Link to="/jobs" className="group rounded-2xl border bg-card p-4 transition-colors hover:border-foreground/30">
+          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary"><Briefcase className="h-5 w-5" /></span>
+          <h2 className="mt-3 text-lg font-bold">Find a Job</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Discover international remote employment and apply directly to employers.</p>
+          <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold">Explore jobs <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" /></span>
+        </Link>
+        <Link to="/assignments" className="group rounded-2xl border-2 border-brand/40 bg-card p-4 transition-colors hover:border-brand">
+          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand text-brand-foreground"><ClipboardList className="h-5 w-5" /></span>
+          <h2 className="mt-3 text-lg font-bold">Earn Through Tasks</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Complete short funded tasks, submit your work and get paid in USD after approval.</p>
+          <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-brand">{openTasks.data ? `${openTasks.data.length} open ${openTasks.data.length === 1 ? "task" : "tasks"}` : "See paid tasks"} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" /></span>
+        </Link>
+      </div>
+
+      {recTasks.length > 0 && (
+        <Panel title="Paid tasks for you" action={<Link to="/assignments" className="flex items-center gap-1 text-sm font-semibold">View all <ArrowRight className="h-4 w-4" /></Link>} bodyClassName="grid gap-3 p-0 md:grid-cols-3">
+          {recTasks.map((t) => <TaskCard key={t.id} task={t} />)}
+        </Panel>
+      )}
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         <StatCard label="Pending" value={usd(wallet?.pending_usd)} hint="Under review" icon={<Clock />} tone="warning" />
