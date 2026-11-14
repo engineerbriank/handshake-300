@@ -137,7 +137,7 @@ function useSaveSetting() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ key, value }: { key: string; value: Json }) => { const { error } = await supabase.rpc("admin_update_setting", { _key: key, _value: value }); if (error) throw error; },
-    onSuccess: () => { toast.success("Setting saved"); qc.invalidateQueries({ queryKey: ["admin-settings"] }); qc.invalidateQueries({ queryKey: ["public-settings"] }); },
+    onSuccess: () => { toast.success("Setting saved"); qc.invalidateQueries({ queryKey: ["admin-settings"] }); qc.invalidateQueries({ queryKey: ["settings"] }); },
     onError: (e) => toast.error(errorMessage(e)),
   });
 }
