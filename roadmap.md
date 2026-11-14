@@ -14,3 +14,4 @@
 - [ ] Tests for money rules, commit
 - [x] Send user a preview screenshot of progress
 - [x] Remix setup: re-apply database schema, storage, sign-in providers and job import on the new project
+- [ ] Second remix setup: verify schema, sign-up triggers, starting settings, sign-in providers, job import
