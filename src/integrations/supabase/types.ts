@@ -91,6 +91,7 @@ export type Database = {
           claimed_at: string
           credit_transaction_id: string | null
           credited_at: string | null
+          deadline_notified_at: string | null
           due_at: string
           id: string
           revisions_used: number
@@ -103,6 +104,7 @@ export type Database = {
           claimed_at?: string
           credit_transaction_id?: string | null
           credited_at?: string | null
+          deadline_notified_at?: string | null
           due_at: string
           id?: string
           revisions_used?: number
@@ -115,6 +117,7 @@ export type Database = {
           claimed_at?: string
           credit_transaction_id?: string | null
           credited_at?: string | null
+          deadline_notified_at?: string | null
           due_at?: string
           id?: string
           revisions_used?: number
@@ -192,28 +195,37 @@ export type Database = {
       }
       assignment_submissions: {
         Row: {
+          attachments: string[]
           claim_id: string
           content: string
+          content_hash: string | null
           file_path: string | null
           id: string
+          links: string[]
           revision_number: number
           submitted_at: string
           user_id: string
         }
         Insert: {
+          attachments?: string[]
           claim_id: string
           content: string
+          content_hash?: string | null
           file_path?: string | null
           id?: string
+          links?: string[]
           revision_number?: number
           submitted_at?: string
           user_id: string
         }
         Update: {
+          attachments?: string[]
           claim_id?: string
           content?: string
+          content_hash?: string | null
           file_path?: string | null
           id?: string
+          links?: string[]
           revision_number?: number
           submitted_at?: string
           user_id?: string
@@ -237,12 +249,14 @@ export type Database = {
       }
       assignments: {
         Row: {
+          app_id: string | null
           category: string
           created_at: string
           created_by: string
           deadline: string
           deliverables: string
           description: string
+          difficulty: string | null
           eligibility: string | null
           eligible_countries: string[]
           employer_id: string | null
@@ -250,24 +264,34 @@ export type Database = {
           id: string
           instructions: string
           max_revisions: number
+          paused: boolean
           pay_usd: number
+          publish_at: string | null
           published_at: string | null
           required_skills: string[]
+          review_days: number
           review_requirements: string | null
           revision_policy: string | null
           slots: number
           slots_claimed: number
+          sponsor_name: string
+          sponsor_type: string
           status: Database["public"]["Enums"]["assignment_status"]
+          submission_types: string[]
+          template_id: string | null
           title: string
           updated_at: string
+          verification_checklist: string[]
         }
         Insert: {
+          app_id?: string | null
           category?: string
           created_at?: string
           created_by: string
           deadline: string
           deliverables: string
           description: string
+          difficulty?: string | null
           eligibility?: string | null
           eligible_countries?: string[]
           employer_id?: string | null
@@ -275,24 +299,34 @@ export type Database = {
           id?: string
           instructions: string
           max_revisions?: number
+          paused?: boolean
           pay_usd: number
+          publish_at?: string | null
           published_at?: string | null
           required_skills?: string[]
+          review_days?: number
           review_requirements?: string | null
           revision_policy?: string | null
           slots: number
           slots_claimed?: number
+          sponsor_name?: string
+          sponsor_type?: string
           status?: Database["public"]["Enums"]["assignment_status"]
+          submission_types?: string[]
+          template_id?: string | null
           title: string
           updated_at?: string
+          verification_checklist?: string[]
         }
         Update: {
+          app_id?: string | null
           category?: string
           created_at?: string
           created_by?: string
           deadline?: string
           deliverables?: string
           description?: string
+          difficulty?: string | null
           eligibility?: string | null
           eligible_countries?: string[]
           employer_id?: string | null
@@ -300,18 +334,33 @@ export type Database = {
           id?: string
           instructions?: string
           max_revisions?: number
+          paused?: boolean
           pay_usd?: number
+          publish_at?: string | null
           published_at?: string | null
           required_skills?: string[]
+          review_days?: number
           review_requirements?: string | null
           revision_policy?: string | null
           slots?: number
           slots_claimed?: number
+          sponsor_name?: string
+          sponsor_type?: string
           status?: Database["public"]["Enums"]["assignment_status"]
+          submission_types?: string[]
+          template_id?: string | null
           title?: string
           updated_at?: string
+          verification_checklist?: string[]
         }
         Relationships: [
+          {
+            foreignKeyName: "assignments_app_id_fkey"
+            columns: ["app_id"]
+            isOneToOne: false
+            referencedRelation: "task_app_directory"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "assignments_created_by_fkey"
             columns: ["created_by"]
@@ -324,6 +373,13 @@ export type Database = {
             columns: ["employer_id"]
             isOneToOne: false
             referencedRelation: "employer_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assignments_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "task_templates"
             referencedColumns: ["id"]
           },
         ]
@@ -1355,6 +1411,182 @@ export type Database = {
         }
         Relationships: []
       }
+      task_admin_settings: {
+        Row: {
+          default_pay_usd: number
+          difficulty: string
+          label: string
+          sort_order: number
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          default_pay_usd: number
+          difficulty: string
+          label: string
+          sort_order?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          default_pay_usd?: number
+          difficulty?: string
+          label?: string
+          sort_order?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      task_app_directory: {
+        Row: {
+          category: string
+          client_authorized: boolean
+          created_at: string
+          id: string
+          last_verified_at: string | null
+          listing_available: boolean
+          name: string
+          package_id: string | null
+          play_store_url: string | null
+          publisher: string | null
+          supported_countries: string[] | null
+          testing_instructions: string | null
+          updated_at: string
+          website_url: string | null
+        }
+        Insert: {
+          category: string
+          client_authorized?: boolean
+          created_at?: string
+          id?: string
+          last_verified_at?: string | null
+          listing_available?: boolean
+          name: string
+          package_id?: string | null
+          play_store_url?: string | null
+          publisher?: string | null
+          supported_countries?: string[] | null
+          testing_instructions?: string | null
+          updated_at?: string
+          website_url?: string | null
+        }
+        Update: {
+          category?: string
+          client_authorized?: boolean
+          created_at?: string
+          id?: string
+          last_verified_at?: string | null
+          listing_available?: boolean
+          name?: string
+          package_id?: string | null
+          play_store_url?: string | null
+          publisher?: string | null
+          supported_countries?: string[] | null
+          testing_instructions?: string | null
+          updated_at?: string
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      task_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          kind: string
+          name: string
+          slug: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          kind?: string
+          name: string
+          slug: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          kind?: string
+          name?: string
+          slug?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      task_templates: {
+        Row: {
+          category_slug: string
+          code: string
+          created_at: string
+          deliverables: string
+          description: string
+          difficulty: string
+          estimated_minutes: number
+          id: string
+          instructions: string
+          required_skills: string[]
+          status: string
+          submission_types: string[]
+          suggested_pay_usd: number
+          summary: string
+          title: string
+          updated_at: string
+          updated_by: string | null
+          verification_checklist: string[]
+        }
+        Insert: {
+          category_slug: string
+          code: string
+          created_at?: string
+          deliverables: string
+          description: string
+          difficulty: string
+          estimated_minutes: number
+          id?: string
+          instructions: string
+          required_skills?: string[]
+          status?: string
+          submission_types?: string[]
+          suggested_pay_usd: number
+          summary: string
+          title: string
+          updated_at?: string
+          updated_by?: string | null
+          verification_checklist?: string[]
+        }
+        Update: {
+          category_slug?: string
+          code?: string
+          created_at?: string
+          deliverables?: string
+          description?: string
+          difficulty?: string
+          estimated_minutes?: number
+          id?: string
+          instructions?: string
+          required_skills?: string[]
+          status?: string
+          submission_types?: string[]
+          suggested_pay_usd?: number
+          summary?: string
+          title?: string
+          updated_at?: string
+          updated_by?: string | null
+          verification_checklist?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_templates_category_slug_fkey"
+            columns: ["category_slug"]
+            isOneToOne: false
+            referencedRelation: "task_categories"
+            referencedColumns: ["slug"]
+          },
+        ]
+      }
       user_documents: {
         Row: {
           category: string
@@ -1855,9 +2087,31 @@ export type Database = {
         Returns: number
       }
       admin_close_assignment: { Args: { _assignment: string }; Returns: number }
+      admin_create_task_from_template: {
+        Args: {
+          _app?: string
+          _deadline: string
+          _employer?: string
+          _pay: number
+          _publish_at?: string
+          _slots: number
+          _sponsor_name?: string
+          _sponsor_type?: string
+          _template: string
+        }
+        Returns: string
+      }
       admin_fund_assignment: {
         Args: { _assignment: string; _idempotency_key: string }
         Returns: string
+      }
+      admin_fund_task: {
+        Args: {
+          _assignment: string
+          _fit_to_funds?: boolean
+          _idempotency_key: string
+        }
+        Returns: Json
       }
       admin_grant_role: {
         Args: { _role: Database["public"]["Enums"]["app_role"]; _user: string }
@@ -1910,6 +2164,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      admin_set_task_paused: {
+        Args: { _assignment: string; _paused: boolean }
+        Returns: undefined
+      }
       admin_set_user_status: {
         Args: {
           _reason: string
@@ -1918,12 +2176,23 @@ export type Database = {
         }
         Returns: undefined
       }
+      admin_start_review: { Args: { _submission: string }; Returns: undefined }
       admin_update_finance_setting: {
         Args: { _key: string; _value: number }
         Returns: undefined
       }
       admin_update_setting: {
         Args: { _key: string; _value: Json }
+        Returns: undefined
+      }
+      admin_update_task_details: {
+        Args: {
+          _assignment: string
+          _checklist: string[]
+          _deadline: string
+          _deliverables: string
+          _instructions: string
+        }
         Returns: undefined
       }
       cancel_withdrawal: { Args: { _wid: string }; Returns: undefined }
@@ -1939,6 +2208,7 @@ export type Database = {
       is_staff: { Args: { _user_id: string }; Returns: boolean }
       mark_phone_verified: { Args: never; Returns: undefined }
       next_payout_time: { Args: { _from?: string }; Returns: string }
+      notify_task_deadlines: { Args: never; Returns: number }
       open_dispute: {
         Args: { _claim: string; _reason: string }
         Returns: string
@@ -1979,6 +2249,15 @@ export type Database = {
       submit_identity_verification: {
         Args: { _document_path: string }
         Returns: undefined
+      }
+      submit_task: {
+        Args: {
+          _attachments?: string[]
+          _claim: string
+          _content: string
+          _links?: string[]
+        }
+        Returns: string
       }
       username_available: { Args: { _username: string }; Returns: boolean }
     }
