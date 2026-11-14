@@ -9,7 +9,7 @@ export function PageHeader({ title, description, actions, back }: { title: strin
     <div className="mb-5 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
       <div className="min-w-0">
         {back}
-        <h1 className="text-xl font-bold text-foreground">{title}</h1>
+        <h1 className="truncate text-2xl font-bold text-foreground">{title}</h1>
         {description && <p className="mt-1 max-w-2xl text-sm text-muted-foreground">{description}</p>}
       </div>
       {actions && <div className="flex flex-wrap gap-2">{actions}</div>}
@@ -22,7 +22,7 @@ export function Panel({ title, action, children, className, bodyClassName }: { t
     <section className={cn("bg-card", className)}>
       {(title || action) && (
         <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 pb-3">
-          <h2 className="text-[0.95rem] font-bold">{title}</h2>
+          <h2 className="text-lg font-bold">{title}</h2>
           {action}
         </header>
       )}
@@ -39,12 +39,12 @@ export function StatCard({ label, value, hint, icon, tone = "default" }: { label
     info: "bg-info-soft text-info",
   }[tone];
   return (
-    <div className="rounded-lg border bg-card p-3">
+    <div className="rounded-xl border bg-card p-4">
       <div className="flex items-start justify-between gap-2">
-        <p className="text-xs font-medium text-foreground">{label}</p>
+        <p className="text-sm font-medium text-foreground">{label}</p>
         {icon && <span className={cn("rounded-lg p-1.5 [&_svg]:h-4 [&_svg]:w-4", toneCls)}>{icon}</span>}
       </div>
-      <p className="tabular mt-1 text-lg font-semibold">{value}</p>
+      <p className="tabular mt-1 text-xl font-semibold">{value}</p>
       {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
     </div>
   );

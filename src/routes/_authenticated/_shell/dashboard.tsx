@@ -93,14 +93,14 @@ function Dashboard() {
             {txns?.length ? (
               <ul className="divide-y">
                 {txns.map((t) => (
-                  <li key={t.id} className="flex items-center justify-between gap-3 px-5 py-3 text-sm">
+                  <li key={t.id} className="flex items-center justify-between gap-3 py-3 text-sm">
                     <span><span className="block font-medium">{TXN_LABEL[t.kind] ?? t.description}</span><span className="text-xs text-muted-foreground">{shortDate(t.created_at)}</span></span>
                     <span className={`tabular font-semibold ${t.amount >= 0 ? "text-success" : ""}`}>{t.amount >= 0 ? "+" : "−"}{usd(Math.abs(t.amount))}</span>
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="px-5 py-6 text-sm text-muted-foreground">No transactions yet. Earnings appear here when an assignment is approved.</p>
+              <p className="py-4 text-sm text-muted-foreground">No transactions yet. Earnings appear here when an assignment is approved.</p>
             )}
           </Panel>
 
@@ -108,14 +108,14 @@ function Dashboard() {
             {apps?.length ? (
               <ul className="divide-y">
                 {apps.slice(0, 4).map((a) => (
-                  <li key={a.id} className="flex items-center justify-between gap-3 px-5 py-3 text-sm">
+                  <li key={a.id} className="flex items-center justify-between gap-3 py-3 text-sm">
                     <span className="min-w-0"><span className="block truncate font-medium">{a.job?.title}</span><span className="text-xs text-muted-foreground">{a.job?.employer} · {shortDate(a.applied_at)}</span></span>
                     <StatusBadge status={a.status} />
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="px-5 py-6 text-sm text-muted-foreground">Track jobs you apply to from any job page.</p>
+              <p className="py-4 text-sm text-muted-foreground">Track jobs you apply to from any job page.</p>
             )}
           </Panel>
 
@@ -123,14 +123,14 @@ function Dashboard() {
             {notes?.length ? (
               <ul className="divide-y">
                 {notes.map((n) => (
-                  <li key={n.id} className="flex gap-3 px-5 py-3 text-sm">
+                  <li key={n.id} className="flex gap-3 py-3 text-sm">
                     <Bell className={`mt-0.5 h-4 w-4 shrink-0 ${n.read_at ? "text-muted-foreground" : "text-info"}`} />
                     <span className="min-w-0"><span className="block font-medium">{n.title}</span><span className="line-clamp-1 text-xs text-muted-foreground">{n.body} · {ago(n.created_at)}</span></span>
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="px-5 py-6 text-sm text-muted-foreground">You're all caught up.</p>
+              <p className="py-4 text-sm text-muted-foreground">You're all caught up.</p>
             )}
           </Panel>
 
@@ -138,14 +138,14 @@ function Dashboard() {
             {claims?.length ? (
               <ul className="divide-y">
                 {claims.slice(0, 4).map((c) => (
-                  <li key={c.id} className="flex items-center justify-between gap-3 px-5 py-3 text-sm">
+                  <li key={c.id} className="flex items-center justify-between gap-3 py-3 text-sm">
                     <span className="min-w-0"><span className="block truncate font-medium">{c.assignment?.title}</span><span className="text-xs text-muted-foreground">{usd(c.assignment?.pay_usd)} · due {shortDate(c.due_at)}</span></span>
                     <StatusBadge status={c.status} />
                   </li>
                 ))}
               </ul>
             ) : (
-              <div className="flex items-center gap-3 px-5 py-6 text-sm text-muted-foreground"><ClipboardList className="h-4 w-4" /> No assignments claimed yet.</div>
+              <div className="flex items-center gap-3 py-4 text-sm text-muted-foreground"><ClipboardList className="h-4 w-4" /> No assignments claimed yet.</div>
             )}
           </Panel>
       </div>

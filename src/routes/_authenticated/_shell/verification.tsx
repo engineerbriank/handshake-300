@@ -1,11 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
 import { toast } from "sonner";
-import { Mail, Phone, UserRound, ScanFace, Wallet, CheckCircle2, Circle, Clock, XCircle, Loader2, Upload } from "lucide-react";
+import { Mail, UserRound, ScanFace, Wallet, CheckCircle2, Circle, Clock, XCircle, Loader2, Upload } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { PageHeader, StatusBadge } from "@/components/common/ui-bits";
 import { useVerifications } from "@/lib/user-data";
 import { useCurrentUser, useProfile } from "@/lib/auth";
@@ -20,7 +18,6 @@ export const Route = createFileRoute("/_authenticated/_shell/verification")({
 const STEPS = [
   { kind: "email", title: "Email address", desc: "Confirm the link we emailed you.", icon: Mail, required: "Required to sign in" },
   { kind: "profile", title: "Profile completion", desc: "Name, username, phone number and country.", icon: UserRound, required: "Required to claim assignments" },
-  { kind: "phone", title: "Phone number", desc: "Confirm your number with a one-time SMS code.", icon: Phone, required: "Recommended" },
   { kind: "identity", title: "Identity", desc: "Upload a government-issued ID (passport, national ID or driving licence).", icon: ScanFace, required: "Required to withdraw" },
   { kind: "payment_ownership", title: "Payment account ownership", desc: "Add your payout account; our team confirms it is in your name.", icon: Wallet, required: "Required to withdraw" },
 ] as const;
@@ -92,7 +89,6 @@ function Verification() {
                   <div className="mt-3">
                     {s.kind === "email" && status !== "approved" && <Button size="sm" variant="outline" onClick={() => resend.mutate()} disabled={resend.isPending}>Resend email</Button>}
                     {s.kind === "profile" && status !== "approved" && <Button size="sm" asChild><Link to="/profile">Complete profile</Link></Button>}
-                    {s.kind === "phone" && status !== "approved" && <PhoneVerify phone={profile?.phone ?? ""} />}
                     {s.kind === "identity" && (status === "not_started" || status === "rejected") && (
                       <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">
                         {uploadId.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />} Upload ID document
@@ -109,38 +105,6 @@ function Verification() {
         })}
       </ol>
       <p className="mt-6 text-center text-xs text-muted-foreground">Status: {humanize(profile?.account_status)}. Accounts are personal and non-transferable.</p>
-    </div>
-  );
-}
-
-function PhoneVerify({ phone }: { phone: string }) {
-  const qc = useQueryClient();
-  const [sent, setSent] = useState(false);
-  const [code, setCode] = useState("");
-  const send = useMutation({
-    mutationFn: async () => {
-      if (!/^\+[0-9]{9,15}$/.test(phone)) throw new Error("Add your phone in international format (e.g. +254712345678) on your profile first.");
-      const { error } = await supabase.auth.updateUser({ phone });
-      if (error) throw new Error(/sms|provider|phone/i.test(error.message) ? `SMS verification isn't available yet: ${error.message}` : error.message);
-    },
-    onSuccess: () => { setSent(true); toast.success("Code sent by SMS"); },
-    onError: (e) => toast.error((e as Error).message),
-  });
-  const verify = useMutation({
-    mutationFn: async () => {
-      const { error } = await supabase.auth.verifyOtp({ phone, token: code.trim(), type: "phone_change" });
-      if (error) throw error;
-      const { error: e2 } = await supabase.rpc("mark_phone_verified");
-      if (e2) throw e2;
-    },
-    onSuccess: () => { toast.success("Phone verified"); qc.invalidateQueries(); },
-    onError: (e) => toast.error((e as Error).message),
-  });
-  if (!sent) return <Button size="sm" variant="outline" onClick={() => send.mutate()} disabled={send.isPending}>Send code to {phone || "your phone"}</Button>;
-  return (
-    <div className="flex gap-2">
-      <Input value={code} onChange={(e) => setCode(e.target.value)} placeholder="6-digit code" className="w-36" inputMode="numeric" />
-      <Button size="sm" onClick={() => verify.mutate()} disabled={code.length < 6 || verify.isPending}>Verify</Button>
     </div>
   );
 }
