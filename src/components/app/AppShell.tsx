@@ -87,6 +87,7 @@ function useUnreadCount() {
 const TABS = [
   { label: "Home", to: "/dashboard", icon: Home },
   { label: "Jobs", to: "/jobs", icon: Search },
+  { label: "Tasks", to: "/assignments", icon: ClipboardList },
   { label: "Earnings", to: "/wallet", icon: CircleDollarSign },
   { label: "Account", to: "/profile", icon: UserRound },
 ];
