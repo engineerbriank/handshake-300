@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1794646075656,
+      "tag": "0000_handshake_core_schema",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794646379007,
+      "tag": "0001_handshake_functions_and_seed",
+      "breakpoints": true
+    }
+  ]
+}
