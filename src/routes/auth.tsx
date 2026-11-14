@@ -50,12 +50,12 @@ function SocialButtons({ redirect }: { redirect?: string }) {
   };
   return (
     <div className="grid gap-3">
-      <button type="button" onClick={() => go("google")} disabled={!!busy} className="flex h-11 items-center justify-center gap-2.5 rounded-xl border border-[#747775] bg-[#FFFFFF] px-3 text-sm font-medium text-[#1F1F1F] disabled:opacity-60">
+      <Button variant="outline" type="button" onClick={() => go("google")} disabled={!!busy} className="h-10 w-full text-xs">
         {busy === "google" ? <Loader2 className="h-4 w-4 animate-spin" /> : <GoogleG />} Continue with Google
-      </button>
-      <button type="button" onClick={() => go("apple")} disabled={!!busy} className="flex h-11 items-center justify-center rounded-xl bg-[#000000] px-3 text-sm font-medium text-[#FFFFFF] disabled:opacity-60">
+      </Button>
+      <Button type="button" onClick={() => go("apple")} disabled={!!busy} className="h-10 w-full text-xs">
         {busy === "apple" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Continue with Apple"}
-      </button>
+      </Button>
     </div>
   );
 }
@@ -81,38 +81,21 @@ function AuthPage() {
   }, [navigate, search.redirect]);
 
   return (
-    <div className="flex min-h-screen bg-surface">
-      <div className="hidden w-[42%] flex-col justify-between bg-primary p-10 text-primary-foreground lg:flex">
-        <Link to="/" className="flex items-center gap-3">
-          <LogoMark className="h-10 w-10 bg-primary-foreground text-primary" />
-          <span className="text-lg font-extrabold tracking-[0.08em]">Handshake</span>
-        </Link>
-        <div>
-          <h2 className="text-4xl font-extrabold leading-tight">Get paid in USD for real remote work from around the world.</h2>
-          <p className="mt-4 max-w-md text-primary-foreground/70">One account for international job discovery, funded digital assignments and weekly withdrawals.</p>
+    <main className={`auth-screen flex min-h-dvh flex-col items-center px-5 ${mode === "signup" ? "bg-background" : ""}`}>
+      <div className="w-full max-w-[350px] flex-1 pb-6 pt-14 sm:pt-16">
+        <div className="mb-7 flex flex-col items-center text-center">
+          <Link to="/"><LogoMark className="h-[62px] w-[62px]" /></Link>
+          <p className="mt-3 text-[30px] font-bold leading-tight">Handshake</p>
+          <h1 className="mt-2 text-xl font-bold">{mode === "signup" ? "Create your account" : mode === "forgot" ? "Reset your password" : "Welcome Back!"}</h1>
+          <p className="mt-1 text-xs text-muted-foreground">{mode === "signup" ? "Let’s get started. Fill in your basic details." : mode === "forgot" ? "We'll email you a reset link" : "Sign in to continue"}</p>
         </div>
-        <p className="text-xs text-primary-foreground/50">Accounts are personal and non-transferable.</p>
+        {mode === "signup" ? <SignUpForm /> : mode === "forgot" ? <ForgotForm /> : <SignInForm redirect={search.redirect} />}
+        <p className="mt-6 text-center text-xs text-muted-foreground">
+          {mode === "signup" ? < >Already have an account? <Link to="/auth" search={{ redirect: search.redirect }} className="font-semibold text-brand">Sign in</Link></> : <>Don't have an account? <Link to="/auth" search={{ mode: "signup", redirect: search.redirect }} className="font-semibold text-brand">Sign up</Link></>}
+        </p>
       </div>
-      <div className="flex flex-1 items-start justify-center px-4 py-10 sm:items-center">
-        <div className="w-full max-w-md">
-          <div className="mb-8 flex flex-col items-center text-center">
-            <Link to="/"><LogoMark className="h-14 w-14 lg:hidden" /></Link>
-            <h1 className="mt-4 text-2xl font-bold">{mode === "signup" ? "Create your account" : mode === "forgot" ? "Reset your password" : "Welcome back!"}</h1>
-            <p className="mt-1 text-sm text-muted-foreground">{mode === "signup" ? "Join Handshake in a few steps" : mode === "forgot" ? "We'll email you a reset link" : "Sign in to continue"}</p>
-          </div>
-          <div className="rounded-3xl border bg-background p-6 shadow-card sm:p-8">
-            {mode === "signup" ? <SignUpForm /> : mode === "forgot" ? <ForgotForm /> : <SignInForm redirect={search.redirect} />}
-          </div>
-          <p className="mt-6 text-center text-sm text-muted-foreground">
-            {mode === "signup" ? (
-              <>Already have an account? <Link to="/auth" search={{ redirect: search.redirect }} className="font-semibold text-foreground">Sign in</Link></>
-            ) : (
-              <>Don't have an account? <Link to="/auth" search={{ mode: "signup", redirect: search.redirect }} className="font-semibold text-foreground">Sign up</Link></>
-            )}
-          </p>
-        </div>
-      </div>
-    </div>
+      <div className="home-indicator" />
+    </main>
   );
 }
 
@@ -120,7 +103,7 @@ function IconInput({ icon: Icon, ...props }: React.ComponentProps<typeof Input> 
   return (
     <div className="relative">
       <Icon className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-      <Input {...props} className="h-12 rounded-xl pl-10" />
+      <Input {...props} className="h-11 rounded-lg pl-10 text-xs" />
     </div>
   );
 }
@@ -142,14 +125,14 @@ function SignInForm({ redirect }: { redirect?: string }) {
       <IconInput icon={Mail} type="email" placeholder="Email address" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
       <div className="relative">
         <IconInput icon={Lock} type={show ? "text" : "password"} placeholder="Password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button type="button" onClick={() => setShow(!show)} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-muted-foreground" aria-label={show ? "Hide password" : "Show password"}>
+        <Button variant="ghost" size="icon" type="button" onClick={() => setShow(!show)} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-muted-foreground" aria-label={show ? "Hide password" : "Show password"}>
           {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-        </button>
+        </Button>
       </div>
       <div className="text-right">
         <Link to="/auth" search={{ mode: "forgot" }} className="text-sm font-medium text-muted-foreground hover:text-foreground">Forgot password?</Link>
       </div>
-      <Button type="submit" className="h-12 w-full" disabled={loading}>{loading && <Loader2 className="animate-spin" />} Sign In</Button>
+      <Button type="submit" className="h-11 w-full" disabled={loading}>{loading && <Loader2 className="animate-spin" />} Sign In</Button>
       <div className="relative py-2 text-center text-xs text-muted-foreground"><span className="relative z-10 bg-background px-2">or continue with</span><div className="absolute inset-x-0 top-1/2 border-t" /></div>
       <SocialButtons redirect={redirect} />
     </form>
@@ -239,7 +222,7 @@ function SignUpForm() {
         <span>I agree to the <Link to="/terms" className="font-medium text-foreground underline">Terms</Link> and <Link to="/privacy" className="font-medium text-foreground underline">Privacy Policy</Link>. My account is personal and non-transferable.</span>
       </label>
       {err("terms")}
-      <Button type="submit" className="h-12 w-full" disabled={loading}>{loading && <Loader2 className="animate-spin" />} Create Account</Button>
+      <Button type="submit" className="h-11 w-full" disabled={loading}>{loading && <Loader2 className="animate-spin" />} Create Account</Button>
       <div className="relative py-2 text-center text-xs text-muted-foreground"><span className="relative z-10 bg-background px-2">or continue with</span><div className="absolute inset-x-0 top-1/2 border-t" /></div>
       <SocialButtons />
     </form>
@@ -265,7 +248,7 @@ function ForgotForm() {
   return (
     <form onSubmit={submit} className="space-y-4">
       <IconInput icon={Mail} type="email" placeholder="Email address" required value={email} onChange={(e) => setEmail(e.target.value)} />
-      <Button type="submit" className="h-12 w-full" disabled={loading}>{loading && <Loader2 className="animate-spin" />} Send reset link</Button>
+      <Button type="submit" className="h-11 w-full" disabled={loading}>{loading && <Loader2 className="animate-spin" />} Send reset link</Button>
       <Link to="/auth" className="block text-center text-sm font-medium text-muted-foreground">Back to sign in</Link>
     </form>
   );
