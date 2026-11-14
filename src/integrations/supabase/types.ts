@@ -2177,6 +2177,7 @@ export type Database = {
         Returns: undefined
       }
       admin_start_review: { Args: { _submission: string }; Returns: undefined }
+      admin_task_stats: { Args: never; Returns: Json }
       admin_update_finance_setting: {
         Args: { _key: string; _value: number }
         Returns: undefined
