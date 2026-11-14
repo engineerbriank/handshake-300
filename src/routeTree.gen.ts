@@ -19,6 +19,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AuthenticatedShellRouteRouteImport } from './routes/_authenticated/_shell/route'
+import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as JobsIndexRouteImport } from './routes/jobs/index'
 import { Route as JobsJobIdRouteImport } from './routes/jobs/$jobId'
 import { Route as AuthenticatedShellApplicationsRouteImport } from './routes/_authenticated/_shell/applications'
@@ -93,6 +94,11 @@ const TermsRoute = TermsRouteImport.update({
 } as any)
 const AuthenticatedShellRouteRoute = AuthenticatedShellRouteRouteImport.update({
   id: '/_shell',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const JobsIndexRoute = JobsIndexRouteImport.update({
@@ -260,6 +266,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
+  '/admin': typeof AuthenticatedAdminRouteRoute
   '/jobs/$jobId': typeof JobsJobIdRoute
   '/jobs/': typeof JobsIndexRoute
   '/applications': typeof AuthenticatedShellApplicationsRoute
@@ -297,6 +304,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
+  '/admin': typeof AuthenticatedAdminRouteRoute
   '/jobs/$jobId': typeof JobsJobIdRoute
   '/jobs': typeof JobsIndexRoute
   '/applications': typeof AuthenticatedShellApplicationsRoute
@@ -337,6 +345,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
   '/_authenticated/_shell': typeof AuthenticatedShellRouteRouteWithChildren
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteRoute
   '/jobs/$jobId': typeof JobsJobIdRoute
   '/jobs/': typeof JobsIndexRoute
   '/_authenticated/_shell/applications': typeof AuthenticatedShellApplicationsRoute
@@ -376,6 +385,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/reset-password'
     | '/terms'
+    | '/admin'
     | '/jobs/$jobId'
     | '/jobs/'
     | '/applications'
@@ -413,6 +423,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/reset-password'
     | '/terms'
+    | '/admin'
     | '/jobs/$jobId'
     | '/jobs'
     | '/applications'
@@ -452,6 +463,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/terms'
     | '/_authenticated/_shell'
+    | '/_authenticated/admin'
     | '/jobs/$jobId'
     | '/jobs/'
     | '/_authenticated/_shell/applications'
@@ -569,6 +581,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedShellRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/jobs/': {
@@ -822,10 +841,12 @@ const AuthenticatedShellRouteRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedShellRouteRoute: typeof AuthenticatedShellRouteRouteWithChildren
+  AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedShellRouteRoute: AuthenticatedShellRouteRouteWithChildren,
+  AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
