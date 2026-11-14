@@ -1,5 +1,13 @@
 {
   "version": "7",
   "dialect": "postgresql",
-  "entries": []
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1794656322145,
+      "tag": "0000_paid_tasks_catalogue_and_workflow",
+      "breakpoints": true
+    }
+  ]
 }
