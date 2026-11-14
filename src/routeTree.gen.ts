@@ -19,12 +19,14 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AuthenticatedShellRouteRouteImport } from './routes/_authenticated/_shell/route'
+import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as JobsIndexRouteImport } from './routes/jobs/index'
 import { Route as JobsJobIdRouteImport } from './routes/jobs/$jobId'
 import { Route as AuthenticatedShellApplicationsRouteImport } from './routes/_authenticated/_shell/applications'
 import { Route as AuthenticatedShellCvRouteImport } from './routes/_authenticated/_shell/cv'
 import { Route as AuthenticatedShellDashboardRouteImport } from './routes/_authenticated/_shell/dashboard'
 import { Route as AuthenticatedShellEarningsRouteImport } from './routes/_authenticated/_shell/earnings'
+import { Route as AuthenticatedShellEmployerRouteImport } from './routes/_authenticated/_shell/employer'
 import { Route as AuthenticatedShellLoginActivityRouteImport } from './routes/_authenticated/_shell/login-activity'
 import { Route as AuthenticatedShellNotificationsRouteImport } from './routes/_authenticated/_shell/notifications'
 import { Route as AuthenticatedShellPaymentMethodsRouteImport } from './routes/_authenticated/_shell/payment-methods'
@@ -40,6 +42,13 @@ import { Route as AuthenticatedShellVerificationRouteImport } from './routes/_au
 import { Route as AuthenticatedShellWalletRouteImport } from './routes/_authenticated/_shell/wallet'
 import { Route as AuthenticatedShellWithdrawalsRouteImport } from './routes/_authenticated/_shell/withdrawals'
 import { Route as AuthenticatedShellWorkRouteImport } from './routes/_authenticated/_shell/work'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedAdminAssignmentsRouteImport } from './routes/_authenticated/admin/assignments'
+import { Route as AuthenticatedAdminFinanceRouteImport } from './routes/_authenticated/admin/finance'
+import { Route as AuthenticatedAdminJobsRouteImport } from './routes/_authenticated/admin/jobs'
+import { Route as AuthenticatedAdminSupportRouteImport } from './routes/_authenticated/admin/support'
+import { Route as AuthenticatedAdminSystemRouteImport } from './routes/_authenticated/admin/system'
+import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin/users'
 import { Route as AuthenticatedShellAssignmentsIndexRouteImport } from './routes/_authenticated/_shell/assignments/index'
 import { Route as AuthenticatedShellAssignmentsAssignmentIdRouteImport } from './routes/_authenticated/_shell/assignments/$assignmentId'
 import { Route as ApiPublicCronPayoutsRouteImport } from './routes/api/public/cron/payouts'
@@ -95,6 +104,11 @@ const AuthenticatedShellRouteRoute = AuthenticatedShellRouteRouteImport.update({
   id: '/_shell',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const JobsIndexRoute = JobsIndexRouteImport.update({
   id: '/jobs/',
   path: '/jobs/',
@@ -126,6 +140,12 @@ const AuthenticatedShellEarningsRoute =
   AuthenticatedShellEarningsRouteImport.update({
     id: '/earnings',
     path: '/earnings',
+    getParentRoute: () => AuthenticatedShellRouteRoute,
+  } as any)
+const AuthenticatedShellEmployerRoute =
+  AuthenticatedShellEmployerRouteImport.update({
+    id: '/employer',
+    path: '/employer',
     getParentRoute: () => AuthenticatedShellRouteRoute,
   } as any)
 const AuthenticatedShellLoginActivityRoute =
@@ -216,6 +236,45 @@ const AuthenticatedShellWorkRoute = AuthenticatedShellWorkRouteImport.update({
   path: '/work',
   getParentRoute: () => AuthenticatedShellRouteRoute,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAdminAssignmentsRoute =
+  AuthenticatedAdminAssignmentsRouteImport.update({
+    id: '/assignments',
+    path: '/assignments',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminFinanceRoute =
+  AuthenticatedAdminFinanceRouteImport.update({
+    id: '/finance',
+    path: '/finance',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminJobsRoute = AuthenticatedAdminJobsRouteImport.update({
+  id: '/jobs',
+  path: '/jobs',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAdminSupportRoute =
+  AuthenticatedAdminSupportRouteImport.update({
+    id: '/support',
+    path: '/support',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminSystemRoute =
+  AuthenticatedAdminSystemRouteImport.update({
+    id: '/system',
+    path: '/system',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
 const AuthenticatedShellAssignmentsIndexRoute =
   AuthenticatedShellAssignmentsIndexRouteImport.update({
     id: '/assignments/',
@@ -260,12 +319,14 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
+  '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/jobs/$jobId': typeof JobsJobIdRoute
   '/jobs/': typeof JobsIndexRoute
   '/applications': typeof AuthenticatedShellApplicationsRoute
   '/cv': typeof AuthenticatedShellCvRoute
   '/dashboard': typeof AuthenticatedShellDashboardRoute
   '/earnings': typeof AuthenticatedShellEarningsRoute
+  '/employer': typeof AuthenticatedShellEmployerRoute
   '/login-activity': typeof AuthenticatedShellLoginActivityRoute
   '/notifications': typeof AuthenticatedShellNotificationsRoute
   '/payment-methods': typeof AuthenticatedShellPaymentMethodsRoute
@@ -281,6 +342,13 @@ export interface FileRoutesByFullPath {
   '/wallet': typeof AuthenticatedShellWalletRoute
   '/withdrawals': typeof AuthenticatedShellWithdrawalsRoute
   '/work': typeof AuthenticatedShellWorkRoute
+  '/admin/assignments': typeof AuthenticatedAdminAssignmentsRoute
+  '/admin/finance': typeof AuthenticatedAdminFinanceRoute
+  '/admin/jobs': typeof AuthenticatedAdminJobsRoute
+  '/admin/support': typeof AuthenticatedAdminSupportRoute
+  '/admin/system': typeof AuthenticatedAdminSystemRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
   '/assignments/$assignmentId': typeof AuthenticatedShellAssignmentsAssignmentIdRoute
   '/api/public/cron/payouts': typeof ApiPublicCronPayoutsRoute
   '/api/public/cron/sync-jobs': typeof ApiPublicCronSyncJobsRoute
@@ -303,6 +371,7 @@ export interface FileRoutesByTo {
   '/cv': typeof AuthenticatedShellCvRoute
   '/dashboard': typeof AuthenticatedShellDashboardRoute
   '/earnings': typeof AuthenticatedShellEarningsRoute
+  '/employer': typeof AuthenticatedShellEmployerRoute
   '/login-activity': typeof AuthenticatedShellLoginActivityRoute
   '/notifications': typeof AuthenticatedShellNotificationsRoute
   '/payment-methods': typeof AuthenticatedShellPaymentMethodsRoute
@@ -318,6 +387,13 @@ export interface FileRoutesByTo {
   '/wallet': typeof AuthenticatedShellWalletRoute
   '/withdrawals': typeof AuthenticatedShellWithdrawalsRoute
   '/work': typeof AuthenticatedShellWorkRoute
+  '/admin/assignments': typeof AuthenticatedAdminAssignmentsRoute
+  '/admin/finance': typeof AuthenticatedAdminFinanceRoute
+  '/admin/jobs': typeof AuthenticatedAdminJobsRoute
+  '/admin/support': typeof AuthenticatedAdminSupportRoute
+  '/admin/system': typeof AuthenticatedAdminSystemRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
   '/assignments/$assignmentId': typeof AuthenticatedShellAssignmentsAssignmentIdRoute
   '/api/public/cron/payouts': typeof ApiPublicCronPayoutsRoute
   '/api/public/cron/sync-jobs': typeof ApiPublicCronSyncJobsRoute
@@ -337,12 +413,14 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/terms': typeof TermsRoute
   '/_authenticated/_shell': typeof AuthenticatedShellRouteRouteWithChildren
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/jobs/$jobId': typeof JobsJobIdRoute
   '/jobs/': typeof JobsIndexRoute
   '/_authenticated/_shell/applications': typeof AuthenticatedShellApplicationsRoute
   '/_authenticated/_shell/cv': typeof AuthenticatedShellCvRoute
   '/_authenticated/_shell/dashboard': typeof AuthenticatedShellDashboardRoute
   '/_authenticated/_shell/earnings': typeof AuthenticatedShellEarningsRoute
+  '/_authenticated/_shell/employer': typeof AuthenticatedShellEmployerRoute
   '/_authenticated/_shell/login-activity': typeof AuthenticatedShellLoginActivityRoute
   '/_authenticated/_shell/notifications': typeof AuthenticatedShellNotificationsRoute
   '/_authenticated/_shell/payment-methods': typeof AuthenticatedShellPaymentMethodsRoute
@@ -358,6 +436,13 @@ export interface FileRoutesById {
   '/_authenticated/_shell/wallet': typeof AuthenticatedShellWalletRoute
   '/_authenticated/_shell/withdrawals': typeof AuthenticatedShellWithdrawalsRoute
   '/_authenticated/_shell/work': typeof AuthenticatedShellWorkRoute
+  '/_authenticated/admin/assignments': typeof AuthenticatedAdminAssignmentsRoute
+  '/_authenticated/admin/finance': typeof AuthenticatedAdminFinanceRoute
+  '/_authenticated/admin/jobs': typeof AuthenticatedAdminJobsRoute
+  '/_authenticated/admin/support': typeof AuthenticatedAdminSupportRoute
+  '/_authenticated/admin/system': typeof AuthenticatedAdminSystemRoute
+  '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/_shell/assignments/$assignmentId': typeof AuthenticatedShellAssignmentsAssignmentIdRoute
   '/api/public/cron/payouts': typeof ApiPublicCronPayoutsRoute
   '/api/public/cron/sync-jobs': typeof ApiPublicCronSyncJobsRoute
@@ -376,12 +461,14 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/reset-password'
     | '/terms'
+    | '/admin'
     | '/jobs/$jobId'
     | '/jobs/'
     | '/applications'
     | '/cv'
     | '/dashboard'
     | '/earnings'
+    | '/employer'
     | '/login-activity'
     | '/notifications'
     | '/payment-methods'
@@ -397,6 +484,13 @@ export interface FileRouteTypes {
     | '/wallet'
     | '/withdrawals'
     | '/work'
+    | '/admin/assignments'
+    | '/admin/finance'
+    | '/admin/jobs'
+    | '/admin/support'
+    | '/admin/system'
+    | '/admin/users'
+    | '/admin/'
     | '/assignments/$assignmentId'
     | '/api/public/cron/payouts'
     | '/api/public/cron/sync-jobs'
@@ -419,6 +513,7 @@ export interface FileRouteTypes {
     | '/cv'
     | '/dashboard'
     | '/earnings'
+    | '/employer'
     | '/login-activity'
     | '/notifications'
     | '/payment-methods'
@@ -434,6 +529,13 @@ export interface FileRouteTypes {
     | '/wallet'
     | '/withdrawals'
     | '/work'
+    | '/admin/assignments'
+    | '/admin/finance'
+    | '/admin/jobs'
+    | '/admin/support'
+    | '/admin/system'
+    | '/admin/users'
+    | '/admin'
     | '/assignments/$assignmentId'
     | '/api/public/cron/payouts'
     | '/api/public/cron/sync-jobs'
@@ -452,12 +554,14 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/terms'
     | '/_authenticated/_shell'
+    | '/_authenticated/admin'
     | '/jobs/$jobId'
     | '/jobs/'
     | '/_authenticated/_shell/applications'
     | '/_authenticated/_shell/cv'
     | '/_authenticated/_shell/dashboard'
     | '/_authenticated/_shell/earnings'
+    | '/_authenticated/_shell/employer'
     | '/_authenticated/_shell/login-activity'
     | '/_authenticated/_shell/notifications'
     | '/_authenticated/_shell/payment-methods'
@@ -473,6 +577,13 @@ export interface FileRouteTypes {
     | '/_authenticated/_shell/wallet'
     | '/_authenticated/_shell/withdrawals'
     | '/_authenticated/_shell/work'
+    | '/_authenticated/admin/assignments'
+    | '/_authenticated/admin/finance'
+    | '/_authenticated/admin/jobs'
+    | '/_authenticated/admin/support'
+    | '/_authenticated/admin/system'
+    | '/_authenticated/admin/users'
+    | '/_authenticated/admin/'
     | '/_authenticated/_shell/assignments/$assignmentId'
     | '/api/public/cron/payouts'
     | '/api/public/cron/sync-jobs'
@@ -571,6 +682,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedShellRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/jobs/': {
       id: '/jobs/'
       path: '/jobs'
@@ -611,6 +729,13 @@ declare module '@tanstack/react-router' {
       path: '/earnings'
       fullPath: '/earnings'
       preLoaderRoute: typeof AuthenticatedShellEarningsRouteImport
+      parentRoute: typeof AuthenticatedShellRouteRoute
+    }
+    '/_authenticated/_shell/employer': {
+      id: '/_authenticated/_shell/employer'
+      path: '/employer'
+      fullPath: '/employer'
+      preLoaderRoute: typeof AuthenticatedShellEmployerRouteImport
       parentRoute: typeof AuthenticatedShellRouteRoute
     }
     '/_authenticated/_shell/login-activity': {
@@ -718,6 +843,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedShellWorkRouteImport
       parentRoute: typeof AuthenticatedShellRouteRoute
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/assignments': {
+      id: '/_authenticated/admin/assignments'
+      path: '/assignments'
+      fullPath: '/admin/assignments'
+      preLoaderRoute: typeof AuthenticatedAdminAssignmentsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/finance': {
+      id: '/_authenticated/admin/finance'
+      path: '/finance'
+      fullPath: '/admin/finance'
+      preLoaderRoute: typeof AuthenticatedAdminFinanceRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/jobs': {
+      id: '/_authenticated/admin/jobs'
+      path: '/jobs'
+      fullPath: '/admin/jobs'
+      preLoaderRoute: typeof AuthenticatedAdminJobsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/support': {
+      id: '/_authenticated/admin/support'
+      path: '/support'
+      fullPath: '/admin/support'
+      preLoaderRoute: typeof AuthenticatedAdminSupportRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/system': {
+      id: '/_authenticated/admin/system'
+      path: '/system'
+      fullPath: '/admin/system'
+      preLoaderRoute: typeof AuthenticatedAdminSystemRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/users': {
+      id: '/_authenticated/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/_shell/assignments/': {
       id: '/_authenticated/_shell/assignments/'
       path: '/assignments'
@@ -768,6 +942,7 @@ interface AuthenticatedShellRouteRouteChildren {
   AuthenticatedShellCvRoute: typeof AuthenticatedShellCvRoute
   AuthenticatedShellDashboardRoute: typeof AuthenticatedShellDashboardRoute
   AuthenticatedShellEarningsRoute: typeof AuthenticatedShellEarningsRoute
+  AuthenticatedShellEmployerRoute: typeof AuthenticatedShellEmployerRoute
   AuthenticatedShellLoginActivityRoute: typeof AuthenticatedShellLoginActivityRoute
   AuthenticatedShellNotificationsRoute: typeof AuthenticatedShellNotificationsRoute
   AuthenticatedShellPaymentMethodsRoute: typeof AuthenticatedShellPaymentMethodsRoute
@@ -793,6 +968,7 @@ const AuthenticatedShellRouteRouteChildren: AuthenticatedShellRouteRouteChildren
     AuthenticatedShellCvRoute: AuthenticatedShellCvRoute,
     AuthenticatedShellDashboardRoute: AuthenticatedShellDashboardRoute,
     AuthenticatedShellEarningsRoute: AuthenticatedShellEarningsRoute,
+    AuthenticatedShellEmployerRoute: AuthenticatedShellEmployerRoute,
     AuthenticatedShellLoginActivityRoute: AuthenticatedShellLoginActivityRoute,
     AuthenticatedShellNotificationsRoute: AuthenticatedShellNotificationsRoute,
     AuthenticatedShellPaymentMethodsRoute:
@@ -820,12 +996,40 @@ const AuthenticatedShellRouteRouteWithChildren =
     AuthenticatedShellRouteRouteChildren,
   )
 
+interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminAssignmentsRoute: typeof AuthenticatedAdminAssignmentsRoute
+  AuthenticatedAdminFinanceRoute: typeof AuthenticatedAdminFinanceRoute
+  AuthenticatedAdminJobsRoute: typeof AuthenticatedAdminJobsRoute
+  AuthenticatedAdminSupportRoute: typeof AuthenticatedAdminSupportRoute
+  AuthenticatedAdminSystemRoute: typeof AuthenticatedAdminSystemRoute
+  AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+}
+
+const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
+  {
+    AuthenticatedAdminAssignmentsRoute: AuthenticatedAdminAssignmentsRoute,
+    AuthenticatedAdminFinanceRoute: AuthenticatedAdminFinanceRoute,
+    AuthenticatedAdminJobsRoute: AuthenticatedAdminJobsRoute,
+    AuthenticatedAdminSupportRoute: AuthenticatedAdminSupportRoute,
+    AuthenticatedAdminSystemRoute: AuthenticatedAdminSystemRoute,
+    AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
+    AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+  }
+
+const AuthenticatedAdminRouteRouteWithChildren =
+  AuthenticatedAdminRouteRoute._addFileChildren(
+    AuthenticatedAdminRouteRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedShellRouteRoute: typeof AuthenticatedShellRouteRouteWithChildren
+  AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedShellRouteRoute: AuthenticatedShellRouteRouteWithChildren,
+  AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
