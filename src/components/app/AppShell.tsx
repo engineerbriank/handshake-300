@@ -8,6 +8,7 @@ import { NAV_GROUPS } from "./nav-items";
 import { supabase } from "@/integrations/supabase/client";
 import { useCurrentUser, useProfile, useRoles, isStaff, displayName } from "@/lib/auth";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 export async function signOut(queryClient: ReturnType<typeof useQueryClient>, navigate: ReturnType<typeof useNavigate>) {
   await queryClient.cancelQueries();
@@ -46,9 +47,9 @@ function NavList({ onNavigate, dark }: { onNavigate?: () => void; dark?: boolean
             })}
             {g.title === "Account" && (
               <li>
-                <button type="button" onClick={() => signOut(qc, navigate)} className={cn(item(false), "w-full")}>
+                <Button variant="ghost" type="button" onClick={() => signOut(qc, navigate)} className={cn(item(false), "w-full justify-start text-destructive")}>
                   <LogOut className="h-4 w-4" /> Logout
-                </button>
+                </Button>
               </li>
             )}
           </ul>
@@ -76,7 +77,8 @@ function useUnreadCount() {
     enabled: !!user,
     refetchInterval: 60_000,
     queryFn: async () => {
-      const { count } = await supabase.from("notifications").select("id", { count: "exact", head: true }).eq("user_id", user!.id).is("read_at", null);
+      if (!user) return 0;
+      const { count } = await supabase.from("notifications").select("id", { count: "exact", head: true }).eq("user_id", user.id).is("read_at", null);
       return count ?? 0;
     },
   });
@@ -96,9 +98,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   const { data: unread } = useUnreadCount();
 
   return (
-    <div className="min-h-screen bg-surface">
+    <div className="min-h-screen bg-background">
       {/* Desktop sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col bg-sidebar lg:flex">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-60 flex-col border-r bg-sidebar lg:flex">
         <div className="px-5 py-5">
           <Logo to="/dashboard" light />
         </div>
@@ -107,14 +109,11 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </aside>
 
-      <div className="lg:pl-64">
-        <header className="sticky top-0 z-20 flex h-14 items-center gap-3 border-b bg-background/95 px-4 backdrop-blur sm:px-6">
-          <button type="button" className="-ml-1 rounded-lg p-2 hover:bg-secondary lg:hidden" onClick={() => setOpen(true)} aria-label="Open menu">
-            <Menu className="h-5 w-5" />
-          </button>
-          <div className="lg:hidden">
-            <Logo to="/dashboard" />
-          </div>
+      <div className="lg:pl-60">
+        <header className="sticky top-0 z-20 grid h-12 grid-cols-[minmax(0,1fr)_auto] items-center gap-3 bg-background px-4 sm:px-6 lg:border-b">
+          <Button variant="ghost" size="icon" type="button" className="-ml-2 lg:hidden" onClick={() => setOpen(true)} aria-label="Open menu">
+            <Menu className="h-4 w-4" />
+          </Button>
           <div className="ml-auto flex items-center gap-1">
             <Link to="/notifications" className="relative rounded-lg p-2 hover:bg-secondary" aria-label="Notifications">
               <Bell className="h-5 w-5" />
@@ -133,7 +132,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </header>
 
-        <main className="mx-auto w-full max-w-6xl px-4 pb-28 pt-6 sm:px-6 lg:pb-12">{children}</main>
+        <main className="app-content mx-auto w-full max-w-5xl px-4 pb-28 pt-2 sm:px-6 lg:pb-12 lg:pt-6">{children}</main>
       </div>
 
       {/* Mobile menu */}
@@ -142,6 +141,8 @@ export function AppShell({ children }: { children: ReactNode }) {
           <SheetTitle className="sr-only">Menu</SheetTitle>
           <div className="border-b px-5 py-4">
             <Logo to="/dashboard" />
+            <p className="mt-2 text-xs text-muted-foreground">{displayName(profile)}</p>
+            <p className="truncate text-xs text-muted-foreground">{profile?.email}</p>
           </div>
           <div className="px-3 py-4">
             <NavList onNavigate={() => setOpen(false)} />
@@ -152,7 +153,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       {/* Mobile bottom tabs */}
       <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-4 border-t bg-background pb-[env(safe-area-inset-bottom)] lg:hidden">
         {TABS.map((t) => {
-          const active = path === t.to || path.startsWith(t.to + "/");
+          const active = path === t.to || path.startsWith(t.to + "/") || (t.to === "/wallet" && ["/earnings", "/withdrawals", "/payment-methods", "/transactions"].includes(path)) || (t.to === "/profile" && ["/skills", "/cv", "/portfolio", "/verification", "/security", "/login-activity"].includes(path));
           return (
             <Link key={t.to} to={t.to} className={cn("flex flex-col items-center gap-1 py-2.5 text-[0.7rem] font-medium", active ? "text-foreground" : "text-muted-foreground")}>
               <t.icon className={cn("h-5 w-5", active && "stroke-[2.4]")} />
