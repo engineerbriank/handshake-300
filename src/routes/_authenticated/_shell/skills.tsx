@@ -13,7 +13,7 @@ import { useCurrentUser } from "@/lib/auth";
 import { shortDate } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/_shell/skills")({
-  head: () => ({ meta: [{ title: "Skills and Experience — HANDSHAKE" }, { name: "description", content: "Your skills and work history." }] }),
+  head: () => ({ meta: [{ title: "Skills and Experience — Handshake" }, { name: "description", content: "Your skills and work history." }] }),
   component: Skills,
 });
 

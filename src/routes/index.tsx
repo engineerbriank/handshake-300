@@ -30,9 +30,9 @@ const featuredQuery = queryOptions({
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "HANDSHAKE — Your next opportunity could be anywhere" },
+      { title: "Handshake — Your next opportunity could be anywhere" },
       { name: "description", content: "Discover international remote opportunities, complete paid digital assignments and manage your USD earnings with weekly M-Pesa withdrawals." },
-      { property: "og:title", content: "HANDSHAKE — Your next opportunity could be anywhere" },
+      { property: "og:title", content: "Handshake — Your next opportunity could be anywhere" },
       { property: "og:description", content: "International remote jobs, funded digital assignments and a USD wallet in one place." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -144,10 +144,10 @@ function Landing() {
       {/* ASSIGNMENTS */}
       <section className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-wider text-info">HANDSHAKE Workroom</p>
+          <p className="text-sm font-semibold uppercase tracking-wider text-info">Handshake Workroom</p>
           <h2 className="mt-2 text-2xl font-bold sm:text-3xl">Paid digital assignments, funded before they go live</h2>
           <p className="mt-3 text-muted-foreground">
-            HANDSHAKE and approved clients publish short, well-defined digital tasks. Each assignment has clear instructions, a fixed USD payment, limited slots and a deadline. Its full budget is reserved in our ledger before anyone can claim it.
+            Handshake and approved clients publish short, well-defined digital tasks. Each assignment has clear instructions, a fixed USD payment, limited slots and a deadline. Its full budget is reserved in our ledger before anyone can claim it.
           </p>
           <Button asChild className="mt-6"><Link to="/assignments">Explore assignments</Link></Button>
         </div>
@@ -252,7 +252,7 @@ function Landing() {
           <h2 className="text-2xl font-bold sm:text-3xl">Frequently asked questions</h2>
           <Accordion type="single" collapsible className="mt-6">
             {[
-              ["Does HANDSHAKE pay me for external jobs?", "No. External jobs are with the employer who posted them. You apply on their site and they pay you directly. HANDSHAKE only pays for HANDSHAKE assignments that you complete and that are approved."],
+              ["Does Handshake pay me for external jobs?", "No. External jobs are with the employer who posted them. You apply on their site and they pay you directly. Handshake only pays for Handshake assignments that you complete and that are approved."],
               ["Is employment guaranteed?", "No. We help you discover genuine opportunities, but hiring decisions are made by employers."],
               ["When are withdrawals processed?", "You can request a withdrawal at any time. Requests are processed every Saturday at 8:00 PM East Africa Time (UTC+3). The minimum is $5."],
               ["How is the KES amount calculated?", "We use a documented USD/KES exchange rate retrieved at the time of your request. You see the rate, fees and net KES before you confirm."],

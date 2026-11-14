@@ -15,7 +15,7 @@ import { useSettings } from "@/components/app/MaintenanceBanner";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/_shell/withdrawals")({
-  head: () => ({ meta: [{ title: "Withdraw Funds — HANDSHAKE" }, { name: "description", content: "Request a withdrawal to M-Pesa or other supported methods." }] }),
+  head: () => ({ meta: [{ title: "Withdraw Funds — Handshake" }, { name: "description", content: "Request a withdrawal to M-Pesa or other supported methods." }] }),
   component: Withdrawals,
 });
 

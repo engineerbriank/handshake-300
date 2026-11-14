@@ -6,7 +6,7 @@ import { useTransactions, TXN_LABEL } from "@/lib/user-data";
 import { usd, dateTime } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/_shell/transactions")({
-  head: () => ({ meta: [{ title: "Transactions — HANDSHAKE" }, { name: "description", content: "Every movement on your available USD balance." }] }),
+  head: () => ({ meta: [{ title: "Transactions — Handshake" }, { name: "description", content: "Every movement on your available USD balance." }] }),
   component: Transactions,
 });
 

@@ -15,7 +15,7 @@ import { usd, dateTime, shortDate } from "@/lib/format";
 import { uploadPrivate, validateFile } from "@/lib/upload";
 
 export const Route = createFileRoute("/_authenticated/_shell/work")({
-  head: () => ({ meta: [{ title: "My Work — HANDSHAKE" }, { name: "description", content: "Your claimed assignments and submissions." }] }),
+  head: () => ({ meta: [{ title: "My Work — Handshake" }, { name: "description", content: "Your claimed assignments and submissions." }] }),
   component: WorkPage,
 });
 

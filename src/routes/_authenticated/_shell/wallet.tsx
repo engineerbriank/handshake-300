@@ -7,7 +7,7 @@ import { usd, dateTime } from "@/lib/format";
 import { useSettings } from "@/components/app/MaintenanceBanner";
 
 export const Route = createFileRoute("/_authenticated/_shell/wallet")({
-  head: () => ({ meta: [{ title: "USD Wallet — HANDSHAKE" }, { name: "description", content: "Your USD balances and transactions." }] }),
+  head: () => ({ meta: [{ title: "USD Wallet — Handshake" }, { name: "description", content: "Your USD balances and transactions." }] }),
   component: WalletPage,
 });
 

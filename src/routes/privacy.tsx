@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { StaticPage, staticHead } from "@/components/common/StaticPage";
 
 export const Route = createFileRoute("/privacy")({
-  head: staticHead("Privacy Policy", "How HANDSHAKE collects, uses and protects your personal and financial information."),
+  head: staticHead("Privacy Policy", "How Handshake collects, uses and protects your personal and financial information."),
   component: () => (
     <StaticPage title="Privacy Policy" intro="We collect only what we need to run the platform securely.">
       <h2>What we collect</h2>

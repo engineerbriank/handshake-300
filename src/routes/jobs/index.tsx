@@ -24,9 +24,9 @@ export const Route = createFileRoute("/jobs/")({
   loader: ({ context, deps }) => context.queryClient.ensureQueryData(jobsQuery(deps)),
   head: () => ({
     meta: [
-      { title: "Explore remote jobs worldwide — HANDSHAKE" },
+      { title: "Explore remote jobs worldwide — Handshake" },
       { name: "description", content: "Search live international remote jobs by country, category, salary and experience. Apply directly on the employer's site." },
-      { property: "og:title", content: "Explore remote jobs worldwide — HANDSHAKE" },
+      { property: "og:title", content: "Explore remote jobs worldwide — Handshake" },
       { property: "og:description", content: "Live remote opportunities from verified international job sources." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

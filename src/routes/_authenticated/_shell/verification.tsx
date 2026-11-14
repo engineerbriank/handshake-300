@@ -13,7 +13,7 @@ import { uploadPrivate, validateFile } from "@/lib/upload";
 import { humanize, dateTime } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/_shell/verification")({
-  head: () => ({ meta: [{ title: "Verification Centre — HANDSHAKE" }, { name: "description", content: "Complete your account verification." }] }),
+  head: () => ({ meta: [{ title: "Verification Centre — Handshake" }, { name: "description", content: "Complete your account verification." }] }),
   component: Verification,
 });
 
@@ -64,7 +64,7 @@ function Verification() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <PageHeader title="Verification Centre" description="Verification protects your earnings and keeps HANDSHAKE free of fraud." />
+      <PageHeader title="Verification Centre" description="Verification protects your earnings and keeps Handshake free of fraud." />
       <div className="mb-6 rounded-2xl border bg-card p-5 shadow-card">
         <div className="flex items-center justify-between">
           <div><p className="text-sm text-muted-foreground">Account status</p><div className="mt-1"><StatusBadge status={profile?.account_status} /></div></div>

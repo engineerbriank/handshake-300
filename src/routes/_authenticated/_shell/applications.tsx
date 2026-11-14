@@ -12,7 +12,7 @@ import { useApplications } from "@/lib/user-data";
 import { shortDate } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/_shell/applications")({
-  head: () => ({ meta: [{ title: "My Applications — HANDSHAKE" }, { name: "description", content: "Track the jobs you've applied to." }] }),
+  head: () => ({ meta: [{ title: "My Applications — Handshake" }, { name: "description", content: "Track the jobs you've applied to." }] }),
   component: Applications,
 });
 
@@ -65,7 +65,7 @@ function Applications() {
 
   return (
     <div>
-      <PageHeader title="My Applications" description="You update these statuses yourself — HANDSHAKE does not receive decisions from external employers." />
+      <PageHeader title="My Applications" description="You update these statuses yourself — Handshake does not receive decisions from external employers." />
       {isLoading ? <Loading /> : (
         <Tabs defaultValue="active">
           <TabsList className="mb-4"><TabsTrigger value="active">Active ({active.length})</TabsTrigger><TabsTrigger value="closed">Completed ({closed.length})</TabsTrigger></TabsList>

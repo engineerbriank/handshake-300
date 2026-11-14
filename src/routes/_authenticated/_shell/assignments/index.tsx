@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { usd, shortDate, humanize } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/_shell/assignments/")({
-  head: () => ({ meta: [{ title: "HANDSHAKE Assignments" }, { name: "description", content: "Funded digital assignments you can claim." }] }),
+  head: () => ({ meta: [{ title: "Handshake Assignments" }, { name: "description", content: "Funded digital assignments you can claim." }] }),
   component: AssignmentsPage,
 });
 
@@ -27,7 +27,7 @@ function AssignmentsPage() {
   });
   return (
     <div>
-      <PageHeader title="HANDSHAKE Assignments" description="Paid digital work funded in advance. Each assignment's full budget is reserved before it is published." />
+      <PageHeader title="Handshake Assignments" description="Paid digital work funded in advance. Each assignment's full budget is reserved before it is published." />
       {q.isLoading ? <Loading /> : q.error ? <ErrorNote error={q.error} /> : q.data!.length === 0 ? (
         <EmptyState icon={<Briefcase />} title="No open assignments right now" description="New funded assignments are published regularly. You'll get a notification when one is available." />
       ) : (

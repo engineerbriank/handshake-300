@@ -14,7 +14,7 @@ import { COUNTRIES } from "@/lib/constants";
 import { signOut } from "@/components/app/AppShell";
 
 export const Route = createFileRoute("/_authenticated/_shell/profile")({
-  head: () => ({ meta: [{ title: "My Profile — HANDSHAKE" }, { name: "description", content: "Your personal details." }] }),
+  head: () => ({ meta: [{ title: "My Profile — Handshake" }, { name: "description", content: "Your personal details." }] }),
   component: ProfilePage,
 });
 
@@ -51,7 +51,7 @@ function ProfilePage() {
     { label: "Security Centre", to: "/security", icon: Settings },
     { label: "Client Portal", to: "/employer", icon: Building2 },
     { label: "Support", to: "/report", icon: LifeBuoy },
-    { label: "About HANDSHAKE", to: "/how-it-works", icon: Info },
+    { label: "About Handshake", to: "/how-it-works", icon: Info },
     { label: "Terms & Conditions", to: "/terms", icon: ScrollText },
     { label: "Privacy Policy", to: "/privacy", icon: Shield },
   ] as const;
@@ -88,7 +88,7 @@ function ProfilePage() {
           <code className="rounded-lg bg-secondary px-3 py-2 font-mono font-bold">{p?.referral_code}</code>
           <Button size="sm" variant="outline" onClick={() => { navigator.clipboard.writeText(p?.referral_code ?? ""); toast.success("Copied"); }}><Copy /> Copy</Button>
         </div>
-        <p className="mt-2 text-xs text-muted-foreground">Share with people you know. Referrals are recorded; HANDSHAKE does not pay referral rewards at this time.</p>
+        <p className="mt-2 text-xs text-muted-foreground">Share with people you know. Referrals are recorded; Handshake does not pay referral rewards at this time.</p>
       </Panel>
 
       <nav className="divide-y rounded-2xl border bg-card shadow-card">

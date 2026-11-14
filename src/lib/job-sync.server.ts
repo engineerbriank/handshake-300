@@ -31,7 +31,7 @@ export type NormalizedJob = {
   source_url: string | null;
 };
 
-const UA = "HANDSHAKE-JobSync/1.0 (+https://handshake.lovable.app)";
+const UA = "Handshake-JobSync/1.0 (+https://handshake.lovable.app)";
 
 export function cleanHtml(html: string) {
   return sanitizeHtml(html ?? "", {

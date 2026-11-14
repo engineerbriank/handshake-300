@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { StaticPage, staticHead } from "@/components/common/StaticPage";
 
 export const Route = createFileRoute("/employers")({
-  head: staticHead("Hire remote talent", "Publish funded digital assignments to a verified international workforce on HANDSHAKE."),
+  head: staticHead("Hire remote talent", "Publish funded digital assignments to a verified international workforce on Handshake."),
   component: () => (
     <StaticPage title="Hire remote talent" intro="Get well-defined digital work done by verified workers around the world.">
       <h2>What you can post</h2>

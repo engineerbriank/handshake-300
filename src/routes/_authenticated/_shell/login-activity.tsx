@@ -7,7 +7,7 @@ import { useCurrentUser } from "@/lib/auth";
 import { dateTime } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/_shell/login-activity")({
-  head: () => ({ meta: [{ title: "Login Activity — HANDSHAKE" }, { name: "description", content: "Recent sign-ins to your account." }] }),
+  head: () => ({ meta: [{ title: "Login Activity — Handshake" }, { name: "description", content: "Recent sign-ins to your account." }] }),
   component: LoginActivity,
 });
 

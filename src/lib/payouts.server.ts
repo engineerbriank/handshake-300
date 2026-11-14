@@ -37,7 +37,7 @@ async function submitMpesa(p: { payoutId: string; phone: string; amountKes: numb
       Amount: p.amountKes,
       PartyA: process.env["MPESA_SHORTCODE"],
       PartyB: p.phone.replace(/^\+/, ""),
-      Remarks: "HANDSHAKE withdrawal",
+      Remarks: "Handshake withdrawal",
       QueueTimeOutURL: `${p.baseUrl}/api/public/payments/mpesa/timeout?token=${cb}`,
       ResultURL: `${p.baseUrl}/api/public/payments/mpesa/result?token=${cb}`,
       Occasion: p.payoutId.slice(0, 20),

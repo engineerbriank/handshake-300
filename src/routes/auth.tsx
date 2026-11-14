@@ -22,10 +22,10 @@ export const Route = createFileRoute("/auth")({
   }),
   head: () => ({
     meta: [
-      { title: "Sign in or create an account — HANDSHAKE" },
-      { name: "description", content: "Sign in to HANDSHAKE or create your account to find remote jobs and paid assignments." },
-      { property: "og:title", content: "Sign in — HANDSHAKE" },
-      { property: "og:description", content: "Access your HANDSHAKE account." },
+      { title: "Sign in or create an account — Handshake" },
+      { name: "description", content: "Sign in to Handshake or create your account to find remote jobs and paid assignments." },
+      { property: "og:title", content: "Sign in — Handshake" },
+      { property: "og:description", content: "Access your Handshake account." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -85,7 +85,7 @@ function AuthPage() {
       <div className="hidden w-[42%] flex-col justify-between bg-primary p-10 text-primary-foreground lg:flex">
         <Link to="/" className="flex items-center gap-3">
           <LogoMark className="h-10 w-10 bg-primary-foreground text-primary" />
-          <span className="text-lg font-extrabold tracking-[0.08em]">HANDSHAKE</span>
+          <span className="text-lg font-extrabold tracking-[0.08em]">Handshake</span>
         </Link>
         <div>
           <h2 className="text-4xl font-extrabold leading-tight">Get paid in USD for real remote work from around the world.</h2>
@@ -98,7 +98,7 @@ function AuthPage() {
           <div className="mb-8 flex flex-col items-center text-center">
             <Link to="/"><LogoMark className="h-14 w-14 lg:hidden" /></Link>
             <h1 className="mt-4 text-2xl font-bold">{mode === "signup" ? "Create your account" : mode === "forgot" ? "Reset your password" : "Welcome back!"}</h1>
-            <p className="mt-1 text-sm text-muted-foreground">{mode === "signup" ? "Join HANDSHAKE in a few steps" : mode === "forgot" ? "We'll email you a reset link" : "Sign in to continue"}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{mode === "signup" ? "Join Handshake in a few steps" : mode === "forgot" ? "We'll email you a reset link" : "Sign in to continue"}</p>
           </div>
           <div className="rounded-3xl border bg-background p-6 shadow-card sm:p-8">
             {mode === "signup" ? <SignUpForm /> : mode === "forgot" ? <ForgotForm /> : <SignInForm redirect={search.redirect} />}

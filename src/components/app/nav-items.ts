@@ -10,7 +10,7 @@ export const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
     items: [
       { label: "Dashboard", to: "/dashboard", icon: LayoutDashboard },
       { label: "Explore Jobs", to: "/jobs", icon: Search },
-      { label: "HANDSHAKE Assignments", to: "/assignments", icon: Briefcase },
+      { label: "Handshake Assignments", to: "/assignments", icon: Briefcase },
       { label: "Recommended Jobs", to: "/recommended", icon: Sparkles },
       { label: "Saved Jobs", to: "/saved", icon: Bookmark },
       { label: "Applications", to: "/applications", icon: FileText },

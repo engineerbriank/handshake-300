@@ -12,7 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useSavedJobs } from "@/lib/use-saved-jobs";
 
 export const Route = createFileRoute("/_authenticated/_shell/dashboard")({
-  head: () => ({ meta: [{ title: "Dashboard — HANDSHAKE" }, { name: "description", content: "Your HANDSHAKE balance, work and opportunities." }] }),
+  head: () => ({ meta: [{ title: "Dashboard — Handshake" }, { name: "description", content: "Your Handshake balance, work and opportunities." }] }),
   component: Dashboard,
 });
 
@@ -48,7 +48,7 @@ function Dashboard() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold sm:text-3xl">Hello, {profile?.first_name || "there"}!</h1>
-        <p className="text-muted-foreground">Welcome to HANDSHAKE</p>
+        <p className="text-muted-foreground">Welcome to Handshake</p>
       </div>
 
       {needsVerification && (

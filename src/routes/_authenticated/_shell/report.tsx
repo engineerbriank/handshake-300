@@ -12,7 +12,7 @@ import { useCurrentUser } from "@/lib/auth";
 import { dateTime, humanize } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/_shell/report")({
-  head: () => ({ meta: [{ title: "Report a Problem — HANDSHAKE" }, { name: "description", content: "Contact HANDSHAKE support." }] }),
+  head: () => ({ meta: [{ title: "Report a Problem — Handshake" }, { name: "description", content: "Contact Handshake support." }] }),
   component: Report,
 });
 

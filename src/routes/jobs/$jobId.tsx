@@ -27,14 +27,14 @@ export const Route = createFileRoute("/jobs/$jobId")({
   head: ({ loaderData }) => ({
     meta: loaderData
       ? [
-          { title: `${loaderData.title} at ${loaderData.employer} — HANDSHAKE` },
+          { title: `${loaderData.title} at ${loaderData.employer} — Handshake` },
           { name: "description", content: loaderData.excerpt ?? `Remote role at ${loaderData.employer}.` },
           { property: "og:title", content: `${loaderData.title} at ${loaderData.employer}` },
           { property: "og:description", content: loaderData.excerpt ?? `Remote role at ${loaderData.employer}.` },
           { property: "og:type", content: "article" },
           { name: "twitter:card", content: "summary" },
         ]
-      : [{ title: "Job unavailable — HANDSHAKE" }, { name: "robots", content: "noindex" }],
+      : [{ title: "Job unavailable — Handshake" }, { name: "robots", content: "noindex" }],
   }),
   notFoundComponent: () => (
     <SmartShell>
@@ -178,7 +178,7 @@ function JobDetail() {
           )}
 
           <div className="mt-6 rounded-2xl border border-dashed p-4 text-xs text-muted-foreground">
-            Source: {src?.website ? <a href={job.source_url ?? src.website} target="_blank" rel="noopener" className="font-semibold text-foreground underline">{src?.attribution ?? src?.name}</a> : src?.name}. You apply on the employer's or source's website. HANDSHAKE does not guarantee employment and does not pay for work performed for external employers.
+            Source: {src?.website ? <a href={job.source_url ?? src.website} target="_blank" rel="noopener" className="font-semibold text-foreground underline">{src?.attribution ?? src?.name}</a> : src?.name}. You apply on the employer's or source's website. Handshake does not guarantee employment and does not pay for work performed for external employers.
           </div>
         </div>
 

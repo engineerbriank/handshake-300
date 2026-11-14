@@ -9,7 +9,7 @@ import { useCurrentUser } from "@/lib/auth";
 import { useSavedJobs } from "@/lib/use-saved-jobs";
 
 export const Route = createFileRoute("/_authenticated/_shell/saved")({
-  head: () => ({ meta: [{ title: "Saved Jobs — HANDSHAKE" }, { name: "description", content: "Jobs you've saved." }] }),
+  head: () => ({ meta: [{ title: "Saved Jobs — Handshake" }, { name: "description", content: "Jobs you've saved." }] }),
   component: Saved,
 });
 

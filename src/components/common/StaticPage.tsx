@@ -16,9 +16,9 @@ export function StaticPage({ title, intro, children }: { title: string; intro?: 
 export function staticHead(title: string, description: string) {
   return () => ({
     meta: [
-      { title: `${title} — HANDSHAKE` },
+      { title: `${title} — Handshake` },
       { name: "description", content: description },
-      { property: "og:title", content: `${title} — HANDSHAKE` },
+      { property: "og:title", content: `${title} — Handshake` },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

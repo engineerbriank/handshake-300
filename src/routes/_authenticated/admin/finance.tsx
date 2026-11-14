@@ -243,7 +243,7 @@ function Deposits() {
   const recon = useRecon();
   return (
     <Panel title="Record a confirmed deposit">
-      <Notice>Record money only after it has actually arrived in a HANDSHAKE bank or provider account. The external reference (bank transfer ID, M-Pesa receipt, invoice number) is stored permanently and audited.</Notice>
+      <Notice>Record money only after it has actually arrived in a Handshake bank or provider account. The external reference (bank transfer ID, M-Pesa receipt, invoice number) is stored permanently and audited.</Notice>
       <form className="grid max-w-2xl gap-4 md:grid-cols-2" onSubmit={(e) => { e.preventDefault(); if (confirm(`Record ${usd(f.amount)} received with reference ${f.ref}?`)) m.mutate(); }}>
         <Field label="Amount received (USD)"><Input type="number" min="0.01" step="0.01" value={f.amount} onChange={(e) => setF({ ...f, amount: e.target.value })} required /></Field>
         <Field label="External payment reference"><Input value={f.ref} onChange={(e) => setF({ ...f, ref: e.target.value })} minLength={4} required /></Field>
