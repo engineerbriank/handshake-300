@@ -39,6 +39,7 @@ function TaskDetail() {
     },
   });
   const limit = useQuery({ queryKey: ["setting", "max_active_task_claims"], queryFn: async () => Number((await supabase.from("system_settings").select("value").eq("key", "max_active_task_claims").maybeSingle()).data?.value ?? 5) });
+  const fee = useQuery({ queryKey: ["fee", "assignment_commission"], queryFn: async () => (await supabase.from("platform_fees").select("percent,flat_usd").eq("kind", "assignment_commission").is("provider", null).eq("active", true).maybeSingle()).data });
   const doClaim = useMutation({
     mutationFn: async () => { const { error } = await supabase.rpc("claim_assignment", { _assignment: assignmentId }); if (error) throw error; },
     onSuccess: () => { toast.success("Task accepted. Your slot is reserved — find it in My Tasks."); qc.invalidateQueries(); navigate({ to: "/work" }); },
@@ -62,6 +63,9 @@ function TaskDetail() {
     { ok: left > 0, label: left > 0 ? `${left} funded ${left === 1 ? "slot" : "slots"} left` : "All funded slots are taken" },
     { ok: activeCount < (limit.data ?? 5), label: activeCount < (limit.data ?? 5) ? `You have ${activeCount} of ${limit.data ?? 5} active tasks` : `Finish a current task first (limit ${limit.data ?? 5})` },
   ];
+  const pay = Number(a.pay_usd);
+  const feeUsd = fee.data ? Math.round((pay * Number(fee.data.percent) / 100 + Number(fee.data.flat_usd)) * 100) / 100 : 0;
+  const net = feeUsd >= pay ? pay : pay - feeUsd;
   const canClaim = !mine && state === "published" && checks.every((c) => c.ok) && !!user;
 
   return (
@@ -111,7 +115,7 @@ function TaskDetail() {
         <ol className="list-decimal space-y-1.5 pl-5 text-sm">
           <li>Accept the task — your slot and its {usd(a.pay_usd)} are held for you until the deadline.</li>
           <li>Submit your work before {dateTime(a.deadline)}. The amount shows as pending in your wallet.</li>
-          <li>Once approved, {usd(a.pay_usd)} moves to your available USD balance{Number(a.pay_usd) > 0 && " (minus any platform fee shown in Fees & Limits; currently none)"}.</li>
+          <li>Once approved, {usd(net)} moves to your available USD balance{net < pay ? ` (${usd(pay)} minus a ${usd(pay - net)} platform fee)` : " — no platform fee is deducted"}.</li>
           <li>Withdraw under the usual wallet rules (minimum $5, weekly payout run).</li>
         </ol>
         <p className="mt-3 text-xs text-muted-foreground">Handshake will never ask for your passwords, one-time codes or banking logins to complete a task.</p>
