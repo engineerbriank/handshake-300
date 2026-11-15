@@ -25,7 +25,8 @@
 ## Paid Tasks
 - [x] Fourth remix setup: sign-up hooks, starting records, 473 imported jobs, sign-in options
 - [x] Task catalogue tables, funding/claim/submit/review rules
-- [ ] Load 720 task templates and 218 verified apps (apps loaded)
-- [ ] User screens: Paid Tasks, task detail, My Tasks, dashboard sections, navigation
-- [ ] Admin Paid Tasks centre: catalogue, publish, funding, submissions, payments, performance
-- [ ] Run the full $100 / 40 × $2.00 money test and edge cases against real records
+- [x] Load 720 task templates and 226 verified apps
+- [x] User screens: Paid Tasks, task detail, My Tasks, dashboard sections, navigation
+- [x] Admin Paid Tasks centre: catalogue, publish, funding, submissions, payments, performance
+- [x] Run the full $100 / 40 × $2.00 money test and edge cases against real records
+- [ ] Check signed-in Paid Tasks and admin screens in the browser (needs a real account; none exists yet)
